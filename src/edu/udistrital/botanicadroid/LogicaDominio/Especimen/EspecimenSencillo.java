@@ -1,35 +1,30 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
-import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Localidad;
 import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Recolecta;
+import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Localidad;
 import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.ColectorPrincipal;
 import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Colector;
 
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:56 p.m.
+ * @created 13-may-2013 01:24:11 a.m.
  */
 public class EspecimenSencillo implements Especimen {
 
 	private String descripcionEspecimen;
-	private Habito habito;
 	private long alturaDeLaPlanta;
 	private long dap;
 	private String abundancia;
 	private String fenologia;
-	private Flor flor;
 	private String numeroDeColeccion;
-	private ArrayList colectores;
+	private Etiqueta etiqueta;
+	private Recolecta recolecta;
 	private Habitat habitat;
 	private Localidad localidad;
-	private Recolecta recolecta;
 	private ColectorPrincipal colectorPrincipal;
-	public Etiqueta m_Etiqueta;
-	public Recolecta m_Recolecta;
-	public Habitat m_Habitat;
-	public Localidad m_Localidad;
-	public Habito m_Habito;
-	public Flor m_Flor;
+	private ArrayList colectores;
+	private ArrayList habito;
+	private Flor flor;
 
 	public EspecimenSencillo(){
 
@@ -71,20 +66,8 @@ public class EspecimenSencillo implements Especimen {
 		descripcionEspecimen = newVal;
 	}
 
-	public String gethabito(){
-		return habito;
-	}
-
 	public void agregarTodosColectores(){
 
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethabito(String newVal){
-		habito = newVal;
 	}
 
 	public long getalturaDeLaPlanta(){

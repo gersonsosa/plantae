@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:57 p.m.
+ * @created 13-may-2013 01:24:11 a.m.
  */
 public class Hoja {
 
@@ -18,8 +18,8 @@ public class Hoja {
 	private String naturalezaDelLimbo;
 	private String numeroDePinnas;
 	private String numeroHojas;
-	private String tamañoDeLasHojas;
-	private String tamañoDelPeciolo;
+	private String tamaÃ±oDeLasHojas;
+	private String tamaÃ±oDelPeciolo;
 	private String descripcion;
 	public Color m_Color;
 
@@ -177,28 +177,28 @@ public class Hoja {
 		numeroHojas = newVal;
 	}
 
-	public String gettamañoDeLasHojas(){
-		return tamañoDeLasHojas;
+	public String gettamaÃ±oDeLasHojas(){
+		return tamaÃ±oDeLasHojas;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDeLasHojas(String newVal){
-		tamañoDeLasHojas = newVal;
+	public void settamaÃ±oDeLasHojas(String newVal){
+		tamaÃ±oDeLasHojas = newVal;
 	}
 
-	public String gettamañoDelPeciolo(){
-		return tamañoDelPeciolo;
+	public String gettamaÃ±oDelPeciolo(){
+		return tamaÃ±oDelPeciolo;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDelPeciolo(String newVal){
-		tamañoDelPeciolo = newVal;
+	public void settamaÃ±oDelPeciolo(String newVal){
+		tamaÃ±oDelPeciolo = newVal;
 	}
 
 }

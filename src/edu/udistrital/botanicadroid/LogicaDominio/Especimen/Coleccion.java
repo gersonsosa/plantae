@@ -3,12 +3,12 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:56 p.m.
+ * @created 13-may-2013 01:24:11 a.m.
  */
 public class Coleccion {
 
 	private String nombre;
-	public Especimen m_Especimen;
+	private ArrayList especimenes;
 
 	public Coleccion(){
 

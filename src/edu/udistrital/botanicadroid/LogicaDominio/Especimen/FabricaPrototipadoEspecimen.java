@@ -3,14 +3,12 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:57 p.m.
+ * @created 13-may-2013 01:24:12 a.m.
  */
 public class FabricaPrototipadoEspecimen {
 
-	private EspecimenSencillo especimenSencillo;
-	private EspecimenDetallado especimenDetallado;
-	public EspecimenDetallado m_EspecimenDetallado;
-	public EspecimenSencillo m_EspecimenSencillo;
+	private ArrayList especimenDetallado;
+	private ArrayList especimenSencillo;
 
 	public FabricaPrototipadoEspecimen(){
 

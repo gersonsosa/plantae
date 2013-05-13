@@ -3,12 +3,12 @@ package edu.udistrital.botanicadroid.LogicaDominio.Autenticacion;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:58 p.m.
+ * @created 13-may-2013 01:24:10 a.m.
  */
 public class Usuario extends Persona {
 
 	private String nombreUsuario;
-	private String contraseña;
+	private String contraseÃ±a;
 	private int tipoCapturaDatos;
 
 	public Usuario(){

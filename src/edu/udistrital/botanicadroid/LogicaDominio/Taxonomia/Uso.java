@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Taxonomia;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:58 p.m.
+ * @created 13-may-2013 01:24:13 a.m.
  */
 public class Uso {
 

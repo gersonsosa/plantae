@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:57 p.m.
+ * @created 13-may-2013 01:24:10 a.m.
  */
 public class Inflorescencia {
 
@@ -19,11 +19,11 @@ public class Inflorescencia {
 	private String posicionDeLasInflorecencias;
 	private String raquilas;
 	private String raquis;
-	private String tamañoDeLasBracteasPedunculares;
-	private String tamañoDelPedunculo;
-	private String tamañoDelProfilo;
-	private String tamañoDelRaquis;
-	private String tamañoDeRaquilas;
+	private String tamaÃ±oDeLasBracteasPedunculares;
+	private String tamaÃ±oDelPedunculo;
+	private String tamaÃ±oDelProfilo;
+	private String tamaÃ±oDelRaquis;
+	private String tamaÃ±oDeRaquilas;
 	public Color m_Color;
 
 
@@ -180,64 +180,64 @@ public class Inflorescencia {
 		raquis = newVal;
 	}
 
-	public String gettamañoDeLasBracteasPedunculares(){
-		return tamañoDeLasBracteasPedunculares;
+	public String gettamaÃ±oDeLasBracteasPedunculares(){
+		return tamaÃ±oDeLasBracteasPedunculares;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDeLasBracteasPedunculares(String newVal){
-		tamañoDeLasBracteasPedunculares = newVal;
+	public void settamaÃ±oDeLasBracteasPedunculares(String newVal){
+		tamaÃ±oDeLasBracteasPedunculares = newVal;
 	}
 
-	public String gettamañoDelPedunculo(){
-		return tamañoDelPedunculo;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelPedunculo(String newVal){
-		tamañoDelPedunculo = newVal;
-	}
-
-	public String gettamañoDelProfilo(){
-		return tamañoDelProfilo;
+	public String gettamaÃ±oDelPedunculo(){
+		return tamaÃ±oDelPedunculo;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDelProfilo(String newVal){
-		tamañoDelProfilo = newVal;
+	public void settamaÃ±oDelPedunculo(String newVal){
+		tamaÃ±oDelPedunculo = newVal;
 	}
 
-	public String gettamañoDelRaquis(){
-		return tamañoDelRaquis;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelRaquis(String newVal){
-		tamañoDelRaquis = newVal;
-	}
-
-	public String gettamañoDeRaquilas(){
-		return tamañoDeRaquilas;
+	public String gettamaÃ±oDelProfilo(){
+		return tamaÃ±oDelProfilo;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDeRaquilas(String newVal){
-		tamañoDeRaquilas = newVal;
+	public void settamaÃ±oDelProfilo(String newVal){
+		tamaÃ±oDelProfilo = newVal;
+	}
+
+	public String gettamaÃ±oDelRaquis(){
+		return tamaÃ±oDelRaquis;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settamaÃ±oDelRaquis(String newVal){
+		tamaÃ±oDelRaquis = newVal;
+	}
+
+	public String gettamaÃ±oDeRaquilas(){
+		return tamaÃ±oDeRaquilas;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settamaÃ±oDeRaquilas(String newVal){
+		tamaÃ±oDeRaquilas = newVal;
 	}
 
 }

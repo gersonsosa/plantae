@@ -6,16 +6,16 @@ import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:50:37 p.m.
+ * @created 13-may-2013 01:24:12 a.m.
  */
 public class Viaje {
 
 	private String nombre;
-	private ArrayList<Colector> colectores;
 	private FabricaEspecimen fabricaEspecimen;
 	private FabricaPrototipadoEspecimen fabricaPrototipadoEspecimen;
 	private ColectorPrincipal colectorPrincipal;
 	private Trayecto trayecto;
+	private ArrayList colectores;
 	private Proyecto proyecto;
 
 	public Viaje(){

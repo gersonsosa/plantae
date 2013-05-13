@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:58 p.m.
+ * @created 13-may-2013 01:24:11 a.m.
  */
 public class Raiz {
 
@@ -13,7 +13,7 @@ public class Raiz {
 	private String diametroEnLaBase;
 	private String formaDeLasEspinas;
 	private boolean raizArmada;
-	private String tamañoDeLasEspinas;
+	private String tamaÃ±oDeLasEspinas;
 	public Color m_Color;
 
 
@@ -46,8 +46,8 @@ public class Raiz {
 		return formaDeLasEspinas;
 	}
 
-	public String gettamañoDeLasEspinas(){
-		return tamañoDeLasEspinas;
+	public String gettamaÃ±oDeLasEspinas(){
+		return tamaÃ±oDeLasEspinas;
 	}
 
 	public boolean israizArmada(){
@@ -106,8 +106,8 @@ public class Raiz {
 	 * 
 	 * @param newVal
 	 */
-	public void settamañoDeLasEspinas(String newVal){
-		tamañoDeLasEspinas = newVal;
+	public void settamaÃ±oDeLasEspinas(String newVal){
+		tamaÃ±oDeLasEspinas = newVal;
 	}
 
 }

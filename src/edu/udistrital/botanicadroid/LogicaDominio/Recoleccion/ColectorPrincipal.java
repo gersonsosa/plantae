@@ -4,13 +4,12 @@ import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Usuario;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:56 p.m.
+ * @created 13-may-2013 01:24:13 a.m.
  */
 public class ColectorPrincipal extends Usuario {
 
-	private ColectorPrincipal colectorPrincipal;
 	private String numeroColeccionActual;
-	public ColectorPrincipal m_ColectorPrincipal;
+	private ColectorPrincipal colectorPrincipal;
 
 
 

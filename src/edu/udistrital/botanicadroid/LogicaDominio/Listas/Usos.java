@@ -5,14 +5,13 @@ import edu.udistrital.botanicadroid.LogicaDominio.java.util.Iterator;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 10-may-2013 03:41:58 p.m.
+ * @created 13-may-2013 01:24:07 a.m.
  */
 public class Usos implements Iterator {
 
 	private ArrayList<Uso> data;
 	private Enumeration eu;
 	private Uso nextUso;
-	public Uso m_Uso;
 
 	public Usos(){
 
