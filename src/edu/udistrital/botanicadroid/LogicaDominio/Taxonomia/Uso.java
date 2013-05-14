@@ -1,5 +1,7 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Taxonomia;
 
+import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Region;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0

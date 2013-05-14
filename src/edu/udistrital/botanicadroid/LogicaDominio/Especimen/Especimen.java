@@ -1,5 +1,7 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Colector;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0

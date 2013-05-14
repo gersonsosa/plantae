@@ -1,7 +1,10 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Recoleccion;
+import java.util.ArrayList;
+import java.util.Map;
+
+import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.FabricaEspecimen;
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.FabricaPrototipadoEspecimen;
-import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 
 /**
  * @author Sosa G., Mateus A.

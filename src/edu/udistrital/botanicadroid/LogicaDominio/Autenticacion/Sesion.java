@@ -1,5 +1,4 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Autenticacion;
-import edu.udistrital.botanicadroid.LogicaDominio.LoginFilter.UsernameFilterGeneric;
 
 /**
  * @author Sosa G., Mateus A.

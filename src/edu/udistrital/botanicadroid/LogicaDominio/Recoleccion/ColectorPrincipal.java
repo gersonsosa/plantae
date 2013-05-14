@@ -1,4 +1,6 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Recoleccion;
+import java.util.ArrayList;
+
 import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Usuario;
 
 /**

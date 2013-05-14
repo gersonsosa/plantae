@@ -1,6 +1,9 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Listas;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Habitat;
-import edu.udistrital.botanicadroid.LogicaDominio.java.util.Iterator;
 
 /**
  * @author Sosa G., Mateus A.

@@ -1,4 +1,6 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Taxonomia;
+import java.util.Date;
+
 import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Persona;
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 

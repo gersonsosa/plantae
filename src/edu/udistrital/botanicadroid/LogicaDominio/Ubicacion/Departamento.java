@@ -1,5 +1,7 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Ubicacion;
 
+import java.util.ArrayList;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0

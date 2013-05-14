@@ -108,7 +108,7 @@ public class Inflorescencia {
 		naturalezaDelProfilo = newVal;
 	}
 
-	public String getnumeroDeLasBracteasPedunculares(){
+	public int getnumeroDeLasBracteasPedunculares(){
 		return numeroDeLasBracteasPedunculares;
 	}
 
@@ -116,11 +116,11 @@ public class Inflorescencia {
 	 * 
 	 * @param newVal
 	 */
-	public void setnumeroDeLasBracteasPedunculares(String newVal){
+	public void setnumeroDeLasBracteasPedunculares(int newVal){
 		numeroDeLasBracteasPedunculares = newVal;
 	}
 
-	public String getnumeroDeRaquilas(){
+	public int getnumeroDeRaquilas(){
 		return numeroDeRaquilas;
 	}
 
@@ -128,7 +128,7 @@ public class Inflorescencia {
 	 * 
 	 * @param newVal
 	 */
-	public void setnumeroDeRaquilas(String newVal){
+	public void setnumeroDeRaquilas(int newVal){
 		numeroDeRaquilas = newVal;
 	}
 

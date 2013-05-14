@@ -1,5 +1,10 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Listas;
 
+import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Color;
+import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Habitat;
+import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Habito;
+import edu.udistrital.botanicadroid.LogicaDominio.Taxonomia.Uso;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0

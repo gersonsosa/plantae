@@ -1,5 +1,11 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Autenticacion;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Proyecto;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Viaje;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0

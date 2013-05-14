@@ -1,4 +1,5 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Colector;
 import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Recolecta;
 import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Localidad;
 
