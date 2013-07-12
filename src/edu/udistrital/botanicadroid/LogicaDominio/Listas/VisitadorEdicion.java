@@ -8,7 +8,7 @@ import edu.udistrital.botanicadroid.LogicaDominio.Taxonomia.Uso;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:07 a.m.
+ * @created 26-Jun-2013 11:33:39 PM
  */
 public class VisitadorEdicion implements Visitador {
 
@@ -73,6 +73,14 @@ public class VisitadorEdicion implements Visitador {
 	 * @param habitos
 	 */
 	public void visitar(Habitos habitos){
+
+	}
+
+	/**
+	 * 
+	 * @param usos
+	 */
+	public void visitar(Usos usos){
 
 	}
 

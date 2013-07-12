@@ -1,31 +1,31 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 import java.util.ArrayList;
 
-import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Colector;
-import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.ColectorPrincipal;
-import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Recolecta;
 import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Localidad;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Recoleccion;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.ColectorPrincipal;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.Colector;
 
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:11 a.m.
+ * @created 26-Jun-2013 12:09:14 AM
  */
 public class EspecimenSencillo implements Especimen {
 
-	private String descripcionEspecimen;
+	private String numeroDeColeccion;
 	private long alturaDeLaPlanta;
 	private long dap;
 	private String abundancia;
 	private String fenologia;
-	private String numeroDeColeccion;
-	private Etiqueta etiqueta;
-	private Recolecta recolecta;
+	private String descripcionEspecimen;
+	private Habito habito;
 	private Habitat habitat;
 	private Localidad localidad;
+	private Etiqueta etiqueta;
+	private Recoleccion recolecta;
 	private ColectorPrincipal colectorPrincipal;
 	private ArrayList colectores;
-	private ArrayList habito;
 	private Flor flor;
 
 	public EspecimenSencillo(){
@@ -50,6 +50,10 @@ public class EspecimenSencillo implements Especimen {
 
 	public String getdescripcionEspecimen(){
 		return descripcionEspecimen;
+	}
+
+	public void agregarMuestraAsociada(){
+
 	}
 
 	/**
@@ -124,6 +128,10 @@ public class EspecimenSencillo implements Especimen {
 		return numeroDeColeccion;
 	}
 
+	public Habito gethabito(){
+		return habito;
+	}
+
 	/**
 	 * 
 	 * @param newVal
@@ -134,6 +142,38 @@ public class EspecimenSencillo implements Especimen {
 
 	public Object clone(){
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabito(Habito newVal){
+		habito = newVal;
+	}
+
+	public Habitat gethabitat(){
+		return habitat;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabitat(Habitat newVal){
+		habitat = newVal;
+	}
+
+	public Localidad getlocalidad(){
+		return localidad;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setlocalidad(Localidad newVal){
+		localidad = newVal;
 	}
 
 }

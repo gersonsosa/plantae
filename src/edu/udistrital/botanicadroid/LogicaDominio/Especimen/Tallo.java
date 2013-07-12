@@ -3,13 +3,12 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:11 a.m.
+ * @created 26-Jun-2013 12:09:15 AM
  */
 public class Tallo {
 
 	private String alturaDelTallo;
 	private Color colorDelTallo;
-	private String descripcion;
 	private boolean desnudoCubierto;
 	private String diametroDelTallo;
 	private String disposicionDeLasEspinas;
@@ -18,6 +17,7 @@ public class Tallo {
 	private String formaDelTallo;
 	private String longitudEntrenudos;
 	private String naturalezaDelTallo;
+	private String descripcion;
 	public Color m_Color;
 
 

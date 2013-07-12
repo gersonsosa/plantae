@@ -3,17 +3,17 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:11 a.m.
+ * @created 26-Jun-2013 12:09:15 AM
  */
 public class Raiz {
 
 	private long alturaDelCono;
-	private String descripcion;
 	private String diametroDeLasRaices;
 	private String diametroEnLaBase;
 	private String formaDeLasEspinas;
 	private boolean raizArmada;
 	private String tamañoDeLasEspinas;
+	private String descripcion;
 	public Color m_Color;
 
 

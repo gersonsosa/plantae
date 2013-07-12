@@ -5,11 +5,11 @@ import java.util.ArrayList;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:13 a.m.
+ * @created 26-Jun-2013 11:33:38 PM
  */
 public class Familia extends Taxon {
 
-	private ArrayList generos;
+	private ArrayList<Genero> generos;
 
 	public Familia(){
 

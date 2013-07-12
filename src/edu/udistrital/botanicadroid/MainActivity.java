@@ -2,14 +2,15 @@ package edu.udistrital.botanicadroid;
 
 import java.util.Locale;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,11 @@ public class MainActivity extends FragmentActivity {
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-
+	
+	public static final String PREFS_NAME = "botanicadroid_prefs";
+	Editor editor;
+	public MenuItem mLogOutView;
+	
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
@@ -37,6 +42,13 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);
+		//SharedPreferences preferences = getPreferences(0);
+		if (!checkLogin(preferences)){
+			Intent loginIntent = new Intent(this,LoginActivity.class);
+			startActivity(loginIntent);
+			finish();
+		}
 		setContentView(R.layout.activity_main);
 
 		// Create the adapter that will return a fragment for each of the three
@@ -46,8 +58,13 @@ public class MainActivity extends FragmentActivity {
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setAdapter(mSectionsPagerAdapter);		
 
+	}
+
+	private boolean checkLogin(SharedPreferences preferences) {
+		// TODO Auto-generated method stub
+		 return preferences.getBoolean("isLoggedIn", false);
 	}
 
 	@Override
@@ -55,6 +72,24 @@ public class MainActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+	    case R.id.log_out_action:
+	    	SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);
+			SharedPreferences.Editor editor = preferences.edit();
+	        editor.putBoolean("isLoggedIn", false);
+	        editor.commit();
+	        Intent loginIntent = new Intent(this, LoginActivity.class);
+	        startActivity(loginIntent);
+	        finish();
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	/**

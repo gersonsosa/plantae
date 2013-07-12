@@ -21,4 +21,16 @@ public class Trayecto {
 
 	}
 
+	public MapView getmapa(){
+		return mapa;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setmapa(MapView newVal){
+		mapa = newVal;
+	}
+
 }

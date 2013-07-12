@@ -103,4 +103,16 @@ public class Proyecto {
 		emisorPermiso = newVal;
 	}
 
+	public String getnombre(){
+		return nombre;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setnombre(String newVal){
+		nombre = newVal;
+	}
+
 }

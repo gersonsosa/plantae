@@ -1,19 +1,26 @@
 package edu.udistrital.botanicadroid;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Sesion;
+import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Usuario;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -25,7 +32,7 @@ public class LoginActivity extends Activity {
 	 * TODO: remove after connecting to a real authentication system.
 	 */
 	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
+		"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -40,6 +47,7 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	private Usuario usuario;
 
 	// UI references.
 	private EditText mEmailView;
@@ -110,9 +118,37 @@ public class LoginActivity extends Activity {
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
-
-		boolean cancel = false;
+		// Create the user object
+		usuario = new Usuario(mPassword, mEmail);
+		// Validate the user object password and email
+		Sesion sesion = usuario.validarDatosInicioSesion();
 		View focusView = null;
+		// Check if the validation of the credentials produce any errors
+		if (sesion == null){
+			Iterator<Entry<String, String>> iterator = ((Map<String, String>)usuario.geterroresCredenciales()).entrySet().iterator();
+			while (iterator.hasNext()) {
+				Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
+				if (entry.getKey().equals("mPassword")){
+					mPasswordView.setError(entry.getValue());
+					focusView = mPasswordView;
+				}else if (entry.getKey().equals("mEmail")){
+					mEmailView.setError(entry.getValue());
+					focusView = mEmailView;
+				}
+			}
+			focusView.requestFocus();
+		}else{
+			// Show a progress spinner, and kick off a background task to
+			// perform the user login attempt.
+			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			showProgress(true);
+			mAuthTask = new UserLoginTask();
+			mAuthTask.execute((Void) null);
+		}
+
+		
+		/*boolean cancel = false;
+		
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
@@ -147,14 +183,14 @@ public class LoginActivity extends Activity {
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
-		}
+		}*/
 	}
 
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private void showProgress(final boolean show) {
+	protected void showProgress(final boolean show) {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
@@ -190,7 +226,7 @@ public class LoginActivity extends Activity {
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-
+	
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
@@ -225,6 +261,12 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				SharedPreferences preferences = getSharedPreferences("botanicadroid_prefs", 0);
+				SharedPreferences.Editor editor = preferences.edit();
+		        editor.putBoolean("isLoggedIn", true);
+		        editor.commit();
+		        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+		        startActivity(intent);
 				finish();
 			} else {
 				mPasswordView

@@ -3,13 +3,12 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:10 a.m.
+ * @created 26-Jun-2013 12:09:15 AM
  */
 public class Inflorescencia {
 
 	private Color colorDeLaInflorecenciaEnFlor;
 	private Color colorDeLaInflorecenciaEnFruto;
-	private String descripcion;
 	private boolean inflorecenciaSolitaria;
 	private String naturalezaDeLasBracteasPedunculares;
 	private String naturalezaDelProfilo;
@@ -24,6 +23,7 @@ public class Inflorescencia {
 	private String tamañoDelProfilo;
 	private String tamañoDelRaquis;
 	private String tamañoDeRaquilas;
+	private String descripcion;
 	public Color m_Color;
 
 

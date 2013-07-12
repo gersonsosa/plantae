@@ -3,18 +3,11 @@ package edu.udistrital.botanicadroid.LogicaDominio.Autenticacion;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:10 a.m.
+ * @created 19-May-2013 11:50:34 PM
  */
 public class Sesion {
 
-	private Sesion sesion;
-	private Usuario usuario;
-
-
-
-	public void finalize() throws Throwable {
-
-	}
+	private static Sesion sesion;
 
 	/**
 	 * 
@@ -25,24 +18,27 @@ public class Sesion {
 
 	/**
 	 * 
-	 * @param contraseña
-	 * @param nombreUsuario
+	 * @exception Throwable
 	 */
-	public static Sesion iniciarSesion(String contraseña, String nombreUsuario){
-		return null;
-	}
+	public void finalize()
+	  throws Throwable{
 
-	public boolean cerrarSesion(){
-		return false;
 	}
 
 	/**
 	 * 
-	 * @param contraseña
-	 * @param nombreUsuario
+	 * @param usuario    nombreUsuario
 	 */
-	private static Usuario validarDatosInicioSesion(String contraseña, String nombreUsuario){
-		return null;
+	public static Sesion iniciarSesion(Usuario usuario){
+		if (sesion == null) {
+			sesion=new Sesion();
+		}
+		return sesion;
+	}
+
+	public boolean cerrarSesion(){
+		sesion = null;
+		return true;
 	}
 
 }

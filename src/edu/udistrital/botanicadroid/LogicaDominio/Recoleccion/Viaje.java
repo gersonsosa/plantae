@@ -2,6 +2,8 @@ package edu.udistrital.botanicadroid.LogicaDominio.Recoleccion;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.google.android.maps.MapView;
+
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.FabricaEspecimen;
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.FabricaPrototipadoEspecimen;
@@ -18,7 +20,7 @@ public class Viaje {
 	private FabricaPrototipadoEspecimen fabricaPrototipadoEspecimen;
 	private ColectorPrincipal colectorPrincipal;
 	private Trayecto trayecto;
-	private ArrayList colectores;
+	private ArrayList<Colector> colectores;
 	private Proyecto proyecto;
 
 	public Viaje(){
@@ -52,7 +54,7 @@ public class Viaje {
 		return null;
 	}
 
-	private Map construirMapa(){
+	private MapView construirMapa(){
 		return null;
 	}
 
@@ -84,6 +86,64 @@ public class Viaje {
 	 */
 	public void agregarMuestraAsociada(String metodoDeTratamiento, Especimen especimen){
 
+	}
+
+	/**
+	 * 
+	 * @param colectores
+	 * @param proyecto
+	 * @param nombre    nombre
+	 */
+	public Viaje(ArrayList<Colector> colectores, Proyecto proyecto, String nombre){
+
+	}
+
+	public String getnombre(){
+		return nombre;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setnombre(String newVal){
+		nombre = newVal;
+	}
+
+	public Proyecto getproyecto(){
+		return proyecto;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setproyecto(Proyecto newVal){
+		proyecto = newVal;
+	}
+
+	public ColectorPrincipal getcolectorPrincipal(){
+		return colectorPrincipal;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolectorPrincipal(ColectorPrincipal newVal){
+		colectorPrincipal = newVal;
+	}
+
+	public Trayecto gettrayecto(){
+		return trayecto;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settrayecto(Trayecto newVal){
+		trayecto = newVal;
 	}
 
 }

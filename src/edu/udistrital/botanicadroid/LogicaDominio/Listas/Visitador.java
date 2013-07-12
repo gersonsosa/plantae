@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Listas;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:07 a.m.
+ * @created 26-Jun-2013 11:33:39 PM
  */
 public interface Visitador {
 
@@ -24,5 +24,11 @@ public interface Visitador {
 	 * @param habitos
 	 */
 	public void visitar(Habitos habitos);
+
+	/**
+	 * 
+	 * @param usos
+	 */
+	public void visitar(Usos usos);
 
 }

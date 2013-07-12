@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Autenticacion;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:10 a.m.
+ * @created 19-May-2013 11:50:34 PM
  */
 public class Persona {
 

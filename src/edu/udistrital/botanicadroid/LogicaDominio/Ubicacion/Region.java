@@ -3,7 +3,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Ubicacion;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:13 a.m.
+ * @created 26-Jun-2013 11:33:38 PM
  */
 public abstract class Region {
 
@@ -39,6 +39,18 @@ public abstract class Region {
 	 */
 	public Region getRegionHijo(int region){
 		return null;
+	}
+
+	public String getnombre(){
+		return nombre;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setnombre(String newVal){
+		nombre = newVal;
 	}
 
 }

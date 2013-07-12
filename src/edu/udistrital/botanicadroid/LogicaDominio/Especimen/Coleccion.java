@@ -5,16 +5,12 @@ import java.util.ArrayList;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:11 a.m.
+ * @created 26-Jun-2013 12:09:13 AM
  */
 public class Coleccion {
 
 	private String nombre;
 	private ArrayList especimenes;
-
-	public Coleccion(){
-
-	}
 
 	public void finalize() throws Throwable {
 
@@ -26,6 +22,14 @@ public class Coleccion {
 	 */
 	public Coleccion(String nombre){
 
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 }

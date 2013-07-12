@@ -20,4 +20,16 @@ public class Colector extends Persona {
 
 	}
 
+	public Persona getpersona(){
+		return persona;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setpersona(Persona newVal){
+		persona = newVal;
+	}
+
 }

@@ -5,7 +5,7 @@ import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Region;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:13 a.m.
+ * @created 26-Jun-2013 11:33:39 PM
  */
 public class Uso {
 
@@ -26,6 +26,30 @@ public class Uso {
 	 */
 	public Uso(String nombre){
 
+	}
+
+	public Region getregion(){
+		return region;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setregion(Region newVal){
+		region = newVal;
+	}
+
+	public String getdescripcion(){
+		return descripcion;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setdescripcion(String newVal){
+		descripcion = newVal;
 	}
 
 }

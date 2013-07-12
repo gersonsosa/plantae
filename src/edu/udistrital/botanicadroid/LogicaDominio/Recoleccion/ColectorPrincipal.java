@@ -11,7 +11,7 @@ import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Usuario;
 public class ColectorPrincipal extends Usuario {
 
 	private String numeroColeccionActual;
-	private ColectorPrincipal colectorPrincipal;
+	private static ColectorPrincipal colectorPrincipal;
 
 
 
@@ -19,12 +19,25 @@ public class ColectorPrincipal extends Usuario {
 		super.finalize();
 	}
 
-	private ColectorPrincipal(){
-
+	/**
+	 * 
+	 * @param contraseña
+	 * @param usuario
+	 */
+	private ColectorPrincipal(String contraseña, String usuario){
+		super(contraseña, usuario);
 	}
 
-	public static ColectorPrincipal getColectorPrincipal(){
-		return null;
+	/**
+	 * 
+	 * @param contraseña
+	 * @param usuario
+	 */
+	public static ColectorPrincipal getColectorPrincipal(String contraseña, String usuario){
+		if (colectorPrincipal == null) {
+			colectorPrincipal=new ColectorPrincipal(usuario, contraseña);
+		}
+		return colectorPrincipal;
 	}
 
 	public ArrayList<Viaje> getListaViajes(){
@@ -33,6 +46,18 @@ public class ColectorPrincipal extends Usuario {
 
 	public ArrayList<Proyecto> getListaProyectos(){
 		return null;
+	}
+
+	public String getnumeroColeccionActual(){
+		return numeroColeccionActual;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setnumeroColeccionActual(String newVal){
+		numeroColeccionActual = newVal;
 	}
 
 }

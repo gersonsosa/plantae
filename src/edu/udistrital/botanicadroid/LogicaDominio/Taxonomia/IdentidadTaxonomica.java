@@ -7,14 +7,14 @@ import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:13 a.m.
+ * @created 26-Jun-2013 11:33:38 PM
  */
 public class IdentidadTaxonomica {
 
 	private Date fechaIdentificacion;
 	private String tipo;
-	private Taxon taxon;
 	private Persona determinador;
+	private Taxon taxon;
 	private Especimen especimen;
 
 	public IdentidadTaxonomica(){
@@ -32,6 +32,42 @@ public class IdentidadTaxonomica {
 	 */
 	public IdentidadTaxonomica(Persona determinador, Taxon taxon){
 
+	}
+
+	public Date getfechaIdentificacion(){
+		return fechaIdentificacion;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setfechaIdentificacion(Date newVal){
+		fechaIdentificacion = newVal;
+	}
+
+	public String gettipo(){
+		return tipo;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settipo(String newVal){
+		tipo = newVal;
+	}
+
+	public Persona getdeterminador(){
+		return determinador;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setdeterminador(Persona newVal){
+		determinador = newVal;
 	}
 
 }

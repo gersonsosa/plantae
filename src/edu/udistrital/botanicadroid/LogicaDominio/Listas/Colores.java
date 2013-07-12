@@ -1,14 +1,14 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Listas;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Color;
+import java.util.Iterator;
 
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
- * @created 13-may-2013 01:24:07 a.m.
+ * @created 26-Jun-2013 11:33:38 PM
  */
 public class Colores implements Iterator {
 
