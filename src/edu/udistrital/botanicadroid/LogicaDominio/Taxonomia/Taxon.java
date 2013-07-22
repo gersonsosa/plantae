@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public abstract class Taxon {
 
 	private String nombre;
-	private ArrayList usos;
-	private ArrayList nombresComunes;
+	private ArrayList<Uso> usos;
+	private ArrayList<NombreComun> nombresComunes;
 	private int taxonID;
 
 	public Taxon(){

@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class FabricaPrototipadoEspecimen {
 
-	private ArrayList especimenDetallado;
-	private ArrayList especimenSencillo;
+	private ArrayList<Especimen> especimenDetallado;
+	private ArrayList<Especimen> especimenSencillo;
 
 	public FabricaPrototipadoEspecimen(){
 

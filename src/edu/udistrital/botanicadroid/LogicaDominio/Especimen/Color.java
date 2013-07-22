@@ -71,4 +71,16 @@ public class Color {
 		colorID = newVal;
 	}
 
+	public ColorMunsell getcolorMunsell(){
+		return colorMunsell;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolorMunsell(ColorMunsell newVal){
+		colorMunsell = newVal;
+	}
+
 }

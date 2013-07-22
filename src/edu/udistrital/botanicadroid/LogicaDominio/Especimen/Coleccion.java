@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Coleccion {
 
 	private String nombre;
-	private ArrayList especimenes;
+	private ArrayList<Especimen> especimenes;
 	private int coleccionID;
 
 	public void finalize() throws Throwable {

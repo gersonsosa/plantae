@@ -25,7 +25,7 @@ public class EspecimenSencillo implements Especimen {
 	private Etiqueta etiqueta;
 	private Recoleccion recolecta;
 	private ColectorPrincipal colectorPrincipal;
-	private ArrayList colectores;
+	private ArrayList<Colector> colectores;
 	private Flor flor;
 	private int especimensencilloID;
 
