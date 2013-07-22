@@ -25,6 +25,7 @@ public class Inflorescencia {
 	private String tamañoDeRaquilas;
 	private String descripcion;
 	public Color m_Color;
+	private int inflorecenciaID;
 
 
 
@@ -238,6 +239,18 @@ public class Inflorescencia {
 	 */
 	public void settamañoDeRaquilas(String newVal){
 		tamañoDeRaquilas = newVal;
+	}
+
+	public int getinflorecenciaID(){
+		return inflorecenciaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setinflorecenciaID(int newVal){
+		inflorecenciaID = newVal;
 	}
 
 }

@@ -8,6 +8,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Ubicacion;
 public abstract class Region {
 
 	private String nombre;
+	private int regionID;
 
 	public Region(){
 
@@ -51,6 +52,18 @@ public abstract class Region {
 	 */
 	public void setnombre(String newVal){
 		nombre = newVal;
+	}
+
+	public int getregionID(){
+		return regionID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setregionID(int newVal){
+		regionID = newVal;
 	}
 
 }

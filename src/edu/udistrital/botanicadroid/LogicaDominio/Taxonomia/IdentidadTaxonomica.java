@@ -16,6 +16,7 @@ public class IdentidadTaxonomica {
 	private Persona determinador;
 	private Taxon taxon;
 	private Especimen especimen;
+	private int identidadtaxonomicaID;
 
 	public IdentidadTaxonomica(){
 
@@ -68,6 +69,18 @@ public class IdentidadTaxonomica {
 	 */
 	public void setdeterminador(Persona newVal){
 		determinador = newVal;
+	}
+
+	public int getidentidadtaxonomicaID(){
+		return identidadtaxonomicaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setidentidadtaxonomicaID(int newVal){
+		identidadtaxonomicaID = newVal;
 	}
 
 }

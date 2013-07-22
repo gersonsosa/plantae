@@ -12,6 +12,7 @@ public class Fruto {
 	private String consistenciaDelPericarpio;
 	private String descripcion;
 	public Color m_Color;
+	private int frutoID;
 
 
 
@@ -69,6 +70,18 @@ public class Fruto {
 	 */
 	public void setdescripcion(String newVal){
 		descripcion = newVal;
+	}
+
+	public int getfrutoID(){
+		return frutoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setfrutoID(int newVal){
+		frutoID = newVal;
 	}
 
 }

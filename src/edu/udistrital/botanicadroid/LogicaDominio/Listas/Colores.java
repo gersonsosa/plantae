@@ -15,6 +15,7 @@ public class Colores implements Iterator {
 	private ArrayList<Color> data;
 	private Enumeration ec;
 	private Color nextColor;
+	private int coloresID;
 
 	public Colores(){
 
@@ -34,6 +35,18 @@ public class Colores implements Iterator {
 
 	public void remove(){
 
+	}
+
+	public int getcoloresID(){
+		return coloresID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcoloresID(int newVal){
+		coloresID = newVal;
 	}
 
 }

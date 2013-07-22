@@ -15,6 +15,7 @@ public class Flor {
 	private Color colorDeLosPistiliodios;
 	private Color descripcion;
 	public Color m_Color;
+	private int florID;
 
 
 
@@ -108,6 +109,18 @@ public class Flor {
 	 */
 	public void setdescripcion(Color newVal){
 		descripcion = newVal;
+	}
+
+	public int getflorID(){
+		return florID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setflorID(int newVal){
+		florID = newVal;
 	}
 
 }

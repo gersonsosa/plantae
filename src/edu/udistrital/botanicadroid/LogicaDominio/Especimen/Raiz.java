@@ -15,6 +15,7 @@ public class Raiz {
 	private String tamañoDeLasEspinas;
 	private String descripcion;
 	public Color m_Color;
+	private int raizID;
 
 
 
@@ -108,6 +109,18 @@ public class Raiz {
 	 */
 	public void settamañoDeLasEspinas(String newVal){
 		tamañoDeLasEspinas = newVal;
+	}
+
+	public int getraizID(){
+		return raizID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setraizID(int newVal){
+		raizID = newVal;
 	}
 
 }

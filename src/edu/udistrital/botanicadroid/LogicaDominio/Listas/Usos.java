@@ -15,6 +15,7 @@ public class Usos implements Iterator {
 	private ArrayList<Uso> data;
 	private Enumeration eu;
 	private Uso nextUso;
+	private int usosID;
 
 	public Usos(){
 
@@ -34,6 +35,18 @@ public class Usos implements Iterator {
 
 	public void remove(){
 
+	}
+
+	public int getusosID(){
+		return usosID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setusosID(int newVal){
+		usosID = newVal;
 	}
 
 }

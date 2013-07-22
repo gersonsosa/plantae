@@ -11,6 +11,7 @@ public class NombreComun {
 	private String idioma;
 	private Region region;
 	private String nombre;
+	private int nombreComunID;
 
 	public NombreComun(){
 
@@ -62,6 +63,18 @@ public class NombreComun {
 	 */
 	public void setregion(Region newVal){
 		region = newVal;
+	}
+
+	public int getnombreComunID(){
+		return nombreComunID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setnombreComunID(int newVal){
+		nombreComunID = newVal;
 	}
 
 }

@@ -22,6 +22,7 @@ public class Viaje {
 	private Trayecto trayecto;
 	private ArrayList<Colector> colectores;
 	private Proyecto proyecto;
+	private int viajeID;
 
 	public Viaje(){
 
@@ -144,6 +145,18 @@ public class Viaje {
 	 */
 	public void settrayecto(Trayecto newVal){
 		trayecto = newVal;
+	}
+
+	public int getviajeID(){
+		return viajeID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setviajeID(int newVal){
+		viajeID = newVal;
 	}
 
 }

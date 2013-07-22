@@ -10,6 +10,7 @@ import com.google.android.maps.MapView;
 public class Trayecto {
 
 	private MapView mapa;
+	private int trayectoID;
 
 
 
@@ -31,6 +32,18 @@ public class Trayecto {
 	 */
 	public void setmapa(MapView newVal){
 		mapa = newVal;
+	}
+
+	public int gettrayectoID(){
+		return trayectoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settrayectoID(int newVal){
+		trayectoID = newVal;
 	}
 
 }

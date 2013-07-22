@@ -22,6 +22,7 @@ public class Hoja {
 	private String tamañoDelPeciolo;
 	private String descripcion;
 	public Color m_Color;
+	private int hojaID;
 
 
 
@@ -199,6 +200,18 @@ public class Hoja {
 	 */
 	public void settamañoDelPeciolo(String newVal){
 		tamañoDelPeciolo = newVal;
+	}
+
+	public int gethojaID(){
+		return hojaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethojaID(int newVal){
+		hojaID = newVal;
 	}
 
 }

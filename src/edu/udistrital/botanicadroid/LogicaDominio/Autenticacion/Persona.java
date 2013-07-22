@@ -12,6 +12,7 @@ public class Persona {
 	private String direccion;
 	private String telefono;
 	private String institucion;
+	private int personaID;
 
 	public Persona(){
 
@@ -88,6 +89,18 @@ public class Persona {
 	 */
 	public void setinstitucion(String newVal){
 		institucion = newVal;
+	}
+
+	public int getpersonaID(){
+		return personaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setpersonaID(int newVal){
+		personaID = newVal;
 	}
 
 }

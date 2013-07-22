@@ -16,6 +16,7 @@ public class Recoleccion {
 	private Date fechaFinal;
 	private String metodoColeccion;
 	private String estacionDelAño;
+	private int recoleccionID;
 
 
 
@@ -82,6 +83,18 @@ public class Recoleccion {
 	 */
 	public void setestacionDelAño(String newVal){
 		estacionDelAño = newVal;
+	}
+
+	public int getrecoleccionID(){
+		return recoleccionID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setrecoleccionID(int newVal){
+		recoleccionID = newVal;
 	}
 
 }

@@ -15,6 +15,7 @@ public class Localidad extends Region {
 	private String descripcion;
 	private String marcaDispositivo;
 	private Region region;
+	private int localidadID;
 
 	public Localidad(){
 
@@ -126,6 +127,18 @@ public class Localidad extends Region {
 	 */
 	public void setregion(Region newVal){
 		region = newVal;
+	}
+
+	public int getlocalidadID(){
+		return localidadID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setlocalidadID(int newVal){
+		localidadID = newVal;
 	}
 
 }

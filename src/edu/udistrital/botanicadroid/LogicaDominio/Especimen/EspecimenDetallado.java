@@ -27,6 +27,8 @@ public class EspecimenDetallado implements Especimen {
 	private Flor flor;
 	private Etiqueta etiqueta;
 	private Recoleccion recolecta;
+	private int especimendetalladoID;
+	private ColectorPrincipal colectorPrincipal;
 
 	public EspecimenDetallado(){
 
@@ -174,6 +176,18 @@ public class EspecimenDetallado implements Especimen {
 	 */
 	public void setnumeroDeColeccion(String newVal){
 		numeroDeColeccion = newVal;
+	}
+
+	public int getespecimendetalladoID(){
+		return especimendetalladoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setespecimendetalladoID(int newVal){
+		especimendetalladoID = newVal;
 	}
 
 }

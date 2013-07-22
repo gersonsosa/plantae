@@ -11,6 +11,7 @@ public class Color {
 	private String descripcion;
 	private Color colorRGB;
 	private ColorMunsell colorMunsell;
+	private int colorID;
 
 
 
@@ -56,6 +57,18 @@ public class Color {
 	 */
 	public void setdescripcion(String newVal){
 		descripcion = newVal;
+	}
+
+	public int getcolorID(){
+		return colorID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolorID(int newVal){
+		colorID = newVal;
 	}
 
 }

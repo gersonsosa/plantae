@@ -14,6 +14,7 @@ public class Proyecto {
 	private String permisoColeccion;
 	private String numeroPermiso;
 	private String emisorPermiso;
+	private int proyectoID;
 
 	public Proyecto(){
 
@@ -113,6 +114,18 @@ public class Proyecto {
 	 */
 	public void setnombre(String newVal){
 		nombre = newVal;
+	}
+
+	public int getproyectoID(){
+		return proyectoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setproyectoID(int newVal){
+		proyectoID = newVal;
 	}
 
 }

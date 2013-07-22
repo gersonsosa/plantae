@@ -27,6 +27,7 @@ public class EspecimenSencillo implements Especimen {
 	private ColectorPrincipal colectorPrincipal;
 	private ArrayList colectores;
 	private Flor flor;
+	private int especimensencilloID;
 
 	public EspecimenSencillo(){
 
@@ -174,6 +175,18 @@ public class EspecimenSencillo implements Especimen {
 	 */
 	public void setlocalidad(Localidad newVal){
 		localidad = newVal;
+	}
+
+	public int getespecimensencilloID(){
+		return especimensencilloID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setespecimensencilloID(int newVal){
+		especimensencilloID = newVal;
 	}
 
 }

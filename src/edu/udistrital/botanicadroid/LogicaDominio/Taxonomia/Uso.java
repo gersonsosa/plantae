@@ -11,6 +11,7 @@ public class Uso {
 
 	private Region region;
 	private String descripcion;
+	private int usoID;
 
 	public Uso(){
 
@@ -50,6 +51,18 @@ public class Uso {
 	 */
 	public void setdescripcion(String newVal){
 		descripcion = newVal;
+	}
+
+	public int getusoID(){
+		return usoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setusoID(int newVal){
+		usoID = newVal;
 	}
 
 }

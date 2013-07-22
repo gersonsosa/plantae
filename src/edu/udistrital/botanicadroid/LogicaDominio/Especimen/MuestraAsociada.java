@@ -10,6 +10,7 @@ public class MuestraAsociada {
 	private String descripcion;
 	private String metodoDeTratamiento;
 	private Especimen especimen;
+	private int muestraAsociadaID;
 
 
 
@@ -43,6 +44,18 @@ public class MuestraAsociada {
 	 */
 	public void setdescripcion(String newVal){
 		descripcion = newVal;
+	}
+
+	public int getmuestraAsociadaID(){
+		return muestraAsociadaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setmuestraAsociadaID(int newVal){
+		muestraAsociadaID = newVal;
 	}
 
 }

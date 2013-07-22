@@ -9,6 +9,7 @@ import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Persona;
 public class Colector extends Persona {
 
 	private Persona persona;
+	private int colectoresID;
 
 
 
@@ -30,6 +31,18 @@ public class Colector extends Persona {
 	 */
 	public void setpersona(Persona newVal){
 		persona = newVal;
+	}
+
+	public int getcolectoresID(){
+		return colectoresID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolectoresID(int newVal){
+		colectoresID = newVal;
 	}
 
 }

@@ -10,6 +10,7 @@ public class Habitat {
 	private String especiesAsociadas;
 	private String sueloSustrato;
 	private String vegetacion;
+	private int habitatID;
 
 
 
@@ -55,6 +56,18 @@ public class Habitat {
 	 */
 	public void setvegetacion(String newVal){
 		vegetacion = newVal;
+	}
+
+	public int gethabitatID(){
+		return habitatID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabitatID(int newVal){
+		habitatID = newVal;
 	}
 
 }

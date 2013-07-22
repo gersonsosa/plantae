@@ -12,6 +12,7 @@ public class ColectorPrincipal extends Usuario {
 
 	private String numeroColeccionActual;
 	private static ColectorPrincipal colectorPrincipal;
+	private int colectorPrincipalID;
 
 
 
@@ -58,6 +59,18 @@ public class ColectorPrincipal extends Usuario {
 	 */
 	public void setnumeroColeccionActual(String newVal){
 		numeroColeccionActual = newVal;
+	}
+
+	public int getcolectorPrincipalID(){
+		return colectorPrincipalID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolectorPrincipalID(int newVal){
+		colectorPrincipalID = newVal;
 	}
 
 }

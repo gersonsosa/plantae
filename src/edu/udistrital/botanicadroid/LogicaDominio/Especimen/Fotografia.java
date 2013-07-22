@@ -10,6 +10,7 @@ public class Fotografia {
 	private String rutaArchivo;
 	private String contexto;
 	private Especimen especimen;
+	private int fotografiaID;
 
 
 
@@ -55,6 +56,18 @@ public class Fotografia {
 	 */
 	public void setespecimen(Especimen newVal){
 		especimen = newVal;
+	}
+
+	public int getfotografiaID(){
+		return fotografiaID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setfotografiaID(int newVal){
+		fotografiaID = newVal;
 	}
 
 }

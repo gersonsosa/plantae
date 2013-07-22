@@ -15,6 +15,7 @@ public class Habitats implements Iterator {
 	private ArrayList<Habitat> data;
 	private Enumeration eht;
 	private Habitat nextHabitat;
+	private int habitatsID;
 
 	public Habitats(){
 
@@ -34,6 +35,18 @@ public class Habitats implements Iterator {
 
 	public void remove(){
 
+	}
+
+	public int gethabitatsID(){
+		return habitatsID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabitatsID(int newVal){
+		habitatsID = newVal;
 	}
 
 }

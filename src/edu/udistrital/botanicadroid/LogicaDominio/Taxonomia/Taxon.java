@@ -12,6 +12,7 @@ public abstract class Taxon {
 	private String nombre;
 	private ArrayList usos;
 	private ArrayList nombresComunes;
+	private int taxonID;
 
 	public Taxon(){
 
@@ -55,6 +56,18 @@ public abstract class Taxon {
 	 */
 	public void setnombre(String newVal){
 		nombre = newVal;
+	}
+
+	public int gettaxonID(){
+		return taxonID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settaxonID(int newVal){
+		taxonID = newVal;
 	}
 
 }

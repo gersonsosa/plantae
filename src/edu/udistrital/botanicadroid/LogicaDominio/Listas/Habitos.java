@@ -15,6 +15,7 @@ public class Habitos implements Iterator {
 	private ArrayList<Habito> data;
 	private Enumeration eh;
 	private int nextHabito;
+	private int habitosID;
 
 	public Habitos(){
 
@@ -34,6 +35,18 @@ public class Habitos implements Iterator {
 
 	public void remove(){
 
+	}
+
+	public int gethabitosID(){
+		return habitosID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabitosID(int newVal){
+		habitosID = newVal;
 	}
 
 }

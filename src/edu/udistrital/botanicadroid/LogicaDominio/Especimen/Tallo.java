@@ -19,6 +19,7 @@ public class Tallo {
 	private String naturalezaDelTallo;
 	private String descripcion;
 	public Color m_Color;
+	private int talloID;
 
 
 
@@ -160,6 +161,18 @@ public class Tallo {
 	 */
 	public void setnaturalezaDelTallo(String newVal){
 		naturalezaDelTallo = newVal;
+	}
+
+	public int gettalloID(){
+		return talloID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void settalloID(int newVal){
+		talloID = newVal;
 	}
 
 }

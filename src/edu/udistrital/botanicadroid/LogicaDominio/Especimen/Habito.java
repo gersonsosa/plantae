@@ -8,6 +8,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Especimen;
 public class Habito {
 
 	private String habito;
+	private int habitoID;
 
 	public Habito(){
 
@@ -27,6 +28,18 @@ public class Habito {
 	 */
 	public void sethabito(String newVal){
 		habito = newVal;
+	}
+
+	public int gethabitoID(){
+		return habitoID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void sethabitoID(int newVal){
+		habitoID = newVal;
 	}
 
 }

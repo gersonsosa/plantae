@@ -10,6 +10,7 @@ public class ColorMunsell {
 	private int hue;
 	private int value;
 	private int chroma;
+	private int colorMunsellID;
 
 	public void finalize() throws Throwable {
 
@@ -53,6 +54,18 @@ public class ColorMunsell {
 	 */
 	public void setchroma(int newVal){
 		chroma = newVal;
+	}
+
+	public int getcolorMunsellID(){
+		return colorMunsellID;
+	}
+
+	/**
+	 * 
+	 * @param newVal
+	 */
+	public void setcolorMunsellID(int newVal){
+		colorMunsellID = newVal;
 	}
 
 }
