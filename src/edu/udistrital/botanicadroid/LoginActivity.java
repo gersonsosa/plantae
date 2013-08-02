@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Sesion;
 import edu.udistrital.botanicadroid.LogicaDominio.Autenticacion.Usuario;
+import edu.udistrital.botanicadroid.LogicaDominio.Recoleccion.ColectorPrincipal;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -47,7 +48,7 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
-	private Usuario usuario;
+	private ColectorPrincipal usuario;
 
 	// UI references.
 	private EditText mEmailView;
@@ -119,7 +120,7 @@ public class LoginActivity extends Activity {
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		// Create the user object
-		usuario = new Usuario(mPassword, mEmail);
+		usuario = ColectorPrincipal.getColectorPrincipal(mEmail, mPassword);
 		// Validate the user object password and email
 		Sesion sesion = usuario.validarDatosInicioSesion();
 		View focusView = null;

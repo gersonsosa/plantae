@@ -50,14 +50,6 @@ public class Usuario extends Persona {
 		return null;
 	}
 
-	public ArrayList<Viaje> getListaViajes(){
-		return null;
-	}
-
-	public ArrayList<Proyecto> getListaProyectos(){
-		return null;
-	}
-
 	public int gettipoCapturaDatos(){
 		return tipoCapturaDatos;
 	}

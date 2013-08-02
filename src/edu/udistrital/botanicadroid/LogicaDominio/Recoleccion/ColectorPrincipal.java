@@ -13,6 +13,8 @@ public class ColectorPrincipal extends Usuario {
 	private String numeroColeccionActual;
 	private static ColectorPrincipal colectorPrincipal;
 	private int colectorPrincipalID;
+	private ArrayList<Viaje> viajes;
+	private ArrayList<Proyecto> proyectos;
 
 
 
@@ -42,11 +44,11 @@ public class ColectorPrincipal extends Usuario {
 	}
 
 	public ArrayList<Viaje> getListaViajes(){
-		return null;
+		return viajes;
 	}
 
 	public ArrayList<Proyecto> getListaProyectos(){
-		return null;
+		return proyectos;
 	}
 
 	public String getnumeroColeccionActual(){
