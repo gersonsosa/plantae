@@ -15,6 +15,7 @@ public class ColectorPrincipal extends Usuario {
 	private int colectorPrincipalID;
 	private ArrayList<Viaje> viajes;
 	private ArrayList<Proyecto> proyectos;
+	private ArrayList<Recoleccion> recolecciones;
 
 
 

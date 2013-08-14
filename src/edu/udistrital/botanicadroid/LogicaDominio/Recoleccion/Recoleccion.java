@@ -2,6 +2,7 @@ package edu.udistrital.botanicadroid.LogicaDominio.Recoleccion;
 
 import java.util.Date;
 
+import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
 import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Localidad;
 import edu.udistrital.botanicadroid.LogicaDominio.Ubicacion.Region;
 
@@ -17,6 +18,7 @@ public class Recoleccion {
 	private String metodoColeccion;
 	private String estacionDelAño;
 	private int recoleccionID;
+	private Especimen especimen;
 
 
 

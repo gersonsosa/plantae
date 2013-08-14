@@ -1,7 +1,5 @@
 package edu.udistrital.botanicadroid.LogicaDominio.Recoleccion;
 import java.util.ArrayList;
-import java.util.Map;
-
 import com.google.android.maps.MapView;
 
 import edu.udistrital.botanicadroid.LogicaDominio.Especimen.Especimen;
@@ -23,6 +21,7 @@ public class Viaje {
 	private ArrayList<Colector> colectores;
 	private Proyecto proyecto;
 	private int viajeID;
+	private ArrayList<Recoleccion> recolecciones;
 
 	public Viaje(){
 
