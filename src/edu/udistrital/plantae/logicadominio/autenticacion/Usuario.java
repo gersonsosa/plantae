@@ -48,15 +48,29 @@ public class Usuario {
 	 * 
 	 * @param datosRegistro    datosRegistro
 	 */
-	public static HashMap<String, String> registrarUsuario(HashMap datosRegistro){
-		return null;
+	public static HashMap<String, String> registrarUsuario(HashMap<String, String> datosRegistro){
+		Persona persona = new Persona();
+		persona.setinstitucion(datosRegistro.get("institution"));
+		String[] names=TextUtils.split(datosRegistro.get("fullname"), " ");
+		if (names.length == 2){
+			persona.setnombres(names[0]);
+			persona.setapellidos(names[1]);
+		} else {
+			persona.setapellidos(datosRegistro.get("fullname"));
+		}
+		HashMap<String, String> errores = validarDatosRegistro(datosRegistro);
+		if (errores.isEmpty()){
+			// TODO: Save Persona, Usuario And ColectorPrincipal
+			Sesion.iniciarSesion(usuario);
+		}
+		return errores;
 	}
 
 	/**
 	 * 
 	 * @param datosRegistro    datosRegistro
 	 */
-	private static HashMap<String, String> validarDatosRegistro(HashMap datosRegistro){
+	private static HashMap<String, String> validarDatosRegistro(HashMap<String, String> datosRegistro){
 		return null;
 	}
 
@@ -140,6 +154,18 @@ public class Usuario {
 	 */
 	public void setcontraseña(String newVal){
 		contraseña = newVal;
+	}
+	
+	public int getUsuarioID() {
+		return usuarioID;
+	}
+
+	/**
+	 * 
+	 * @param usuarioID
+	 */
+	public void setUsuarioID(int usuarioID) {
+		this.usuarioID = usuarioID;
 	}
 
 }

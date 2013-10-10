@@ -30,6 +30,8 @@ public class EspecimenSencillo implements Especimen {
 	private int especimenSencilloID;
 	private Recoleccion recoleccion;
 	private ArrayList<ColectorSecundario> colectoresSecundarios;
+	private ArrayList<MuestraAsociada> muestraAsociada;
+	private ArrayList<Fotografia> fotografias;
 
 	public EspecimenSencillo(){
 
@@ -213,6 +215,14 @@ public class EspecimenSencillo implements Especimen {
 	 */
 	public void setespecimenSencilloID(int newVal){
 		especimenSencilloID = newVal;
+	}
+
+	/**
+	 * 
+	 * @param fotografía
+	 */
+	public void agregarFotografia(Fotografia fotografía){
+
 	}
 
 }

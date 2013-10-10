@@ -33,7 +33,9 @@ public class EspecimenDetallado implements Especimen {
 	private int especimendetalladoID;
 	private ColectorPrincipal colectorPrincipal;
 	private Recoleccion recoleccion;
-	private ArrayList colectoresSecundarios;
+	private ArrayList<ColectorSecundario> colectoresSecundarios;
+	private ArrayList<MuestraAsociada> muestraAsociada;
+	private ArrayList<Fotografia> fotografias;
 
 	public EspecimenDetallado(){
 
@@ -196,6 +198,14 @@ public class EspecimenDetallado implements Especimen {
 	 * @param colectorSecundario
 	 */
 	public void quitarColector(ColectorSecundario colectorSecundario){
+
+	}
+
+	/**
+	 * 
+	 * @param fotografía
+	 */
+	public void agregarFotografia(Fotografia fotografía){
 
 	}
 
