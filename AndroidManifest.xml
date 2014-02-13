@@ -5,29 +5,61 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="10"
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity 
-            android:name="MainActivity" 
-            android:label="@string/app_name">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+        <activity
+            android:name="edu.udistrital.plantae.MainActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-            android:name="LoginActivity" 
-            android:label="@string/title_activity_login" 
-            android:windowSoftInputMode="adjustResize|stateVisible">
+        <activity
+            android:name="edu.udistrital.plantae.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-        
-        
+        <activity
+            android:name="edu.udistrital.plantae.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName="edu.udistrital.plantae.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.udistrital.plantae.LoginActivity" />
+        </activity>
+        <activity
+            android:name="edu.udistrital.plantae.TravelListActivity"
+            android:label="@string/title_travel_list" >
+        </activity>
+        <activity
+            android:name="edu.udistrital.plantae.TravelDetailActivity"
+            android:label="@string/title_travel_detail"
+            android:parentActivityName=".TravelListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TravelListActivity" />
+        </activity>
+        <activity
+            android:name="edu.udistrital.plantae.ViajeListFragment"
+            android:label="@string/title_activity_viaje_list_fragment" >
+        </activity>
+        <activity
+            android:name="edu.udistrital.plantae.ProyectoListFragment"
+            android:label="@string/title_activity_proyecto_list_fragment" >
+        </activity>
+        <activity
+            android:name="edu.udistrital.plantae.EspecimenListFragment"
+            android:label="@string/title_activity_especimen_list_fragment" >
+        </activity>
     </application>
 
 </manifest>

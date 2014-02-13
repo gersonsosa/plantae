@@ -12,7 +12,6 @@ public class Usuario {
 
 	private String nombreUsuario;
 	private String contraseña;
-	private int tipoCapturaDatos;
 	private HashMap<String, String> erroresCredenciales;
 	private Sesion sesion;
 	private int usuarioID;
@@ -32,46 +31,36 @@ public class Usuario {
 		this.contraseña=contraseña;
 	}
 
-	public int gettipoCapturaDatos(){
-		return tipoCapturaDatos;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settipoCapturaDatos(int newVal){
-		tipoCapturaDatos = newVal;
-	}
-	
 	/**
 	 * 
 	 * @param datosRegistro    datosRegistro
+	 * @param databaseHelper 
 	 */
-	public static HashMap<String, String> registrarUsuario(HashMap<String, String> datosRegistro){
-		Persona persona = new Persona();
-		persona.setinstitucion(datosRegistro.get("institution"));
-		String[] names=TextUtils.split(datosRegistro.get("fullname"), " ");
-		if (names.length == 2){
-			persona.setnombres(names[0]);
-			persona.setapellidos(names[1]);
-		} else {
-			persona.setapellidos(datosRegistro.get("fullname"));
+	public static HashMap<String, String> validarDatosRegistro(HashMap<String,String> datosRegistro){
+		// TODO validar datos de un nuevo usuario
+		String email = datosRegistro.get("email");
+		String password = datosRegistro.get("password");
+		String institution = datosRegistro.get("institution");
+		String fullName = datosRegistro.get("fullname");
+		HashMap<String, String> errores = new HashMap<String, String>();
+		
+		/* Verificar la disponibilidad del nombre de usuario / email */
+		
+		if (password.length()<6){
+			errores.put("password", "short");
+		} else if (password.matches("^[a-zA-Z0-9 ]*$")){
+			errores.put("password", "simple");
 		}
-		HashMap<String, String> errores = validarDatosRegistro(datosRegistro);
-		if (errores.isEmpty()){
-			// TODO: Save Persona, Usuario And ColectorPrincipal
-			Sesion.iniciarSesion(usuario);
+		if (!fullName.matches("[a-zA-Z ]+")){
+			errores.put("fullname", "chars");
+		}
+		/*if (!fieldNumber.matches("[a-zA-Z]*[0-9]+")){
+			errores.put("fieldnumber", "chars");
+		}*/
+		if (!institution.matches("^[a-zA-Z0-9 ]*$")){
+			errores.put("institution", "chars");
 		}
 		return errores;
-	}
-
-	/**
-	 * 
-	 * @param datosRegistro    datosRegistro
-	 */
-	private static HashMap<String, String> validarDatosRegistro(HashMap<String, String> datosRegistro){
-		return null;
 	}
 
 	/**
@@ -160,12 +149,5 @@ public class Usuario {
 		return usuarioID;
 	}
 
-	/**
-	 * 
-	 * @param usuarioID
-	 */
-	public void setUsuarioID(int usuarioID) {
-		this.usuarioID = usuarioID;
-	}
 
 }

@@ -10,7 +10,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -27,12 +26,6 @@ import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
  * well.
  */
 public class LoginActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-		"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -68,8 +61,7 @@ public class LoginActivity extends Activity {
 		mEmailView.setText(mEmail);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
@@ -90,6 +82,15 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onClick(View view) {
 						attemptLogin();
+					}
+				});
+		findViewById(R.id.sign_up_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+						startActivity(intent);
+						finish();
 					}
 				});
 	}
@@ -121,18 +122,22 @@ public class LoginActivity extends Activity {
 		// Create the user object
 		usuario = new ColectorPrincipal(mEmail, mPassword);
 		// Validate the user object password and email
-		Sesion sesion = usuario.getusuario().validarDatosInicioSesion();
+		Sesion sesion = usuario.getPersona().getusuario().validarDatosInicioSesion();
 		View focusView = null;
 		// Check if the validation of the credentials produce any errors
 		if (sesion == null){
-			Iterator<Entry<String, String>> iterator = ((Map<String, String>)usuario.getusuario().geterroresCredenciales()).entrySet().iterator();
+			Iterator<Entry<String, String>> iterator = ((Map<String, String>)usuario.getPersona().getusuario().geterroresCredenciales()).entrySet().iterator();
 			while (iterator.hasNext()) {
 				Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
 				if (entry.getKey().equals("mPassword")){
-					mPasswordView.setError(entry.getValue());
+					mPasswordView.setError(getString(R.string.error_field_required));
 					focusView = mPasswordView;
 				}else if (entry.getKey().equals("mEmail")){
-					mEmailView.setError(entry.getValue());
+					if (entry.getValue() == "empty"){
+						mEmailView.setError(getString(R.string.error_field_required));
+					} else {
+						mEmailView.setError(getString(R.string.error_invalid_email));
+					}
 					focusView = mEmailView;
 				}
 			}
@@ -142,8 +147,9 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			mAuthTask = new UserLoginTask(this);
+			String[] strings={mEmail,mPassword};
+			mAuthTask.execute(strings);
 		}
 
 		
@@ -185,6 +191,23 @@ public class LoginActivity extends Activity {
 			mAuthTask.execute((Void) null);
 		}*/
 	}
+	
+	protected void finishLoginTask(boolean result) {
+		showProgress(false);
+		mAuthTask = null;
+		if (result == true){
+			SharedPreferences preferences = getSharedPreferences("plantae_prefs", 0);
+			SharedPreferences.Editor editor = preferences.edit();
+	        editor.putBoolean("isLoggedIn", true);
+	        editor.commit();
+	        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+	        startActivity(intent);
+			finish();
+		} else {
+			mPasswordView.setError(getString(R.string.error_incorrect_password));
+			mPasswordView.requestFocus();
+		}
+	}
 
 	/**
 	 * Shows the progress UI and hides the login form.
@@ -224,61 +247,6 @@ public class LoginActivity extends Activity {
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
-	}
-	
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				SharedPreferences preferences = getSharedPreferences("botanicadroid_prefs", 0);
-				SharedPreferences.Editor editor = preferences.edit();
-		        editor.putBoolean("isLoggedIn", true);
-		        editor.commit();
-		        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-		        startActivity(intent);
-				finish();
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
 		}
 	}
 }
