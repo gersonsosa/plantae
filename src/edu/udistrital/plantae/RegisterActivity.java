@@ -22,15 +22,10 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.j256.ormlite.dao.Dao;
-
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Sesion;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
-import edu.udistrital.plantae.persistencia.DatabaseHelper;
-import edu.udistrital.plantae.persistencia.DatabaseManager;
 
 /**
  * Activity which displays a register screen to the user, offering registration as
@@ -64,7 +59,6 @@ public class RegisterActivity extends Activity {
 	private View mRegisterFormView;
 	private View mRegisterStatusView;
 	private TextView mRegisterStatusMessageView;
-	private DatabaseHelper databaseHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +103,7 @@ public class RegisterActivity extends Activity {
 						attemptRegister();
 					}
 				});
-		databaseHelper = DatabaseManager.getHelper(getApplicationContext());
+		// Instantiate the database helper from the ORM.
 	}
 
 	/**
@@ -215,7 +209,7 @@ public class RegisterActivity extends Activity {
 			persona.setapellidos(datosRegistro.get("fullname"));
 		}
 		persona.setinstitucion(mInstitution);
-		HashMap<String, String> errores = Usuario.validarDatosRegistro(datosRegistro, databaseHelper);
+		HashMap<String, String> errores = Usuario.validarDatosRegistro(datosRegistro);
 		persona.setusuario(Usuario.getUsuario(mEmail, mPassword));
 		colectorPrincipal.setPersona(persona);
 		colectorPrincipal.setnumeroColeccionActual(mFieldNumber);
@@ -318,13 +312,7 @@ public class RegisterActivity extends Activity {
 		protected Boolean doInBackground(ColectorPrincipal... colectorPrincipals) {
 			// TODO: attempt authentication against a network service.
 			ColectorPrincipal colectorPrincipal = colectorPrincipals[0];
-			try {
-				Dao<ColectorPrincipal, String> colectorPrincipalDao = databaseHelper.getColectorPrincipalDao();
-				colectorPrincipalDao.create(colectorPrincipal);
-			} catch (java.sql.SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// Get ORM data access object and create the Colectorprincipal
 			Sesion.iniciarSesion(colectorPrincipal.getPersona().getusuario());
 
 			// TODO: register the new account here.

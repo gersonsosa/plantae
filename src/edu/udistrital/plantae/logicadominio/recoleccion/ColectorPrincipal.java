@@ -17,11 +17,14 @@ public class ColectorPrincipal extends Persona {
 	private ArrayList<Proyecto> proyectos;
 	private ArrayList<Recoleccion> recolecciones;
 	private int tipoCapturaDatos;
-
-
+	private Persona persona;
 
 	public void finalize() throws Throwable {
 		super.finalize();
+	}
+	
+	public ColectorPrincipal() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -30,8 +33,9 @@ public class ColectorPrincipal extends Persona {
 	 * @param contraseña
 	 */
 	public ColectorPrincipal(String usuario, String contraseña){
-		//super(contraseña, usuario);
-		setusuario(Usuario.getUsuario(usuario, contraseña));
+		super();
+		persona = new Persona();
+		persona.setusuario(Usuario.getUsuario(usuario, contraseña));
 	}
 
 	public ArrayList<Viaje> getListaViajes(){
@@ -76,6 +80,14 @@ public class ColectorPrincipal extends Persona {
 	 */
 	public void settipoCapturaDatos(int newVal){
 		tipoCapturaDatos = newVal;
+	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 }
