@@ -1,11 +1,12 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
-import java.util.ArrayList;
-
 import com.google.android.maps.MapView;
-
+import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.FabricaEspecimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.FabricaPrototipadoEspecimen;
+import edu.udistrital.plantae.persistencia.*;
+
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -14,15 +15,27 @@ import edu.udistrital.plantae.logicadominio.datosespecimen.FabricaPrototipadoEsp
  */
 public class Viaje {
 
-	private String nombre;
-	private FabricaEspecimen fabricaEspecimen;
-	private FabricaPrototipadoEspecimen fabricaPrototipadoEspecimen;
-	private ColectorPrincipal colectorPrincipal;
-	private Trayecto trayecto;
-	private Proyecto proyecto;
-	private int viajeID;
-	private ArrayList<Recoleccion> recolecciones;
-	private ArrayList<ColectorSecundario> colectoresSecundarios;
+    private Long id;
+    private String nombre;
+    private FabricaEspecimen fabricaEspecimen;
+    private FabricaPrototipadoEspecimen fabricaPrototipadoEspecimen;
+    private ColectorPrincipal colectorPrincipal;
+    private Trayecto trayecto;
+    private Proyecto proyecto;
+    private List<Recoleccion> recolecciones;
+	private List<ColectorSecundario> colectoresSecundarios;
+    private Long colectorPrincipalID;
+    private Long proyectoID;
+
+    private Long colectorPrincipal__resolvedKey;
+    private Long proyecto__resolvedKey;
+
+	/* greendao specific properties */
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient ViajeDao myDao;
 
 	public Viaje(){
 
@@ -33,7 +46,7 @@ public class Viaje {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param colectores
 	 * @param proyecto
 	 * @param nombre    nombre
@@ -43,13 +56,53 @@ public class Viaje {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param proyecto
 	 * @param nombre    nombre
 	 */
 	public Viaje(Proyecto proyecto, String nombre){
 
 	}
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     *
+     * @param nombre
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Long getColectorPrincipalID() {
+        return colectorPrincipalID;
+    }
+
+    public void setColectorPrincipalID(Long colectorPrincipalID) {
+        this.colectorPrincipalID = colectorPrincipalID;
+    }
+
+    public Long getProyectoID() {
+        return proyectoID;
+    }
+
+    public void setProyectoID(Long proyectoID) {
+        this.proyectoID = proyectoID;
+    }
 
 	public Trayecto reconstruirTrayecto(){
 		return null;
@@ -60,7 +113,7 @@ public class Viaje {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param apellido
 	 * @param nombre    nombre
 	 */
@@ -69,7 +122,7 @@ public class Viaje {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param colector    colector
 	 */
 	public void eliminarColector(ColectorSecundario colector){
@@ -81,7 +134,7 @@ public class Viaje {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param metodoDeTratamiento
 	 * @param especimen    especimen
 	 */
@@ -89,64 +142,114 @@ public class Viaje {
 
 	}
 
-	public String getnombre(){
-		return nombre;
-	}
+    public Trayecto getTrayecto(){
+        return trayecto;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
-	}
+    /**
+     *
+     * @param newVal
+     */
+    public void setTrayecto(Trayecto newVal){
+        trayecto = newVal;
+    }
 
-	public Proyecto getproyecto(){
+    public ColectorPrincipal getColectorPrincipal() {
+        Long __key = this.colectorPrincipalID;
+        if (colectorPrincipal__resolvedKey == null || !colectorPrincipal__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColectorPrincipalDao targetDao = daoSession.getColectorPrincipalDao();
+            ColectorPrincipal colectorPrincipalNew = targetDao.load(__key);
+            synchronized (this) {
+                colectorPrincipal = colectorPrincipalNew;
+            	colectorPrincipal__resolvedKey = __key;
+            }
+        }
+        return colectorPrincipal;
+    }
+
+    public void setColectorPrincipal(ColectorPrincipal colectorPrincipal) {
+        synchronized (this) {
+            this.colectorPrincipal = colectorPrincipal;
+            colectorPrincipalID = colectorPrincipal == null ? null : colectorPrincipal.getId();
+            colectorPrincipal__resolvedKey = colectorPrincipalID;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Proyecto getProyecto() {
+        Long __key = this.proyectoID;
+        if (proyecto__resolvedKey == null || !proyecto__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ProyectoDao targetDao = daoSession.getProyectoDao();
+            Proyecto proyectoNew = targetDao.load(__key);
+            synchronized (this) {
+                proyecto = proyectoNew;
+            	proyecto__resolvedKey = __key;
+            }
+        }
 		return proyecto;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setproyecto(Proyecto newVal){
-		proyecto = newVal;
-	}
+    public void setProyecto(Proyecto proyecto) {
+        synchronized (this) {
+            this.proyecto = proyecto;
+            proyectoID = proyecto == null ? null : proyecto.getId();
+            proyecto__resolvedKey = proyectoID;
+        }
+    }
 
-	public ColectorPrincipal getcolectorPrincipal(){
-		return colectorPrincipal;
-	}
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<ColectorSecundario> getColectoresSecundarios() {
+        if (colectoresSecundarios == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColectorSecundarioDao targetDao = daoSession.getColectorSecundarioDao();
+            List<ColectorSecundario> colectoresSecundariosNew = targetDao._queryViaje_ColectoresSecundarios(id);
+            synchronized (this) {
+                if(colectoresSecundarios == null) {
+                    colectoresSecundarios = colectoresSecundariosNew;
+                }
+            }
+        }
+        return colectoresSecundarios;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolectorPrincipal(ColectorPrincipal newVal){
-		colectorPrincipal = newVal;
-	}
+    public void setColectoresSecundarios(List<ColectorSecundario> colectoresSecundarios) {
+        this.colectoresSecundarios = colectoresSecundarios;
+    }
 
-	public Trayecto gettrayecto(){
-		return trayecto;
-	}
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Recoleccion> getRecolecciones() {
+        if (recolecciones == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RecoleccionDao targetDao = daoSession.getRecoleccionDao();
+            List<Recoleccion> recoleccionesNew = targetDao._queryViaje_Recolecciones(id);
+            synchronized (this) {
+                if(recolecciones == null) {
+                    recolecciones = recoleccionesNew;
+                }
+            }
+        }
+        return recolecciones;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settrayecto(Trayecto newVal){
-		trayecto = newVal;
-	}
+    public void setRecolecciones(List<Recoleccion> recolecciones) {
+        this.recolecciones = recolecciones;
+    }
 
-	public int getviajeID(){
-		return viajeID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setviajeID(int newVal){
-		viajeID = newVal;
+	/** called by internal mechanisms, do not call yourself. */
+	public void __setDaoSession(DaoSession daoSession) {
+		// TODO Auto-generated method stub
+		this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getViajeDao() : null;
 	}
 
 }

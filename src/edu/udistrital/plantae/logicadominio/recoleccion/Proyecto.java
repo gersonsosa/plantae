@@ -1,6 +1,11 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
 
-import java.util.ArrayList;
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.ProyectoDao;
+import edu.udistrital.plantae.persistencia.ViajeDao;
+
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -9,15 +14,23 @@ import java.util.ArrayList;
  */
 public class Proyecto {
 
-	private String nombre;
-	private String agenciaFinanciera;
-	private String agenciaEjecutora;
-	private String numeroConvenio;
-	private String permisoColeccion;
-	private String numeroPermiso;
-	private String emisorPermiso;
-	private int proyectoID;
-	private ArrayList<Viaje> viajes;
+    private Long id;
+    private String nombre;
+    private String agenciaFinanciera;
+    private String agenciaEjecutora;
+    private String numeroConvenio;
+    private String permisoColeccion;
+    private String numeroPermiso;
+    private String emisorPermiso;
+	private List<Viaje> viajes;
+    private Long colectorPrincipalID;
+	
+	/* greendao specific properties */
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient ProyectoDao myDao;
 
 	public Proyecto(){
 
@@ -28,119 +41,123 @@ public class Proyecto {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param nombre
 	 */
 	public Proyecto(String nombre){
-
+        this.nombre = nombre;
 	}
 
-	public String getagenciaFinanciera(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     *
+     * @param nombre
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getAgenciaFinanciera() {
 		return agenciaFinanciera;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setagenciaFinanciera(String newVal){
-		agenciaFinanciera = newVal;
+    public void setAgenciaFinanciera(String agenciaFinanciera) {
+        this.agenciaFinanciera = agenciaFinanciera;
 	}
 
-	public String getagenciaEjecutora(){
+    public String getAgenciaEjecutora() {
 		return agenciaEjecutora;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setagenciaEjecutora(String newVal){
-		agenciaEjecutora = newVal;
+    public void setAgenciaEjecutora(String agenciaEjecutora) {
+        this.agenciaEjecutora = agenciaEjecutora;
 	}
 
-	public String getnumeroConvenio(){
+    public String getNumeroConvenio() {
 		return numeroConvenio;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroConvenio(String newVal){
-		numeroConvenio = newVal;
+    public void setNumeroConvenio(String numeroConvenio) {
+        this.numeroConvenio = numeroConvenio;
 	}
 
-	public String getpermisoColeccion(){
+    public String getPermisoColeccion() {
 		return permisoColeccion;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setpermisoColeccion(String newVal){
-		permisoColeccion = newVal;
+    public void setPermisoColeccion(String permisoColeccion) {
+        this.permisoColeccion = permisoColeccion;
 	}
 
-	public String getnumeroPermiso(){
+    public String getNumeroPermiso() {
 		return numeroPermiso;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroPermiso(String newVal){
-		numeroPermiso = newVal;
+    public void setNumeroPermiso(String numeroPermiso) {
+        this.numeroPermiso = numeroPermiso;
 	}
 
-	public String getemisorPermiso(){
+    public String getEmisorPermiso() {
 		return emisorPermiso;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setemisorPermiso(String newVal){
-		emisorPermiso = newVal;
+    public void setEmisorPermiso(String emisorPermiso) {
+        this.emisorPermiso = emisorPermiso;
 	}
 
-	public String getnombre(){
-		return nombre;
-	}
+    public Long getColectorPrincipalID() {
+        return colectorPrincipalID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
-	}
+    public void setColectorPrincipalID(Long colectorPrincipalID) {
+        this.colectorPrincipalID = colectorPrincipalID;
+    }
 
-	public int getproyectoID(){
-		return proyectoID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setproyectoID(int newVal){
-		proyectoID = newVal;
-	}
-
-	public ArrayList<Viaje> getviajes(){
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Viaje> getViajes() {
+        if (viajes == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ViajeDao targetDao = daoSession.getViajeDao();
+            List<Viaje> viajesNew = targetDao._queryProyecto_Viajes(id);
+            synchronized (this) {
+                if(viajes == null) {
+                    viajes = viajesNew;
+                }
+            }
+        }
 		return viajes;
 	}
 
 	/**
 	 * 
-	 * @param newVal
+	 * @param viajes
 	 */
-	public void setviajes(ArrayList<Viaje> newVal){
-		viajes = newVal;
+	public void setViajes(List<Viaje> viajes){
+		this.viajes = viajes;
+	}
+	
+	/** called by internal mechanisms, do not call yourself. */
+	public void __setDaoSession(DaoSession daoSession) {
+		// TODO Auto-generated method stub
+		this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getProyectoDao() : null;
 	}
 
 }

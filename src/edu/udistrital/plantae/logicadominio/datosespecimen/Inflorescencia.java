@@ -1,5 +1,10 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.InflorescenciaDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -7,249 +12,248 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Inflorescencia {
 
-	private ColorEspecimen colorDeLaInflorecenciaEnFlor;
-	private ColorEspecimen colorDeLaInflorecenciaEnFruto;
-	private boolean inflorecenciaSolitaria;
-	private String naturalezaDeLasBracteasPedunculares;
-	private String naturalezaDelProfilo;
-	private int numeroDeLasBracteasPedunculares;
-	private int numeroDeRaquilas;
-	private String posicionDeLasBracteasPedunculares;
-	private String posicionDeLasInflorecencias;
-	private String raquilas;
-	private String raquis;
-	private String tamañoDeLasBracteasPedunculares;
-	private String tamañoDelPedunculo;
-	private String tamañoDelProfilo;
-	private String tamañoDelRaquis;
-	private String tamañoDeRaquilas;
-	private String descripcion;
-	private int inflorecenciaID;
+    private Long id;
+    private ColorEspecimen colorDeLaInflorescenciaEnFlor;
+    private ColorEspecimen colorDeLaInflorescenciaEnFruto;
+    private boolean inflorescenciaSolitaria;
+    private String naturalezaDeLasBracteasPedunculares;
+    private String naturalezaDelProfilo;
+    private int numeroDeLasBracteasPedunculares;
+    private int numeroDeRaquilas;
+    private String posicionDeLasBracteasPedunculares;
+    private String posicionDeLasInflorescencias;
+    private String raquilas;
+    private String raquis;
+    private String tamañoDeLasBracteasPedunculares;
+    private String tamañoDelPedunculo;
+    private String tamañoDelProfilo;
+    private String tamañoDelRaquis;
+    private String tamañoDeRaquilas;
+    private String descripcion;
+
+    private Long colorDeLaInflorescenciaEnFlorID;
+    private Long colorDeLaInflorescenciaEnFrutoID;
+
+    /** Used to resolve relations */
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    private transient InflorescenciaDao myDao;
+
+    private Long colorDeLaInflorescenciaEnFlor__resolvedKey;
+
+    private Long colorDeLaInflorescenciaEnFruto__resolvedKey;
 
 
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getInflorescenciaDao() : null;
+    }
 
 	public void finalize() throws Throwable {
-
 	}
 
 	public Inflorescencia(){
-
 	}
 
-	public ColorEspecimen getcolorDeLaInflorecenciaEnFlor(){
-		return colorDeLaInflorecenciaEnFlor;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDeLaInflorecenciaEnFlor(ColorEspecimen newVal){
-		colorDeLaInflorecenciaEnFlor = newVal;
-	}
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public ColorEspecimen getcolorDeLaInflorecenciaEnFruto(){
-		return colorDeLaInflorecenciaEnFruto;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDeLaInflorecenciaEnFruto(ColorEspecimen newVal){
-		colorDeLaInflorecenciaEnFruto = newVal;
-	}
-
-	public String getdescripcion(){
-		return descripcion;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
-
-	public boolean isinflorecenciaSolitaria(){
-		return inflorecenciaSolitaria;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setinflorecenciaSolitaria(boolean newVal){
-		inflorecenciaSolitaria = newVal;
-	}
-
-	public String getnaturalezaDeLasBracteasPedunculares(){
+    public String getNaturalezaDeLasBracteasPedunculares() {
 		return naturalezaDeLasBracteasPedunculares;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnaturalezaDeLasBracteasPedunculares(String newVal){
-		naturalezaDeLasBracteasPedunculares = newVal;
+    public void setNaturalezaDeLasBracteasPedunculares(String naturalezaDeLasBracteasPedunculares) {
+        this.naturalezaDeLasBracteasPedunculares = naturalezaDeLasBracteasPedunculares;
 	}
 
-	public String getnaturalezaDelProfilo(){
+    public String getNaturalezaDelProfilo() {
 		return naturalezaDelProfilo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnaturalezaDelProfilo(String newVal){
-		naturalezaDelProfilo = newVal;
+    public void setNaturalezaDelProfilo(String naturalezaDelProfilo) {
+        this.naturalezaDelProfilo = naturalezaDelProfilo;
 	}
 
-	public int getnumeroDeLasBracteasPedunculares(){
-		return numeroDeLasBracteasPedunculares;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroDeLasBracteasPedunculares(int newVal){
-		numeroDeLasBracteasPedunculares = newVal;
-	}
-
-	public int getnumeroDeRaquilas(){
-		return numeroDeRaquilas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroDeRaquilas(int newVal){
-		numeroDeRaquilas = newVal;
-	}
-
-	public String getposicionDeLasBracteasPedunculares(){
+    public String getPosicionDeLasBracteasPedunculares() {
 		return posicionDeLasBracteasPedunculares;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setposicionDeLasBracteasPedunculares(String newVal){
-		posicionDeLasBracteasPedunculares = newVal;
+    public void setPosicionDeLasBracteasPedunculares(String posicionDeLasBracteasPedunculares) {
+        this.posicionDeLasBracteasPedunculares = posicionDeLasBracteasPedunculares;
 	}
 
-	public String getposicionDeLasInflorecencias(){
-		return posicionDeLasInflorecencias;
+    public String getPosicionDeLasInflorescencias() {
+		return posicionDeLasInflorescencias;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setposicionDeLasInflorecencias(String newVal){
-		posicionDeLasInflorecencias = newVal;
+    public void setPosicionDeLasInflorescencias(String posicionDeLasInflorescencias) {
+        this.posicionDeLasInflorescencias = posicionDeLasInflorescencias;
 	}
 
-	public String getraquilas(){
+    public String getRaquilas() {
 		return raquilas;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setraquilas(String newVal){
-		raquilas = newVal;
+    public void setRaquilas(String raquilas) {
+        this.raquilas = raquilas;
 	}
 
-	public String getraquis(){
+    public String getRaquis() {
 		return raquis;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setraquis(String newVal){
-		raquis = newVal;
+    public void setRaquis(String raquis) {
+        this.raquis = raquis;
 	}
 
-	public String gettamañoDeLasBracteasPedunculares(){
+    public String getTamañoDeLasBracteasPedunculares() {
 		return tamañoDeLasBracteasPedunculares;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDeLasBracteasPedunculares(String newVal){
-		tamañoDeLasBracteasPedunculares = newVal;
+    public void setTamañoDeLasBracteasPedunculares(String tamañoDeLasBracteasPedunculares) {
+        this.tamañoDeLasBracteasPedunculares = tamañoDeLasBracteasPedunculares;
 	}
 
-	public String gettamañoDelPedunculo(){
+    public String getTamañoDelPedunculo() {
 		return tamañoDelPedunculo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelPedunculo(String newVal){
-		tamañoDelPedunculo = newVal;
+    public void setTamañoDelPedunculo(String tamañoDelPedunculo) {
+        this.tamañoDelPedunculo = tamañoDelPedunculo;
 	}
 
-	public String gettamañoDelProfilo(){
+    public String getTamañoDelProfilo() {
 		return tamañoDelProfilo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelProfilo(String newVal){
-		tamañoDelProfilo = newVal;
+    public void setTamañoDelProfilo(String tamañoDelProfilo) {
+        this.tamañoDelProfilo = tamañoDelProfilo;
 	}
 
-	public String gettamañoDelRaquis(){
+    public String getTamañoDelRaquis() {
 		return tamañoDelRaquis;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelRaquis(String newVal){
-		tamañoDelRaquis = newVal;
+    public void setTamañoDelRaquis(String tamañoDelRaquis) {
+        this.tamañoDelRaquis = tamañoDelRaquis;
 	}
 
-	public String gettamañoDeRaquilas(){
+    public String getTamañoDeRaquilas() {
 		return tamañoDeRaquilas;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDeRaquilas(String newVal){
-		tamañoDeRaquilas = newVal;
+    public void setTamañoDeRaquilas(String tamañoDeRaquilas) {
+        this.tamañoDeRaquilas = tamañoDeRaquilas;
 	}
 
-	public int getinflorecenciaID(){
-		return inflorecenciaID;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setinflorecenciaID(int newVal){
-		inflorecenciaID = newVal;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean getInflorescenciaSolitaria() {
+        return inflorescenciaSolitaria;
+    }
+
+    public void setInflorescenciaSolitaria(boolean inflorescenciaSolitaria) {
+        this.inflorescenciaSolitaria = inflorescenciaSolitaria;
+    }
+
+    public int getNumeroDeLasBracteasPedunculares() {
+        return numeroDeLasBracteasPedunculares;
+    }
+
+    public void setNumeroDeLasBracteasPedunculares(int numeroDeLasBracteasPedunculares) {
+        this.numeroDeLasBracteasPedunculares = numeroDeLasBracteasPedunculares;
+    }
+
+    public int getNumeroDeRaquilas() {
+        return numeroDeRaquilas;
+    }
+
+    public void setNumeroDeRaquilas(int numeroDeRaquilas) {
+        this.numeroDeRaquilas = numeroDeRaquilas;
+    }
+
+    public Long getColorDeLaInflorescenciaEnFlorID() {
+        return colorDeLaInflorescenciaEnFlorID;
+    }
+
+    public void setColorDeLaInflorescenciaEnFlorID(Long colorDeLaInflorescenciaEnFlorID) {
+        this.colorDeLaInflorescenciaEnFlorID = colorDeLaInflorescenciaEnFlorID;
+    }
+
+    public Long getColorDeLaInflorescenciaEnFrutoID() {
+        return colorDeLaInflorescenciaEnFrutoID;
+    }
+
+    public void setColorDeLaInflorescenciaEnFrutoID(Long colorDeLaInflorescenciaEnFrutoID) {
+        this.colorDeLaInflorescenciaEnFrutoID = colorDeLaInflorescenciaEnFrutoID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDeLaInflorescenciaEnFlor() {
+        Long __key = this.colorDeLaInflorescenciaEnFlorID;
+        if (colorDeLaInflorescenciaEnFlor__resolvedKey == null || !colorDeLaInflorescenciaEnFlor__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDeLaInflorescenciaEnFlorNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDeLaInflorescenciaEnFlor = colorDeLaInflorescenciaEnFlorNew;
+            	colorDeLaInflorescenciaEnFlor__resolvedKey = __key;
+            }
+        }
+        return colorDeLaInflorescenciaEnFlor;
+    }
+
+    public void setColorDeLaInflorescenciaEnFlor(ColorEspecimen colorDeLaInflorescenciaEnFlor) {
+        synchronized (this) {
+            this.colorDeLaInflorescenciaEnFlor = colorDeLaInflorescenciaEnFlor;
+            colorDeLaInflorescenciaEnFlorID = colorDeLaInflorescenciaEnFlor == null ? null : colorDeLaInflorescenciaEnFlor.getId();
+            colorDeLaInflorescenciaEnFlor__resolvedKey = colorDeLaInflorescenciaEnFlorID;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDeLaInflorescenciaEnFruto() {
+        Long __key = this.colorDeLaInflorescenciaEnFrutoID;
+        if (colorDeLaInflorescenciaEnFruto__resolvedKey == null || !colorDeLaInflorescenciaEnFruto__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDeLaInflorescenciaEnFrutoNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDeLaInflorescenciaEnFruto = colorDeLaInflorescenciaEnFrutoNew;
+            	colorDeLaInflorescenciaEnFruto__resolvedKey = __key;
+            }
+        }
+        return colorDeLaInflorescenciaEnFruto;
+    }
+
+    public void setColorDeLaInflorescenciaEnFruto(ColorEspecimen colorDeLaInflorescenciaEnFruto) {
+        synchronized (this) {
+            this.colorDeLaInflorescenciaEnFruto = colorDeLaInflorescenciaEnFruto;
+            colorDeLaInflorescenciaEnFrutoID = colorDeLaInflorescenciaEnFruto == null ? null : colorDeLaInflorescenciaEnFruto.getId();
+            colorDeLaInflorescenciaEnFruto__resolvedKey = colorDeLaInflorescenciaEnFrutoID;
+        }
+    }
 
 }

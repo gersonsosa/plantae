@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scrollbars="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="6dp"
+                            android:background="@drawable/bg_card">
+
+                <RelativeLayout
+                    android:id="@+id/viaje_proyecto_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+                    <Spinner
+                        android:id="@+id/viaje_proyecto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageButton
+                        android:id="@+id/add_proyecto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_alignParentRight="true"
+                        android:contentDescription="@string/add_project"
+                        android:src="@drawable/ic_action_add"/>
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/viaje_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/promtp_travel_name"
+                    android:ems="10"
+                    android:maxLines="1"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:layout_below="@+id/viaje_proyecto_layout" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/colectores_secundarios"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/titulo_colectoresSecundarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/titulo_colectores_secundarios"
+                    android:textSize="18sp"/>
+
+                <Spinner
+                    android:id="@+id/colector_secundario"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    android:layout_below="@+id/titulo_colectoresSecundarios"/>
+
+                <Button
+                    android:id="@+id/viaje_colector_secundario_agregar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/colector_secundario"
+                    android:text="@string/prompt_agregar_colector_secundario"/>
+
+                <ListView
+                    android:id="@+id/list_viaje_colectores_secundarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/viaje_colector_secundario_agregar" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

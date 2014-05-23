@@ -11,7 +11,7 @@ public class Coleccion {
 
 	private String nombre;
 	private ArrayList<Especimen> especimenes;
-	private int coleccionID;
+	private int id;
 
 	public void finalize() throws Throwable {
 
@@ -29,32 +29,24 @@ public class Coleccion {
 		return nombre;
 	}
 
+	/**
+	 * 
+	 * @param nombre
+	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public String getnombre(){
-		return nombre;
-	}
-
-	public int getcoleccionID(){
-		return coleccionID;
+	public int getId(){
+		return id;
 	}
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcoleccionID(int newVal){
-		coleccionID = newVal;
+	public void setId(int newVal){
+		id = newVal;
 	}
 
 }

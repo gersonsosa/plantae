@@ -1,5 +1,10 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.FrutoDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -7,14 +12,31 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Fruto {
 
-	private ColorEspecimen colorDelEndocarpio;
-	private ColorEspecimen colorDelExcarpio;
-	private String consistenciaDelPericarpio;
-	private String descripcion;
-	public ColorEspecimen m_Color;
-	private int frutoID;
+    private Long id;
+    private ColorEspecimen colorDelEndocarpio;
+    private ColorEspecimen colorDelExocarpio;
+    private String consistenciaDelPericarpio;
+    private String descripcion;
+    private Long colorDelEndocarpioID;
+    private Long colorDelExocarpioID;
+
+    /** Used to resolve relations */
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    private transient FrutoDao myDao;
+
+    private Long colorDelEndocarpio__resolvedKey;
+
+    private Long colorDelExocarpio__resolvedKey;
 
 
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getFrutoDao() : null;
+    }
 
 	public void finalize() throws Throwable {
 
@@ -24,64 +46,98 @@ public class Fruto {
 
 	}
 
-	public ColorEspecimen getcolorDelEndocarpio(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getConsistenciaDelPericarpio() {
+        return consistenciaDelPericarpio;
+    }
+
+    public void setConsistenciaDelPericarpio(String consistenciaDelPericarpio) {
+        this.consistenciaDelPericarpio = consistenciaDelPericarpio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Long getColorDelEndocarpioID() {
+        return colorDelEndocarpioID;
+    }
+
+    public void setColorDelEndocarpioID(Long colorDelEndocarpioID) {
+        this.colorDelEndocarpioID = colorDelEndocarpioID;
+    }
+
+    public Long getColorDelExocarpioID() {
+        return colorDelExocarpioID;
+    }
+
+    public void setColorDelExocarpioID(Long colorDelExocarpioID) {
+        this.colorDelExocarpioID = colorDelExocarpioID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelEndocarpio() {
+        Long __key = this.colorDelEndocarpioID;
+        if (colorDelEndocarpio__resolvedKey == null || !colorDelEndocarpio__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelEndocarpioNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelEndocarpio = colorDelEndocarpioNew;
+            	colorDelEndocarpio__resolvedKey = __key;
+            }
+        }
 		return colorDelEndocarpio;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDelEndocarpio(ColorEspecimen newVal){
-		colorDelEndocarpio = newVal;
+    public void setColorDelEndocarpio(ColorEspecimen colorDelEndocarpio) {
+        synchronized (this) {
+            this.colorDelEndocarpio = colorDelEndocarpio;
+            colorDelEndocarpioID = colorDelEndocarpio == null ? null : colorDelEndocarpio.getId();
+            colorDelEndocarpio__resolvedKey = colorDelEndocarpioID;
+	    }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelExocarpio() {
+        Long __key = this.colorDelExocarpioID;
+        if (colorDelExocarpio__resolvedKey == null || !colorDelExocarpio__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelExocarpioNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelExocarpio = colorDelExocarpioNew;
+            	colorDelExocarpio__resolvedKey = __key;
+            }
+        }
+		return colorDelExocarpio;
 	}
 
-	public ColorEspecimen getcolorDelExcarpio(){
-		return colorDelExcarpio;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDelExcarpio(ColorEspecimen newVal){
-		colorDelExcarpio = newVal;
-	}
-
-	public String getconsistenciaDelPericarpio(){
-		return consistenciaDelPericarpio;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setconsistenciaDelPericarpio(String newVal){
-		consistenciaDelPericarpio = newVal;
-	}
-
-	public String getdescripcion(){
-		return descripcion;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
-
-	public int getfrutoID(){
-		return frutoID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setfrutoID(int newVal){
-		frutoID = newVal;
-	}
+    public void setColorDelExocarpio(ColorEspecimen colorDelExocarpio) {
+        synchronized (this) {
+            this.colorDelExocarpio = colorDelExocarpio;
+            colorDelExocarpioID = colorDelExocarpio == null ? null : colorDelExocarpio.getId();
+            colorDelExocarpio__resolvedKey = colorDelExocarpioID;
+        }
+    }
 
 }

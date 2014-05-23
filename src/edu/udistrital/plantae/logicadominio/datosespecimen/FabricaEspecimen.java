@@ -23,7 +23,7 @@ public abstract class FabricaEspecimen {
 
 	public static FabricaEspecimen getFabricaEspecimen(){
 		if (fabricaEspecimen == null) {
-			if (colectorPrincipal.gettipoCapturaDatos() == 1){
+			if (colectorPrincipal.getTipoCapturaDatos() == 1){
 				fabricaEspecimen = new FabricaEspecimenDetallado();
 			} else {
 				fabricaEspecimen =  new FabricaEspecimenSencillo();
@@ -32,7 +32,7 @@ public abstract class FabricaEspecimen {
 		return fabricaEspecimen;
 	}
 
-	public ColectorPrincipal getcolectorPrincipal(){
+	public ColectorPrincipal getColectorPrincipal(){
 		return colectorPrincipal;
 	}
 
@@ -40,7 +40,7 @@ public abstract class FabricaEspecimen {
 	 * 
 	 * @param newVal
 	 */
-	public void setcolectorPrincipal(ColectorPrincipal newVal){
+	public void setColectorPrincipal(ColectorPrincipal newVal){
 		colectorPrincipal = newVal;
 	}
 

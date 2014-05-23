@@ -1,5 +1,10 @@
 package edu.udistrital.plantae.logicadominio.ubicacion;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.LocalidadDao;
+import edu.udistrital.plantae.persistencia.RegionDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -7,18 +12,32 @@ package edu.udistrital.plantae.logicadominio.ubicacion;
  */
 public class Localidad {
 
-	private String nombre;
-	private double latitud;
-	private double longitud;
-	private String datum;
-	private double altitud;
-	private String descripcion;
-	private String marcaDispositivo;
-	private Region region;
-	private int localidadID;
+    private Long id;
+    private String nombre;
+    private double latitud;
+    private double longitud;
+    private String datum;
+    private double altitud;
+    private String descripcion;
+    private String marcaDispositivo;
+    private Region region;
+    private long regionID;
+
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient LocalidadDao myDao;
+
+    private Long region__resolvedKey;
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getLocalidadDao() : null;
+    }
 
 	public Localidad(){
-
 	}
 
 	public void finalize() throws Throwable {
@@ -30,115 +49,142 @@ public class Localidad {
 	 * @param nombre    nombre
 	 */
 	public Localidad(String nombre){
-
 	}
 
-	public String getnombre(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
 		return nombre;
 	}
 
-	/**
-	 * 
-	 * @param newVal    newVal
-	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
+    /**
+     *
+     * @param nombre
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
 	}
 
-	public double getlatitud(){
-		return latitud;
-	}
-
-	/**
-	 * 
-	 * @param newVal    newVal
-	 */
-	public void setlatitud(double newVal){
-		latitud = newVal;
-	}
-
-	public double getlongitud(){
-		return longitud;
-	}
-
-	/**
-	 * 
-	 * @param newVal    newVal
-	 */
-	public void setlongitud(double newVal){
-		longitud = newVal;
-	}
-
-	public String getdatum(){
+    public String getDatum() {
 		return datum;
 	}
 
-	/**
-	 * 
-	 * @param newVal    newVal
-	 */
-	public void setdatum(String newVal){
-		datum = newVal;
+    /**
+     *
+     * @param datum
+     */
+    public void setDatum(String datum) {
+        this.datum = datum;
 	}
 
-	public double getaltitud(){
-		return altitud;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	/**
-	 * 
-	 * @param newVal    newVal
-	 */
-	public void setaltitud(double newVal){
-		altitud = newVal;
-	}
+    /**
+     *
+     * @param descripcion
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-	public String getdescripcion(){
-		return descripcion;
-	}
+    public String getMarcaDispositivo() {
+        return marcaDispositivo;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
+    /**
+     *
+     * @param marcaDispositivo
+     */
+    public void setMarcaDispositivo(String marcaDispositivo) {
+        this.marcaDispositivo = marcaDispositivo;
+    }
 
-	public String getmarcaDispositivo(){
-		return marcaDispositivo;
-	}
+    public double getLatitud() {
+        return latitud;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setmarcaDispositivo(String newVal){
-		marcaDispositivo = newVal;
-	}
+    /**
+     *
+     * @param latitud
+     */
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
 
-	public Region getregion(){
+    public double getLongitud(){
+        return longitud;
+    }
+
+    /**
+     *
+     * @param longitud
+     */
+    public void setLongitud(double longitud){
+        this.longitud = longitud;
+    }
+
+    public double getAltitud(){
+        return altitud;
+    }
+
+    /**
+     *
+     * @param altitud
+     */
+    public void setAltitud(double altitud){
+        this.altitud = altitud;
+    }
+
+    public long getRegionID() {
+        return regionID;
+    }
+
+    public void setRegionID(long regionID) {
+        this.regionID = regionID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Region getRegion() {
+        long __key = this.regionID;
+        if (region__resolvedKey == null || !region__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RegionDao targetDao = daoSession.getRegionDao();
+            Region regionNew = targetDao.load(__key);
+            synchronized (this) {
+                region = regionNew;
+            	region__resolvedKey = __key;
+            }
+        }
 		return region;
 	}
 
 	/**
-	 * 
-	 * @param newVal
+	 *
+	 * @param region
 	 */
-	public void setregion(Region newVal){
-		region = newVal;
-	}
-
-	public int getlocalidadID(){
-		return localidadID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setlocalidadID(int newVal){
-		localidadID = newVal;
-	}
+    public void setRegion(Region region) {
+        if (region == null) {
+            throw new DaoException("To-one property 'regionID' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.region = region;
+            regionID = region.getId();
+            region__resolvedKey = regionID;
+        }
+    }
 
 }

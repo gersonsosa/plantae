@@ -1,6 +1,6 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Familia extends Taxon {
 
-	private ArrayList<Genero> generos;
+	private List<Genero> generos;
 
 	public Familia(){
 
@@ -27,20 +27,16 @@ public class Familia extends Taxon {
 
 	}
 
-	/**
-	 * 
-	 * @param taxon
-	 */
-	public void agregarTaxon(Taxon taxon){
-
+	public List<Genero> getGeneros(){
+		return generos;
 	}
 
 	/**
 	 * 
-	 * @param taxonID
+	 * @param generos
 	 */
-	public void getTaxonHijo(int taxonID){
-
+	public void setGeneros(List<Genero> generos){
+		this.generos = generos;
 	}
 
 }

@@ -7,14 +7,14 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Raiz {
 
-	private long alturaDelCono;
-	private String diametroDeLasRaices;
-	private String diametroEnLaBase;
-	private String formaDeLasEspinas;
-	private boolean raizArmada;
-	private String tamañoDeLasEspinas;
-	private String descripcion;
-	private int raizID;
+    private Long id;
+    private long alturaDelCono;
+    private String diametroDeLasRaices;
+    private String diametroEnLaBase;
+    private String formaDeLasEspinas;
+    private boolean raizArmada;
+    private String tamañoDeLasEspinas;
+    private String descripcion;
 
 
 
@@ -26,100 +26,72 @@ public class Raiz {
 
 	}
 
-	public long getalturaDelCono(){
-		return alturaDelCono;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getdescripcion(){
-		return descripcion;
-	}
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getdiametroDeLasRaices(){
+    public String getDiametroDeLasRaices() {
 		return diametroDeLasRaices;
 	}
 
-	public String getdiametroEnLaBase(){
+    public void setDiametroDeLasRaices(String diametroDeLasRaices) {
+        this.diametroDeLasRaices = diametroDeLasRaices;
+    }
+
+    public String getDiametroEnLaBase() {
 		return diametroEnLaBase;
 	}
 
-	public String getformaDeLasEspinas(){
+    public void setDiametroEnLaBase(String diametroEnLaBase) {
+        this.diametroEnLaBase = diametroEnLaBase;
+    }
+
+    public String getFormaDeLasEspinas() {
 		return formaDeLasEspinas;
 	}
 
-	public String gettamañoDeLasEspinas(){
+    public void setFormaDeLasEspinas(String formaDeLasEspinas) {
+        this.formaDeLasEspinas = formaDeLasEspinas;
+    }
+
+    public String getTamañoDeLasEspinas() {
 		return tamañoDeLasEspinas;
 	}
 
-	public boolean israizArmada(){
+    public void setTamañoDeLasEspinas(String tamañoDeLasEspinas) {
+        this.tamañoDeLasEspinas = tamañoDeLasEspinas;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean getRaizArmada() {
 		return raizArmada;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setalturaDelCono(long newVal){
-		alturaDelCono = newVal;
-	}
+    public void setRaizArmada(boolean raizArmada) {
+        this.raizArmada = raizArmada;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
+    public long getAlturaDelCono() {
+        return alturaDelCono;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdiametroDeLasRaices(String newVal){
-		diametroDeLasRaices = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdiametroEnLaBase(String newVal){
-		diametroEnLaBase = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setformaDeLasEspinas(String newVal){
-		formaDeLasEspinas = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setraizArmada(boolean newVal){
-		raizArmada = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDeLasEspinas(String newVal){
-		tamañoDeLasEspinas = newVal;
-	}
-
-	public int getraizID(){
-		return raizID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setraizID(int newVal){
-		raizID = newVal;
+    public void setAlturaDelCono(long alturaDelCono) {
+        this.alturaDelCono = alturaDelCono;
 	}
 
 }

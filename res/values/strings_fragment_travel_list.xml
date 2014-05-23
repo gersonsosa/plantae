@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_travels_found">No travels were found</string>
+    <string name="add_new_travel">Add a new travel</string>
+    <string name="delete_travel_confirmation_message">Delete Travel? This will delete the travel and its contents.</string>
+</resources>

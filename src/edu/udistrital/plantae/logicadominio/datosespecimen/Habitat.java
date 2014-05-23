@@ -7,10 +7,11 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Habitat {
 
-	private String especiesAsociadas;
-	private String sueloSustrato;
-	private String vegetacion;
-	private int habitatID;
+    private Long id;
+    private String especiesAsociadas;
+    private String sueloSustrato;
+    private String vegetacion;
+    private Long habitatsID;
 
 
 
@@ -22,52 +23,48 @@ public class Habitat {
 
 	}
 
-	public String getespeciesAsociadas(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEspeciesAsociadas() {
 		return especiesAsociadas;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setespeciesAsociadas(String newVal){
-		especiesAsociadas = newVal;
+    public void setEspeciesAsociadas(String especiesAsociadas) {
+        this.especiesAsociadas = especiesAsociadas;
 	}
 
-	public String getsueloSustrato(){
+    public String getSueloSustrato() {
 		return sueloSustrato;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setsueloSustrato(String newVal){
-		sueloSustrato = newVal;
+    public void setSueloSustrato(String sueloSustrato) {
+        this.sueloSustrato = sueloSustrato;
 	}
 
-	public String getvegetacion(){
+    public String getVegetacion() {
 		return vegetacion;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setvegetacion(String newVal){
-		vegetacion = newVal;
-	}
+    public void setVegetacion(String vegetacion) {
+        this.vegetacion = vegetacion;
+    }
 
-	public int gethabitatID(){
-		return habitatID;
-	}
+    public Long getHabitatsID() {
+        return habitatsID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethabitatID(int newVal){
-		habitatID = newVal;
+    public void setHabitatsID(Long habitatsID) {
+        this.habitatsID = habitatsID;
 	}
 
 }

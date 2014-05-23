@@ -1,15 +1,10 @@
 package edu.udistrital.plantae;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,7 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import edu.udistrital.plantae.logicadominio.autenticacion.Sesion;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 
 /**
@@ -40,7 +35,6 @@ public class LoginActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
-	private ColectorPrincipal usuario;
 
 	// UI references.
 	private EditText mEmailView;
@@ -85,7 +79,7 @@ public class LoginActivity extends Activity {
 					}
 				});
 		findViewById(R.id.sign_up_button).setOnClickListener(
-				new View.OnClickListener() {
+                    new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -119,93 +113,59 @@ public class LoginActivity extends Activity {
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
-		// Create the user object
-		usuario = new ColectorPrincipal(mEmail, mPassword);
-		// Validate the user object password and email
-		Sesion sesion = usuario.getPersona().getusuario().validarDatosInicioSesion();
-		View focusView = null;
-		// Check if the validation of the credentials produce any errors
-		if (sesion == null){
-			Iterator<Entry<String, String>> iterator = ((Map<String, String>)usuario.getPersona().getusuario().geterroresCredenciales()).entrySet().iterator();
-			while (iterator.hasNext()) {
-				Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
-				if (entry.getKey().equals("mPassword")){
-					mPasswordView.setError(getString(R.string.error_field_required));
-					focusView = mPasswordView;
-				}else if (entry.getKey().equals("mEmail")){
-					if (entry.getValue() == "empty"){
-						mEmailView.setError(getString(R.string.error_field_required));
-					} else {
-						mEmailView.setError(getString(R.string.error_invalid_email));
-					}
-					focusView = mEmailView;
-				}
-			}
-			focusView.requestFocus();
-		}else{
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			showProgress(true);
-			mAuthTask = new UserLoginTask(this);
-			String[] strings={mEmail,mPassword};
-			mAuthTask.execute(strings);
-		}
-
 		
-		/*boolean cancel = false;
-		
-
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
-		}
-
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
-
-		if (cancel) {
-			// There was an error; don't attempt login and focus the first
-			// form field with an error.
-			focusView.requestFocus();
-		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
-		}*/
+		// Show a progress spinner, and kick off a background task to
+		// perform the user login attempt.
+		mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+		showProgress(true);
+		mAuthTask = new UserLoginTask(this);
+		String[] strings={mEmail,mPassword};
+		mAuthTask.execute(strings);
 	}
 	
-	protected void finishLoginTask(boolean result) {
+	protected void finishLoginTask(ColectorPrincipal result) {
 		showProgress(false);
 		mAuthTask = null;
-		if (result == true){
-			SharedPreferences preferences = getSharedPreferences("plantae_prefs", 0);
-			SharedPreferences.Editor editor = preferences.edit();
-	        editor.putBoolean("isLoggedIn", true);
-	        editor.commit();
+		if (result != null){
 	        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("colectorPrincipal", result.getId());
 	        startActivity(intent);
 			finish();
 		} else {
-			mPasswordView.setError(getString(R.string.error_incorrect_password));
-			mPasswordView.requestFocus();
+			View focusView = null;
+			// Check if the validation of the credentials produce any errors
+			Integer[] erroresCredenciales = Usuario.getErroresCredenciales();
+            if (erroresCredenciales[0]!=null){
+                switch (erroresCredenciales[0]){
+                    case 1 :
+                        mPasswordView.setError(getString(R.string.error_field_required));
+                        focusView = mPasswordView;
+                        break;
+                    case 2 :
+                        mPasswordView.setError(getString(R.string.error_field_required));
+                        focusView = mPasswordView;
+                        break;
+                    case 5 :
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        focusView = mPasswordView;
+                        break;
+                }
+            }
+            if (erroresCredenciales[1] != null){
+                switch (erroresCredenciales[1]){
+                    case 3 :
+                        mEmailView.setError(getString(R.string.error_field_required));
+                        focusView = mEmailView;
+                        break;
+                    case 4 :
+                        mEmailView.setError(getString(R.string.error_invalid_email));
+                        focusView = mEmailView;
+                        break;
+                }
+            }
+    		if (focusView != null){
+                focusView.requestFocus();
+            }
 		}
 	}
 

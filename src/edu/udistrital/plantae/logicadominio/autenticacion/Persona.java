@@ -1,20 +1,37 @@
 package edu.udistrital.plantae.logicadominio.autenticacion;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.PersonaDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
+
+import java.io.Serializable;
+
 
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
  * @created 19-May-2013 11:50:34 PM
  */
-public class Persona {
+public class Persona implements Serializable {
 
-	private String nombres;
-	private String apellidos;
-	private String direccion;
-	private String telefono;
-	private String institucion;
-	private int personaID;
-	private Usuario usuario;
+    private Long id;
+    private String nombres;
+    private String apellidos;
+    private String direccion;
+    private String telefono;
+    private String institucion;
+    private Long usuarioID;
+
+    private Usuario usuario;
+    private Long usuario__resolvedKey;
+	
+	/* greendao specific properties */
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient PersonaDao myDao;
 
 	public Persona(){
 
@@ -33,88 +50,95 @@ public class Persona {
 
 	}
 
-	public String getnombres(){
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+    public String getNombres() {
 		return nombres;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnombres(String newVal){
-		nombres = newVal;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
 	}
 
-	public String getapellidos(){
+    public String getApellidos() {
 		return apellidos;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setapellidos(String newVal){
-		apellidos = newVal;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
 	}
 
-	public String getdireccion(){
+    public String getDireccion() {
 		return direccion;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdireccion(String newVal){
-		direccion = newVal;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
 	}
 
-	public String gettelefono(){
+    public String getTelefono() {
 		return telefono;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settelefono(String newVal){
-		telefono = newVal;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
 	}
 
-	public String getinstitucion(){
+    public String getInstitucion() {
 		return institucion;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setinstitucion(String newVal){
-		institucion = newVal;
+    public void setInstitucion(String institucion) {
+        this.institucion = institucion;
 	}
 
-	public int getpersonaID(){
-		return personaID;
-	}
+    public Long getUsuarioID() {
+        return usuarioID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setpersonaID(int newVal){
-		personaID = newVal;
-	}
+    public void setUsuarioID(Long usuarioID) {
+        this.usuarioID = usuarioID;
+    }
 
-	public Usuario getusuario(){
+    /** To-one relationship, resolved on first access. */
+    public Usuario getUsuario() {
+        Long __key = this.usuarioID;
+        if (usuario__resolvedKey == null || !usuario__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UsuarioDao targetDao = daoSession.getUsuarioDao();
+            Usuario usuarioNew = targetDao.load(__key);
+            synchronized (this) {
+                usuario = usuarioNew;
+            	usuario__resolvedKey = __key;
+            }
+        }
 		return usuario;
 	}
 
 	/**
 	 * 
-	 * @param newVal
+	 * @param usuario
 	 */
-	public void setusuario(Usuario newVal){
-		usuario = newVal;
+    public void setUsuario(Usuario usuario) {
+        synchronized (this) {
+		    this.usuario = usuario;
+            usuarioID = usuario == null ? null : usuario.getId();
+            usuario__resolvedKey = usuarioID;
+	    }
+    }
+
+	/** called by internal mechanisms, do not call yourself. */
+	public void __setDaoSession(DaoSession daoSession) {
+		this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getPersonaDao() : null;
 	}
 
 }

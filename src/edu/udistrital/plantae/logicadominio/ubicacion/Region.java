@@ -7,63 +7,62 @@ package edu.udistrital.plantae.logicadominio.ubicacion;
  */
 public abstract class Region {
 
-	private String nombre;
-	private int regionID;
+    private Long id;
+    private String nombre;
+    private String nombreCompleto;
+    private Region regionPadre;
 
 	public Region(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
-	/**
-	 * 
-	 * @param nombre
-	 */
-	public Region(String nombre){
+    public Region getRegionPadre() {
+        return regionPadre;
+    }
 
-	}
+    public void setRegionPadre(Region regionPadre) {
+        this.regionPadre = regionPadre;
+    }
 
-	/**
-	 * 
-	 * @param region
-	 */
-	public void agregarRegion(Region region){
+    /**
+     *
+     * @param nombre
+     */
+    public Region(String nombre){
+    }
 
-	}
+    public Long getId() {
+        return id;
+    }
 
-	/**
-	 * 
-	 * @param region
-	 */
-	public Region getRegionHijo(int region){
-		return null;
-	}
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getnombre(){
+	public String getNombre(){
 		return nombre;
 	}
 
 	/**
-	 * 
-	 * @param newVal
+	 *
+	 * @param nombre
 	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
+	public void setNombre(String nombre){
+		this.nombre = nombre;
 	}
 
-	public int getregionID(){
-		return regionID;
-	}
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setregionID(int newVal){
-		regionID = newVal;
-	}
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
 
 }

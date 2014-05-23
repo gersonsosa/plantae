@@ -1,9 +1,14 @@
 package edu.udistrital.plantae.logicadominio.listasparametros;
-import java.util.ArrayList;
+
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.HabitoDao;
+import edu.udistrital.plantae.persistencia.HabitosDao;
+
 import java.util.Enumeration;
 import java.util.Iterator;
-
-import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -12,17 +17,56 @@ import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
  */
 public class Habitos implements Iterator {
 
-	private ArrayList<Habito> data;
-	private Enumeration eh;
-	private int nextHabito;
-	private int habitosID;
+    private Long id;
+    private List<Habito> data;
+    private Enumeration eh;
+    private int nextHabito;
+
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient HabitosDao myDao;
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getHabitosDao() : null;
+    }
 
 	public Habitos(){
-
 	}
 
-	public void finalize() throws Throwable {
+    public Long getId() {
+        return id;
+    }
 
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    private List<Habito> getData() {
+        if (data == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            HabitoDao targetDao = daoSession.getHabitoDao();
+            List<Habito> dataNew = targetDao._queryHabitos_Data(id);
+            synchronized (this) {
+                if(data == null) {
+                    data = dataNew;
+                }
+            }
+        }
+        return data;
+    }
+
+	public void finalize() throws Throwable {
 	}
 
 	public boolean hasNext(){
@@ -36,17 +80,4 @@ public class Habitos implements Iterator {
 	public void remove(){
 
 	}
-
-	public int gethabitosID(){
-		return habitosID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethabitosID(int newVal){
-		habitosID = newVal;
-	}
-
 }

@@ -1,5 +1,10 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.HojaDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -7,23 +12,38 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Hoja {
 
-	private String coberturaDelPeciolo;
-	private ColorEspecimen colorDeLasHojas;
-	private ColorEspecimen colorDelPeciolo;
-	private String dispocicionDeLasPinnas;
-	private String disposicionDeLasHojas;
-	private String formaDelPeciolo;
-	private String longuitudDelRaquis;
-	private String naturalezaDeLaVaina;
-	private String naturalezaDelLimbo;
-	private String numeroDePinnas;
-	private String numeroHojas;
-	private String tamañoDeLasHojas;
-	private String tamañoDelPeciolo;
-	private String descripcion;
-	private int hojaID;
+    private Long id;
+    private String coberturaDelPeciolo;
+    private ColorEspecimen colorDeLasHojas;
+    private ColorEspecimen colorDelPeciolo;
+    private String dispocicionDeLasPinnas;
+    private String disposicionDeLasHojas;
+    private String formaDelPeciolo;
+    private String longuitudDelRaquis;
+    private String naturalezaDeLaVaina;
+    private String naturalezaDelLimbo;
+    private String numeroDePinnas;
+    private String numeroHojas;
+    private String tamañoDeLasHojas;
+    private String tamañoDelPeciolo;
+    private String descripcion;
+    private Long colorDeLasHojasID;
+    private Long colorDelPecioloID;
 
+    /** Used to resolve relations */
+    private transient DaoSession daoSession;
 
+    /** Used for active entity operations. */
+    private transient HojaDao myDao;
+
+    private Long colorDeLasHojas__resolvedKey;
+    private Long colorDelPeciolo__resolvedKey;
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getHojaDao() : null;
+    }
 
 	public void finalize() throws Throwable {
 
@@ -33,184 +53,178 @@ public class Hoja {
 
 	}
 
-	public String getcoberturaDelPeciolo(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCoberturaDelPeciolo() {
 		return coberturaDelPeciolo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcoberturaDelPeciolo(String newVal){
-		coberturaDelPeciolo = newVal;
+    public void setCoberturaDelPeciolo(String coberturaDelPeciolo) {
+        this.coberturaDelPeciolo = coberturaDelPeciolo;
 	}
 
-	public ColorEspecimen getcolorDeLasHojas(){
+    public String getDispocicionDeLasPinnas() {
+        return dispocicionDeLasPinnas;
+    }
+
+    public void setDispocicionDeLasPinnas(String dispocicionDeLasPinnas) {
+        this.dispocicionDeLasPinnas = dispocicionDeLasPinnas;
+    }
+
+    public String getDisposicionDeLasHojas() {
+        return disposicionDeLasHojas;
+    }
+
+    public void setDisposicionDeLasHojas(String disposicionDeLasHojas) {
+        this.disposicionDeLasHojas = disposicionDeLasHojas;
+    }
+
+    public String getFormaDelPeciolo() {
+        return formaDelPeciolo;
+    }
+
+    public void setFormaDelPeciolo(String formaDelPeciolo) {
+        this.formaDelPeciolo = formaDelPeciolo;
+    }
+
+    public String getLonguitudDelRaquis() {
+        return longuitudDelRaquis;
+    }
+
+    public void setLonguitudDelRaquis(String longuitudDelRaquis) {
+        this.longuitudDelRaquis = longuitudDelRaquis;
+    }
+
+    public String getNaturalezaDeLaVaina() {
+        return naturalezaDeLaVaina;
+    }
+
+    public void setNaturalezaDeLaVaina(String naturalezaDeLaVaina) {
+        this.naturalezaDeLaVaina = naturalezaDeLaVaina;
+    }
+
+    public String getNaturalezaDelLimbo() {
+        return naturalezaDelLimbo;
+    }
+
+    public void setNaturalezaDelLimbo(String naturalezaDelLimbo) {
+        this.naturalezaDelLimbo = naturalezaDelLimbo;
+    }
+
+    public String getNumeroDePinnas() {
+        return numeroDePinnas;
+    }
+
+    public void setNumeroDePinnas(String numeroDePinnas) {
+        this.numeroDePinnas = numeroDePinnas;
+    }
+
+    public String getNumeroHojas() {
+        return numeroHojas;
+    }
+
+    public void setNumeroHojas(String numeroHojas) {
+        this.numeroHojas = numeroHojas;
+    }
+
+    public String getTamañoDeLasHojas() {
+        return tamañoDeLasHojas;
+    }
+
+    public void setTamañoDeLasHojas(String tamañoDeLasHojas) {
+        this.tamañoDeLasHojas = tamañoDeLasHojas;
+    }
+
+    public String getTamañoDelPeciolo() {
+        return tamañoDelPeciolo;
+    }
+
+    public void setTamañoDelPeciolo(String tamañoDelPeciolo) {
+        this.tamañoDelPeciolo = tamañoDelPeciolo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Long getColorDeLasHojasID() {
+        return colorDeLasHojasID;
+    }
+
+    public void setColorDeLasHojasID(Long colorDeLasHojasID) {
+        this.colorDeLasHojasID = colorDeLasHojasID;
+    }
+
+    public Long getColorDelPecioloID() {
+        return colorDelPecioloID;
+    }
+
+    public void setColorDelPecioloID(Long colorDelPecioloID) {
+        this.colorDelPecioloID = colorDelPecioloID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDeLasHojas() {
+        Long __key = this.colorDeLasHojasID;
+        if (colorDeLasHojas__resolvedKey == null || !colorDeLasHojas__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDeLasHojasNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDeLasHojas = colorDeLasHojasNew;
+            	colorDeLasHojas__resolvedKey = __key;
+            }
+        }
 		return colorDeLasHojas;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDeLasHojas(ColorEspecimen newVal){
-		colorDeLasHojas = newVal;
-	}
+    public void setColorDeLasHojas(ColorEspecimen colorDeLasHojas) {
+        synchronized (this) {
+            this.colorDeLasHojas = colorDeLasHojas;
+            colorDeLasHojasID = colorDeLasHojas == null ? null : colorDeLasHojas.getId();
+            colorDeLasHojas__resolvedKey = colorDeLasHojasID;
+	    }
+    }
 
-	public ColorEspecimen getcolorDelPeciolo(){
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelPeciolo() {
+        Long __key = this.colorDelPecioloID;
+        if (colorDelPeciolo__resolvedKey == null || !colorDelPeciolo__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelPecioloNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelPeciolo = colorDelPecioloNew;
+            	colorDelPeciolo__resolvedKey = __key;
+            }
+        }
 		return colorDelPeciolo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDelPeciolo(ColorEspecimen newVal){
-		colorDelPeciolo = newVal;
-	}
-
-	public String getdescripcion(){
-		return descripcion;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
-
-	public String getdispocicionDeLasPinnas(){
-		return dispocicionDeLasPinnas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdispocicionDeLasPinnas(String newVal){
-		dispocicionDeLasPinnas = newVal;
-	}
-
-	public String getdisposicionDeLasHojas(){
-		return disposicionDeLasHojas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdisposicionDeLasHojas(String newVal){
-		disposicionDeLasHojas = newVal;
-	}
-
-	public String getformaDelPeciolo(){
-		return formaDelPeciolo;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setformaDelPeciolo(String newVal){
-		formaDelPeciolo = newVal;
-	}
-
-	public String getlonguitudDelRaquis(){
-		return longuitudDelRaquis;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setlonguitudDelRaquis(String newVal){
-		longuitudDelRaquis = newVal;
-	}
-
-	public String getnaturalezaDeLaVaina(){
-		return naturalezaDeLaVaina;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnaturalezaDeLaVaina(String newVal){
-		naturalezaDeLaVaina = newVal;
-	}
-
-	public String getnaturalezaDelLimbo(){
-		return naturalezaDelLimbo;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnaturalezaDelLimbo(String newVal){
-		naturalezaDelLimbo = newVal;
-	}
-
-	public String getnumeroDePinnas(){
-		return numeroDePinnas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroDePinnas(String newVal){
-		numeroDePinnas = newVal;
-	}
-
-	public String getnumeroHojas(){
-		return numeroHojas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnumeroHojas(String newVal){
-		numeroHojas = newVal;
-	}
-
-	public String gettamañoDeLasHojas(){
-		return tamañoDeLasHojas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDeLasHojas(String newVal){
-		tamañoDeLasHojas = newVal;
-	}
-
-	public String gettamañoDelPeciolo(){
-		return tamañoDelPeciolo;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settamañoDelPeciolo(String newVal){
-		tamañoDelPeciolo = newVal;
-	}
-
-	public int gethojaID(){
-		return hojaID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethojaID(int newVal){
-		hojaID = newVal;
-	}
+    public void setColorDelPeciolo(ColorEspecimen colorDelPeciolo) {
+        synchronized (this) {
+            this.colorDelPeciolo = colorDelPeciolo;
+            colorDelPecioloID = colorDelPeciolo == null ? null : colorDelPeciolo.getId();
+            colorDelPeciolo__resolvedKey = colorDelPecioloID;
+        }
+    }
 
 }

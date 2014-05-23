@@ -1,6 +1,6 @@
 package edu.udistrital.plantae.logicadominio.ubicacion;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Departamento extends Region {
 
-	private ArrayList<Municipio> municipios;
+	private List<Municipio> municipios;
 
 	public Departamento(){
 
@@ -27,20 +27,16 @@ public class Departamento extends Region {
 
 	}
 
-	/**
-	 * 
-	 * @param region
-	 */
-	public void agregarRegion(Region region){
-
+	public List<Municipio> getMunicipios(){
+		return municipios;
 	}
 
 	/**
 	 * 
-	 * @param region
+	 * @param municipios
 	 */
-	public Region getRegionHijo(int region){
-		return null;
+	public void setMunicipios(List<Municipio> municipios){
+		this.municipios = municipios;
 	}
 
 }

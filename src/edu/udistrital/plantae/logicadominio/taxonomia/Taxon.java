@@ -1,6 +1,12 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
-import java.util.ArrayList;
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.NombreComunDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
+import edu.udistrital.plantae.persistencia.UsoDao;
+
+import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.
@@ -9,65 +15,144 @@ import java.util.ArrayList;
  */
 public abstract class Taxon {
 
-	private String nombre;
-	private ArrayList<Uso> usos;
-	private ArrayList<NombreComun> nombresComunes;
-	private int taxonID;
+    private Long id;
+    private String nombre;
+    private List<Uso> usos;
+    private List<NombreComun> nombresComunes;
+	private Taxon taxonPadre;
+	private String autor;
+	private String nombreCientifico;
+	
+	/* greendao specific properties */
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient TaxonDao myDao;
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getTaxonDao() : null;
+    }
 
 	public Taxon(){
-
 	}
 
 	public void finalize() throws Throwable {
+	}
 
+    public Taxon getTaxonPadre(){
+        return taxonPadre;
+    }
+
+    public void setTaxonPadre(Taxon taxonPadre) {
+        this.taxonPadre = taxonPadre;
+    }
+
+    /**
+	 * 
+	 * @param nombre
+	 */
+	public Taxon(String nombre){
+	}
+
+    public Long getId() {
+		return id;
+	}
+
+	/**
+	 * 
+	 * @param id
+	 */
+    public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombre(){
+		return nombre;
 	}
 
 	/**
 	 * 
 	 * @param nombre
 	 */
-	public Taxon(String nombre){
-
+	public void setNombre(String nombre){
+		this.nombre = nombre;
 	}
 
-	/**
-	 * 
-	 * @param taxon
-	 */
-	public void agregarTaxon(Taxon taxon){
+    public String getAutor() {
+        return autor;
+    }
 
-	}
+    /**
+     *
+     * @param autor
+     */
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
 
-	/**
-	 * 
-	 * @param taxonID
-	 */
-	public void getTaxonHijo(int taxonID){
+    public String getNombreCientifico() {
+        return nombreCientifico;
+    }
 
-	}
+    /**
+     *
+     * @param nombreCientifico
+     */
+    public void setNombreCientifico(String nombreCientifico) {
+        this.nombreCientifico = nombreCientifico;
+    }
 
-	public String getnombre(){
-		return nombre;
-	}
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<NombreComun> getNombresComunes() {
+        if (nombresComunes == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            NombreComunDao targetDao = daoSession.getNombreComunDao();
+            List<NombreComun> nombresComunesNew = targetDao._queryTaxon_NombresComunes(id);
+            synchronized (this) {
+                if(nombresComunes == null) {
+                    nombresComunes = nombresComunesNew;
+                }
+            }
+        }
+        return nombresComunes;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
-	}
+    /**
+     *
+     * @param nombresComunes
+     */
+    public void setNombresComunes(List<NombreComun> nombresComunes){
+        this.nombresComunes = nombresComunes;
+    }
 
-	public int gettaxonID(){
-		return taxonID;
-	}
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Uso> getUsos() {
+        if (usos == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UsoDao targetDao = daoSession.getUsoDao();
+            List<Uso> usosNew = targetDao._queryTaxon_Usos(id);
+            synchronized (this) {
+                if(usos == null) {
+                    usos = usosNew;
+                }
+            }
+        }
+        return usos;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settaxonID(int newVal){
-		taxonID = newVal;
-	}
+    /**
+     *
+     * @param usos
+     */
+    public void setUsos(List<Uso> usos){
+        this.usos = usos;
+    }
 
 }

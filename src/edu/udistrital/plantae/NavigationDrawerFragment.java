@@ -1,26 +1,25 @@
 package edu.udistrital.plantae;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.*;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
+import edu.udistrital.plantae.persistencia.DataBaseHelper;
+import edu.udistrital.plantae.persistencia.ViajeDao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -51,12 +50,16 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
-    private View mFragmentContainerView;
 
+    private ListView mDrawerListView;
+
+    private View mFragmentContainerView;
     private int mCurrentSelectedPosition = 0;
+
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ViajeDao viajeDao;
+    private Long colectorPrincipalID;
 
     public NavigationDrawerFragment() {
     }
@@ -69,6 +72,9 @@ public class NavigationDrawerFragment extends Fragment {
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        //Load viaje DAO
+        viajeDao = DataBaseHelper.getDataBaseHelper(this.getActivity().getApplicationContext()).getDaoSession().getViajeDao();
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -85,24 +91,38 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        View navDrawerView = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) navDrawerView.findViewById(R.id.navigation_drawer_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                R.layout.list_item,
-                R.id.title_list_item,
-                new String[]{
-                        getString(R.string.title_projects),
-                        getString(R.string.title_travels),
-                        getString(R.string.title_specimens),
-                }));
+        colectorPrincipalID = getActivity().getIntent().getLongExtra("colectorPrincipal", 0l);
+        fillOrUpdateNavDrawerList(colectorPrincipalID);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        return navDrawerView;
+    }
+
+    public void fillOrUpdateNavDrawerList(Long colectorPrincipalID){
+        List<Viaje> viajes = viajeDao.queryBuilder().where(ViajeDao.Properties.ColectorPrincipalID.eq(colectorPrincipalID)).list();
+        List<NavigationDrawerItem> navigationDrawerItems = new ArrayList<NavigationDrawerItem>();
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.title_travels),0,0));
+        for (Viaje viaje : viajes) {
+            navigationDrawerItems.add(new NavigationDrawerItem(viaje.getId(), viaje.getNombre(), R.drawable.ic_action_location_map, viaje.getRecolecciones().size()));
+        }
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.add_new_travels), R.drawable.ic_action_add, 0));
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.manage_text), 0, 0));
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.manage_travels), R.drawable.ic_action_location_map, 0));
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.action_settings), android.R.drawable.ic_menu_preferences, 0));
+        // implementar custom adapter para mostrar los elementos del nav drawer
+        ListImageTextAdapter listImageTextAdapter = new ListImageTextAdapter(getActivity().getApplicationContext(),navigationDrawerItems,viajeDao);
+        mDrawerListView.setAdapter(listImageTextAdapter);
+    }
+
+    public ListView getmDrawerListView() {
         return mDrawerListView;
     }
 
@@ -184,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -243,11 +263,11 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        switch (item.getItemId()) {
+        /*switch (item.getItemId()) {
             case R.id.action_add:
                 Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
                 return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

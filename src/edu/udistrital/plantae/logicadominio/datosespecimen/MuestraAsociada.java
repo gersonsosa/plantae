@@ -7,54 +7,53 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class MuestraAsociada {
 
-	private String descripcion;
-	private String metodoDeTratamiento;
-	private int muestraAsociadaID;
+    private Long id;
+    private String descripcion;
+    private String metodoDeTratamiento;
+    private Long especimenID;
 
 
 
 	public void finalize() throws Throwable {
-
 	}
 
 	public MuestraAsociada(){
-
 	}
 
-	public String getmetodoDeTratamiento(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getMetodoDeTratamiento() {
 		return metodoDeTratamiento;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setmetodoDeTratamiento(String newVal){
-		metodoDeTratamiento = newVal;
-	}
+    public void setMetodoDeTratamiento(String metodoDeTratamiento) {
+        this.metodoDeTratamiento = metodoDeTratamiento;
+    }
 
-	public String getdescripcion(){
-		return descripcion;
-	}
+    public Long getEspecimenID() {
+        return especimenID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
-
-	public int getmuestraAsociadaID(){
-		return muestraAsociadaID;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setmuestraAsociadaID(int newVal){
-		muestraAsociadaID = newVal;
+    public void setEspecimenID(Long especimenID) {
+        this.especimenID = especimenID;
 	}
 
 }

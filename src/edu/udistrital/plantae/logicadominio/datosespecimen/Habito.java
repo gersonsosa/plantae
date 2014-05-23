@@ -7,8 +7,9 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Habito {
 
-	private String habito;
-	private int habitoID;
+    private Long id;
+    private String habito;
+    private Long habitosID;
 
 	public Habito(){
 
@@ -18,28 +19,32 @@ public class Habito {
 
 	}
 
-	public String gethabito(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getHabito() {
 		return habito;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethabito(String newVal){
-		habito = newVal;
-	}
+    public void setHabito(String habito) {
+        this.habito = habito;
+    }
 
-	public int gethabitoID(){
-		return habitoID;
-	}
+    public Long getHabitosID() {
+        return habitosID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void sethabitoID(int newVal){
-		habitoID = newVal;
+    public void setHabitosID(Long habitosID) {
+        this.habitosID = habitosID;
 	}
 
 }

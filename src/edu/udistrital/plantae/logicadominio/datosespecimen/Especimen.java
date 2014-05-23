@@ -9,6 +9,10 @@ import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
  */
 public interface Especimen {
 
+    public Long getId();
+
+    public void setId(Long id);
+
 	public void agregarTodosColectores();
 
 	public String generarNumeroDeColeccion();

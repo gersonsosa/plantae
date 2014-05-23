@@ -1,15 +1,11 @@
 package edu.udistrital.plantae;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +22,12 @@ import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Sesion;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
+import edu.udistrital.plantae.persistencia.*;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Activity which displays a register screen to the user, offering registration as
@@ -41,7 +43,7 @@ public class RegisterActivity extends Activity {
 	/**
 	 * Keep track of the register task to ensure we can cancel it if requested.
 	 */
-	private UserRegisterTask mAuthTask = null;
+	private UserRegisterTask mRegisterTask = null;
 
 	// Values for email and password at the time of the register attempt.
 	private String mEmail;
@@ -59,6 +61,10 @@ public class RegisterActivity extends Activity {
 	private View mRegisterFormView;
 	private View mRegisterStatusView;
 	private TextView mRegisterStatusMessageView;
+	private ColectorPrincipalDao colectorPrincipalDao;
+	private PersonaDao personaDao;
+	private UsuarioDao usuarioDao;
+    private DaoSession daoSession;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +109,11 @@ public class RegisterActivity extends Activity {
 						attemptRegister();
 					}
 				});
-		// Instantiate the database helper from the ORM.
+
+        daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();
+		colectorPrincipalDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorPrincipalDao();
+		personaDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getPersonaDao();
+		usuarioDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getUsuarioDao();
 	}
 
 	/**
@@ -149,7 +159,7 @@ public class RegisterActivity extends Activity {
 	 * errors are presented and no actual register attempt is made.
 	 */
 	public void attemptRegister() {
-		if (mAuthTask != null) {
+		if (mRegisterTask != null) {
 			return;
 		}
 		View focusView = null;
@@ -203,16 +213,13 @@ public class RegisterActivity extends Activity {
 		Persona persona = new Persona();
 		String[] names=TextUtils.split(mFullName, " ");
 		if (names.length == 2){
-			persona.setnombres(names[0]);
-			persona.setapellidos(names[1]);
+			persona.setNombres(names[0]);
+			persona.setApellidos(names[1]);
 		} else {
-			persona.setapellidos(datosRegistro.get("fullname"));
+			persona.setApellidos(datosRegistro.get("fullname"));
 		}
-		persona.setinstitucion(mInstitution);
-		HashMap<String, String> errores = Usuario.validarDatosRegistro(datosRegistro);
-		persona.setusuario(Usuario.getUsuario(mEmail, mPassword));
-		colectorPrincipal.setPersona(persona);
-		colectorPrincipal.setnumeroColeccionActual(mFieldNumber);
+		persona.setInstitucion(mInstitution);
+		HashMap<String, String> errores = Usuario.validarDatosRegistro(datosRegistro, usuarioDao);
 		
 		if (!errores.isEmpty()){
 			Iterator<Entry<String, String>> iterator = ((Map<String, String>)errores).entrySet().iterator();
@@ -228,9 +235,11 @@ public class RegisterActivity extends Activity {
 					focusView = mPasswordView;
 				}
 				if (entry.getKey().equals("email")){
-					if (entry.getValue() == "empty"){
+					if (entry.getValue().equals("empty")){
 						mEmailView.setError(getString(R.string.error_field_required));
-					} else {
+					}else if (entry.getValue().equals("taken")){
+						mEmailView.setError(getString(R.string.error_register_being_used_email));
+					}else {
 						mEmailView.setError(getString(R.string.error_invalid_email));
 					}
 					focusView = mEmailView;
@@ -250,14 +259,13 @@ public class RegisterActivity extends Activity {
 			}
 			focusView.requestFocus();
 		} else {
+            Usuario usuario = Usuario.getUsuario(mEmail, mPassword);
+            colectorPrincipal.setNumeroColeccionActual(mFieldNumber);
 			mRegisterStatusMessageView.setText(R.string.register_progress);
 			showProgress(true);
-			mAuthTask = new UserRegisterTask();
-			ColectorPrincipal[] colectorPrincipals = {colectorPrincipal};
-			mAuthTask.execute(colectorPrincipals);
-			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-			startActivity(intent);
-			finish();
+			mRegisterTask = new UserRegisterTask();
+			Object[] params = {colectorPrincipal, persona, usuario};
+			mRegisterTask.execute(params);
 		}
 
 	}
@@ -307,31 +315,54 @@ public class RegisterActivity extends Activity {
 	 * Represents an asynchronous register task used to authenticate
 	 * the user.
 	 */
-	public class UserRegisterTask extends AsyncTask<ColectorPrincipal, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(ColectorPrincipal... colectorPrincipals) {
-			// TODO: attempt authentication against a network service.
-			ColectorPrincipal colectorPrincipal = colectorPrincipals[0];
-			// Get ORM data access object and create the Colectorprincipal
-			Sesion.iniciarSesion(colectorPrincipal.getPersona().getusuario());
+	public class UserRegisterTask extends AsyncTask<Object, Void, Boolean> {
 
-			// TODO: register the new account here.
+        private Usuario usuario;
+        private ColectorPrincipal colectorPrincipal;
+        private Persona persona;
+
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			colectorPrincipal = (ColectorPrincipal) params[0];
+            persona = (Persona) params[1];
+            usuario = (Usuario) params[2];
+			// Get ORM data access object and create the Colectorprincipal
+			// Register the new account here.
+            daoSession.runInTx(new Runnable() {
+                @Override
+                public void run() {
+                    usuarioDao.insert(usuario);
+                    persona.setUsuario(usuario);
+                    personaDao.insert(persona);
+                    colectorPrincipal.setPersona(persona);
+                    colectorPrincipalDao.insert(colectorPrincipal);
+                }
+            });
+			Sesion.iniciarSesion(colectorPrincipal.getPersona().getUsuario());
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
+			mRegisterTask = null;
 			showProgress(false);
 
 			if (success) {
+				SharedPreferences preferences = getSharedPreferences("plantae_prefs", 0);
+				SharedPreferences.Editor editor = preferences.edit();
+		        editor.putLong("idUsuario", usuario.getId());
+		        editor.commit();
+				
+				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("colectorPrincipal", colectorPrincipal.getId());
+				startActivity(intent);
 				finish();
 			}
 		}
 
 		@Override
 		protected void onCancelled() {
-			mAuthTask = null;
+			mRegisterTask = null;
 			showProgress(false);
 		}
 	}

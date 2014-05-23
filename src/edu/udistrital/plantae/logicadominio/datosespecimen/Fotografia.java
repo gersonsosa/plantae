@@ -7,9 +7,10 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Fotografia {
 
-	private String rutaArchivo;
-	private String contexto;
-	private int fotografiaID;
+    private Long id;
+    private String rutaArchivo;
+    private String contexto;
+    private Long especimenID;
 
 
 
@@ -21,40 +22,40 @@ public class Fotografia {
 
 	}
 
-	public String getrutaArchivo(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRutaArchivo() {
 		return rutaArchivo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setrutaArchivo(String newVal){
-		rutaArchivo = newVal;
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
 	}
 
-	public String getcontexto(){
+    public String getContexto() {
 		return contexto;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcontexto(String newVal){
-		contexto = newVal;
-	}
+    public void setContexto(String contexto) {
+        this.contexto = contexto;
+    }
 
-	public int getfotografiaID(){
-		return fotografiaID;
-	}
+    public Long getEspecimenID() {
+        return especimenID;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setfotografiaID(int newVal){
-		fotografiaID = newVal;
+    public void setEspecimenID(Long especimenID) {
+        this.especimenID = especimenID;
 	}
 
 }

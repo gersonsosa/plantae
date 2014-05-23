@@ -1,5 +1,10 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.TalloDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -7,20 +12,35 @@ package edu.udistrital.plantae.logicadominio.datosespecimen;
  */
 public class Tallo {
 
-	private String alturaDelTallo;
-	private ColorEspecimen colorDelTallo;
-	private boolean desnudoCubierto;
-	private String diametroDelTallo;
-	private String disposicionDeLasEspinas;
-	private boolean entrenudosConspicuos;
-	private boolean espinas;
-	private String formaDelTallo;
-	private String longitudEntrenudos;
-	private String naturalezaDelTallo;
-	private String descripcion;
-	private int talloID;
+    private Long id;
+    private String alturaDelTallo;
+    private ColorEspecimen colorDelTallo;
+    private boolean desnudoCubierto;
+    private String diametroDelTallo;
+    private String disposicionDeLasEspinas;
+    private boolean entrenudosConspicuos;
+    private boolean espinas;
+    private String formaDelTallo;
+    private String longitudEntrenudos;
+    private String naturalezaDelTallo;
+    private String descripcion;
+    private Long colorDelTalloID;
+
+    /** Used to resolve relations */
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    private transient TalloDao myDao;
+
+    private Long colorDelTallo__resolvedKey;
 
 
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getTalloDao() : null;
+    }
 
 	public void finalize() throws Throwable {
 
@@ -30,148 +50,133 @@ public class Tallo {
 
 	}
 
-	public String getalturaDelTallo(){
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAlturaDelTallo() {
 		return alturaDelTallo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setalturaDelTallo(String newVal){
-		alturaDelTallo = newVal;
+    public void setAlturaDelTallo(String alturaDelTallo) {
+        this.alturaDelTallo = alturaDelTallo;
 	}
 
-	public ColorEspecimen getcolorDelTallo(){
-		return colorDelTallo;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorDelTallo(ColorEspecimen newVal){
-		colorDelTallo = newVal;
-	}
-
-	public String getdescripcion(){
-		return descripcion;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
-	}
-
-	public boolean isdesnudoCubierto(){
-		return desnudoCubierto;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdesnudoCubierto(boolean newVal){
-		desnudoCubierto = newVal;
-	}
-
-	public String getdiametroDelTallo(){
+    public String getDiametroDelTallo() {
 		return diametroDelTallo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdiametroDelTallo(String newVal){
-		diametroDelTallo = newVal;
+    public void setDiametroDelTallo(String diametroDelTallo) {
+        this.diametroDelTallo = diametroDelTallo;
 	}
 
-	public String getdisposicionDeLasEspinas(){
+    public String getDisposicionDeLasEspinas() {
 		return disposicionDeLasEspinas;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdisposicionDeLasEspinas(String newVal){
-		disposicionDeLasEspinas = newVal;
+    public void setDisposicionDeLasEspinas(String disposicionDeLasEspinas) {
+        this.disposicionDeLasEspinas = disposicionDeLasEspinas;
 	}
 
-	public boolean isentrenudosConspicuos(){
-		return entrenudosConspicuos;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setentrenudosConspicuos(boolean newVal){
-		entrenudosConspicuos = newVal;
-	}
-
-	public boolean isespinas(){
-		return espinas;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setespinas(boolean newVal){
-		espinas = newVal;
-	}
-
-	public String getformaDelTallo(){
+    public String getFormaDelTallo() {
 		return formaDelTallo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setformaDelTallo(String newVal){
-		formaDelTallo = newVal;
+    public void setFormaDelTallo(String formaDelTallo) {
+        this.formaDelTallo = formaDelTallo;
 	}
 
-	public String getlongitudEntrenudos(){
+    public String getLongitudEntrenudos() {
 		return longitudEntrenudos;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setlongitudEntrenudos(String newVal){
-		longitudEntrenudos = newVal;
+    public void setLongitudEntrenudos(String longitudEntrenudos) {
+        this.longitudEntrenudos = longitudEntrenudos;
 	}
 
-	public String getnaturalezaDelTallo(){
+    public String getNaturalezaDelTallo() {
 		return naturalezaDelTallo;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setnaturalezaDelTallo(String newVal){
-		naturalezaDelTallo = newVal;
+    public void setNaturalezaDelTallo(String naturalezaDelTallo) {
+        this.naturalezaDelTallo = naturalezaDelTallo;
 	}
 
-	public int gettalloID(){
-		return talloID;
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void settalloID(int newVal){
-		talloID = newVal;
-	}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean getDesnudoCubierto() {
+        return desnudoCubierto;
+    }
+
+    public void setDesnudoCubierto(boolean desnudoCubierto) {
+        this.desnudoCubierto = desnudoCubierto;
+    }
+
+    public boolean getEntrenudosConspicuos() {
+        return entrenudosConspicuos;
+    }
+
+    public void setEntrenudosConspicuos(boolean entrenudosConspicuos) {
+        this.entrenudosConspicuos = entrenudosConspicuos;
+    }
+
+    public boolean getEspinas() {
+        return espinas;
+    }
+
+    public void setEspinas(boolean espinas) {
+        this.espinas = espinas;
+    }
+
+    public Long getColorDelTalloID() {
+        return colorDelTalloID;
+    }
+
+    public void setColorDelTalloID(Long colorDelTalloID) {
+        this.colorDelTalloID = colorDelTalloID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelTallo() {
+        Long __key = this.colorDelTalloID;
+        if (colorDelTallo__resolvedKey == null || !colorDelTallo__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelTalloNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelTallo = colorDelTalloNew;
+            	colorDelTallo__resolvedKey = __key;
+            }
+        }
+        return colorDelTallo;
+    }
+
+    /**
+     *
+     * @param colorDelTallo
+     */
+    public void setColorDelTallo(ColorEspecimen colorDelTallo) {
+        synchronized (this) {
+            this.colorDelTallo = colorDelTallo;
+            colorDelTalloID = colorDelTallo == null ? null : colorDelTallo.getId();
+            colorDelTallo__resolvedKey = colorDelTalloID;
+        }
+    }
 
 }

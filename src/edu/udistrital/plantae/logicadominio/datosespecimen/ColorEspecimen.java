@@ -1,5 +1,9 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
+import edu.udistrital.plantae.persistencia.ColorMunsellDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
 import android.graphics.Color;
 
 /**
@@ -9,13 +13,22 @@ import android.graphics.Color;
  */
 public class ColorEspecimen {
 
-	private int colorEspecimenID;
+	private Long id;
 	private String nombre;
 	private String descripcion;
 	private Color colorRGB;
 	private ColorMunsell colorMunsell;
+    private Long colorMunsellID;
+    private Long coloresID;
 
+    private Long colorMunsell__resolvedKey;
 
+	/* greendao specific properties */
+	/** Used to resolve relations */
+	private transient DaoSession daoSession;
+
+	/** Used for active entity operations. */
+	private transient ColectorPrincipalDao myDao;
 
 	public void finalize() throws Throwable {
 
@@ -25,64 +38,100 @@ public class ColorEspecimen {
 
 	}
 
-	public String getnombre(){
+    public Color getColorRGB(){
+        return colorRGB;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
 		return nombre;
 	}
 
-	public Color getcolorRGB(){
-		return colorRGB;
+    /**
+     *
+     * @param nombre
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param newVal
 	 */
-	public void setnombre(String newVal){
-		nombre = newVal;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorRGB(Color newVal){
+	public void setColorRGB(Color newVal){
 		colorRGB = newVal;
 	}
 
-	public String getdescripcion(){
+    public String getDescripcion() {
 		return descripcion;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setdescripcion(String newVal){
-		descripcion = newVal;
+    /**
+     *
+     * @param descripcion
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
 	}
 
-	public int getcolorID(){
-		return colorEspecimenID;
+    public Long getColorMunsellID() {
+        return colorMunsellID;
+    }
+
+    public void setColorMunsellID(Long colorMunsellID) {
+        this.colorMunsellID = colorMunsellID;
+    }
+
+    public Long getColoresID() {
+        return coloresID;
+    }
+
+    public void setColoresID(Long coloresID) {
+        this.coloresID = coloresID;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorMunsell getColorMunsell() {
+        Long __key = this.colorMunsellID;
+        if (colorMunsell__resolvedKey == null || !colorMunsell__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorMunsellDao targetDao = daoSession.getColorMunsellDao();
+            ColorMunsell colorMunsellNew = targetDao.load(__key);
+            synchronized (this) {
+                colorMunsell = colorMunsellNew;
+            	colorMunsell__resolvedKey = __key;
+            }
+        }
+        return colorMunsell;
 	}
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorID(int newVal){
-		colorEspecimenID = newVal;
-	}
-
-	public ColorMunsell getcolorMunsell(){
-		return colorMunsell;
-	}
-
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcolorMunsell(ColorMunsell newVal){
-		colorMunsell = newVal;
+    public void setColorMunsell(ColorMunsell colorMunsell) {
+        synchronized (this) {
+            this.colorMunsell = colorMunsell;
+            colorMunsellID = colorMunsell == null ? null : colorMunsell.getId();
+            colorMunsell__resolvedKey = colorMunsellID;
+        }
+    }
+	
+	/** called by internal mechanisms, do not call yourself. */
+	public void __setDaoSession(DaoSession daoSession) {
+		// TODO Auto-generated method stub
+		this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getColectorPrincipalDao() : null;
 	}
 
 }

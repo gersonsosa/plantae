@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="promtp_travel_name">Travel Name</string>
+    <string name="promtp_travel_description">Description</string>
+    <string name="prompt_agregar_colector_secundario">Add</string>
+    <string name="titulo_colectores_secundarios">Sencondary Colectors</string>
+    <string name="create_project">Create project</string>
+    <string name="select_project">Select a project</string>
+    <string name="default_project_name">Default project</string>
+    <string name="add_project">Add New Project</string>
+</resources>
