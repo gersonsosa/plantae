@@ -1,5 +1,11 @@
 package edu.udistrital.plantae.logicadominio.ubicacion;
 
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.RegionDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
@@ -9,8 +15,9 @@ public abstract class Region {
 
     private Long id;
     private String nombre;
-    private String nombreCompleto;
     private Region regionPadre;
+    private String nombreCompleto;
+    private long usuarioId;
 
 	public Region(){
 	}
@@ -26,11 +33,29 @@ public abstract class Region {
         this.regionPadre = regionPadre;
     }
 
+    /** Used to resolve relations */
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    private transient RegionDao myDao;
+
+    private Usuario usuario;
+    private Long usuario__resolvedKey;
+
+
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getRegionDao() : null;
+    }
+
     /**
      *
      * @param nombre
      */
     public Region(String nombre){
+        this.nombre = nombre;
     }
 
     public Long getId() {
@@ -65,4 +90,44 @@ public abstract class Region {
         this.nombreCompleto = nombreCompleto;
     }
 
+    public long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Usuario getUsuario() {
+        long __key = this.usuarioId;
+        if (usuario__resolvedKey == null || !usuario__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UsuarioDao targetDao = daoSession.getUsuarioDao();
+            Usuario usuarioNew = targetDao.load(__key);
+            synchronized (this) {
+                usuario = usuarioNew;
+                usuario__resolvedKey = __key;
+            }
+        }
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new DaoException("To-one property 'usuarioId' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.usuario = usuario;
+            usuarioId = usuario.getId();
+            usuario__resolvedKey = usuarioId;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

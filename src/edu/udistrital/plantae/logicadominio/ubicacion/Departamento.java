@@ -24,7 +24,7 @@ public class Departamento extends Region {
 	 * @param nombre
 	 */
 	public Departamento(String nombre){
-
+        super(nombre);
 	}
 
 	public List<Municipio> getMunicipios(){

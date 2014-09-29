@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
 import edu.udistrital.plantae.persistencia.DaoSession;
@@ -10,16 +12,13 @@ import edu.udistrital.plantae.persistencia.InflorescenciaDao;
  * @version 1.0
  * @created 26-Jun-2013 12:09:15 AM
  */
-public class Inflorescencia {
+public class Inflorescencia implements Parcelable {
 
     private Long id;
     private ColorEspecimen colorDeLaInflorescenciaEnFlor;
     private ColorEspecimen colorDeLaInflorescenciaEnFruto;
-    private boolean inflorescenciaSolitaria;
     private String naturalezaDeLasBracteasPedunculares;
     private String naturalezaDelProfilo;
-    private int numeroDeLasBracteasPedunculares;
-    private int numeroDeRaquilas;
     private String posicionDeLasBracteasPedunculares;
     private String posicionDeLasInflorescencias;
     private String raquilas;
@@ -30,7 +29,9 @@ public class Inflorescencia {
     private String tamañoDelRaquis;
     private String tamañoDeRaquilas;
     private String descripcion;
-
+    private Boolean inflorescenciaSolitaria;
+    private Integer numeroDeLasBracteasPedunculares;
+    private Integer numeroDeRaquilas;
     private Long colorDeLaInflorescenciaEnFlorID;
     private Long colorDeLaInflorescenciaEnFrutoID;
 
@@ -166,27 +167,27 @@ public class Inflorescencia {
         this.descripcion = descripcion;
     }
 
-    public boolean getInflorescenciaSolitaria() {
+    public Boolean getInflorescenciaSolitaria() {
         return inflorescenciaSolitaria;
     }
 
-    public void setInflorescenciaSolitaria(boolean inflorescenciaSolitaria) {
+    public void setInflorescenciaSolitaria(Boolean inflorescenciaSolitaria) {
         this.inflorescenciaSolitaria = inflorescenciaSolitaria;
     }
 
-    public int getNumeroDeLasBracteasPedunculares() {
+    public Integer getNumeroDeLasBracteasPedunculares() {
         return numeroDeLasBracteasPedunculares;
     }
 
-    public void setNumeroDeLasBracteasPedunculares(int numeroDeLasBracteasPedunculares) {
+    public void setNumeroDeLasBracteasPedunculares(Integer numeroDeLasBracteasPedunculares) {
         this.numeroDeLasBracteasPedunculares = numeroDeLasBracteasPedunculares;
     }
 
-    public int getNumeroDeRaquilas() {
+    public Integer getNumeroDeRaquilas() {
         return numeroDeRaquilas;
     }
 
-    public void setNumeroDeRaquilas(int numeroDeRaquilas) {
+    public void setNumeroDeRaquilas(Integer numeroDeRaquilas) {
         this.numeroDeRaquilas = numeroDeRaquilas;
     }
 
@@ -256,4 +257,69 @@ public class Inflorescencia {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeParcelable(this.colorDeLaInflorescenciaEnFlor, 0);
+        dest.writeParcelable(this.colorDeLaInflorescenciaEnFruto, 0);
+        dest.writeByte(inflorescenciaSolitaria ? (byte) 1 : (byte) 0);
+        dest.writeString(this.naturalezaDeLasBracteasPedunculares);
+        dest.writeString(this.naturalezaDelProfilo);
+        dest.writeInt(this.numeroDeLasBracteasPedunculares);
+        dest.writeInt(this.numeroDeRaquilas);
+        dest.writeString(this.posicionDeLasBracteasPedunculares);
+        dest.writeString(this.posicionDeLasInflorescencias);
+        dest.writeString(this.raquilas);
+        dest.writeString(this.raquis);
+        dest.writeString(this.tamañoDeLasBracteasPedunculares);
+        dest.writeString(this.tamañoDelPedunculo);
+        dest.writeString(this.tamañoDelProfilo);
+        dest.writeString(this.tamañoDelRaquis);
+        dest.writeString(this.tamañoDeRaquilas);
+        dest.writeString(this.descripcion);
+        dest.writeValue(this.colorDeLaInflorescenciaEnFlorID);
+        dest.writeValue(this.colorDeLaInflorescenciaEnFrutoID);
+        dest.writeValue(this.colorDeLaInflorescenciaEnFlor__resolvedKey);
+        dest.writeValue(this.colorDeLaInflorescenciaEnFruto__resolvedKey);
+    }
+
+    private Inflorescencia(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLaInflorescenciaEnFlor = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.colorDeLaInflorescenciaEnFruto = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.inflorescenciaSolitaria = in.readByte() != 0;
+        this.naturalezaDeLasBracteasPedunculares = in.readString();
+        this.naturalezaDelProfilo = in.readString();
+        this.numeroDeLasBracteasPedunculares = in.readInt();
+        this.numeroDeRaquilas = in.readInt();
+        this.posicionDeLasBracteasPedunculares = in.readString();
+        this.posicionDeLasInflorescencias = in.readString();
+        this.raquilas = in.readString();
+        this.raquis = in.readString();
+        this.tamañoDeLasBracteasPedunculares = in.readString();
+        this.tamañoDelPedunculo = in.readString();
+        this.tamañoDelProfilo = in.readString();
+        this.tamañoDelRaquis = in.readString();
+        this.tamañoDeRaquilas = in.readString();
+        this.descripcion = in.readString();
+        this.colorDeLaInflorescenciaEnFlorID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLaInflorescenciaEnFrutoID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLaInflorescenciaEnFlor__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLaInflorescenciaEnFruto__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Inflorescencia> CREATOR = new Parcelable.Creator<Inflorescencia>() {
+        public Inflorescencia createFromParcel(Parcel source) {
+            return new Inflorescencia(source);
+        }
+
+        public Inflorescencia[] newArray(int size) {
+            return new Inflorescencia[size];
+        }
+    };
 }

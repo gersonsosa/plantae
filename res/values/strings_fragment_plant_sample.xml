@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="plant_sample_title">Plant Sample</string>
+    <string name="prompt_plant_sample_description">Sample Description</string>
+    <string name="add_plant_sample_action">Add Sample</string>
+</resources>

@@ -24,7 +24,7 @@ public class Pais extends Region {
 	 * @param nombre
 	 */
 	public Pais(String nombre){
-
+        super(nombre);
 	}
 
 	public List<Departamento> getDepartamentos(){

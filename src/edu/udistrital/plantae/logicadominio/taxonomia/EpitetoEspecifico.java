@@ -20,7 +20,7 @@ public class EpitetoEspecifico extends Taxon {
 	 * @param nombre
 	 */
 	public EpitetoEspecifico(String nombre){
-
+        super(nombre);
 	}
 
 }

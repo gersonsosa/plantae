@@ -9,6 +9,7 @@ import de.greenrobot.dao.internal.DaoConfig;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorMunsell;
 
@@ -31,13 +32,14 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Nombre = new Property(1, String.class, "nombre", false, "NOMBRE");
         public final static Property Descripcion = new Property(2, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property ColorMunsellID = new Property(3, Long.class, "colorMunsellID", false, "COLOR_MUNSELL_ID");
-        public final static Property ColoresID = new Property(4, Long.class, "coloresID", false, "COLORES_ID");
+        public final static Property ColorRGB = new Property(3, Integer.class, "colorRGB", false, "COLOR_RGB");
+        public final static Property ColorMunsellID = new Property(4, Long.class, "colorMunsellID", false, "COLOR_MUNSELL_ID");
+        public final static Property UsuarioID = new Property(5, Long.class, "usuarioID", false, "USUARIO_ID");
     };
 
     private DaoSession daoSession;
 
-    private Query<ColorEspecimen> colores_DataQuery;
+    private Query<ColorEspecimen> usuario_ColoresEspecimenQuery;
 
     public ColorEspecimenDao(DaoConfig config) {
         super(config);
@@ -55,15 +57,16 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NOMBRE' TEXT," + // 1: nombre
                 "'DESCRIPCION' TEXT," + // 2: descripcion
-                "'COLOR_MUNSELL_ID' INTEGER," + // 3: colorMunsellID
-                "'COLORES_ID' INTEGER);"); // 4: coloresID
+                "'COLOR_RGB' INTEGER," + // 3: colorRGB
+                "'COLOR_MUNSELL_ID' INTEGER," + // 4: colorMunsellID
+                "'USUARIO_ID' INTEGER);"); // 5: usuarioID
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_COLOR_ESPECIMEN_NOMBRE ON COLOR_ESPECIMEN" +
                 " (NOMBRE);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_COLOR_ESPECIMEN_COLOR_MUNSELL_ID ON COLOR_ESPECIMEN" +
                 " (COLOR_MUNSELL_ID);");
-        db.execSQL("CREATE INDEX " + constraint + "IDX_COLOR_ESPECIMEN_COLORES_ID ON COLOR_ESPECIMEN" +
-                " (COLORES_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_COLOR_ESPECIMEN_USUARIO_ID ON COLOR_ESPECIMEN" +
+                " (USUARIO_ID);");
     }
 
     /** Drops the underlying database table. */
@@ -92,14 +95,19 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
             stmt.bindString(3, descripcion);
         }
  
+        Integer colorRGB = entity.getColorRGB();
+        if (colorRGB != null) {
+            stmt.bindLong(4, colorRGB);
+        }
+
         Long colorMunsellID = entity.getColorMunsellID();
         if (colorMunsellID != null) {
-            stmt.bindLong(4, colorMunsellID);
+            stmt.bindLong(5, colorMunsellID);
         }
  
-        Long coloresID = entity.getColoresID();
-        if (coloresID != null) {
-            stmt.bindLong(5, coloresID);
+        Long usuarioID = entity.getUsuarioID();
+        if (usuarioID != null) {
+            stmt.bindLong(6, usuarioID);
         }
     }
 
@@ -129,8 +137,9 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setNombre(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescripcion(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setColorMunsellID(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setColoresID(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setColorRGB(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setColorMunsellID(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setUsuarioID(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
      }
     
     /** @inheritdoc */
@@ -156,17 +165,17 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "data" to-many relationship of Colores. */
-    public List<ColorEspecimen> _queryColores_Data(Long coloresID) {
+    /** Internal query to resolve the "coloresEspecimen" to-many relationship of Usuario. */
+    public List<ColorEspecimen> _queryUsuario_ColoresEspecimen(Long usuarioID) {
         synchronized (this) {
-            if (colores_DataQuery == null) {
+            if (usuario_ColoresEspecimenQuery == null) {
                 QueryBuilder<ColorEspecimen> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.ColoresID.eq(null));
-                colores_DataQuery = queryBuilder.build();
+                queryBuilder.where(Properties.UsuarioID.eq(null));
+                usuario_ColoresEspecimenQuery = queryBuilder.build();
             }
         }
-        Query<ColorEspecimen> query = colores_DataQuery.forCurrentThread();
-        query.setParameter(0, coloresID);
+        Query<ColorEspecimen> query = usuario_ColoresEspecimenQuery.forCurrentThread();
+        query.setParameter(0, usuarioID);
         return query.list();
     }
 
@@ -178,8 +187,11 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getColorMunsellDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getUsuarioDao().getAllColumns());
             builder.append(" FROM COLOR_ESPECIMEN T");
             builder.append(" LEFT JOIN COLOR_MUNSELL T0 ON T.'COLOR_MUNSELL_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN USUARIO T1 ON T.'USUARIO_ID'=T1.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -192,6 +204,10 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
 
         ColorMunsell colorMunsell = loadCurrentOther(daoSession.getColorMunsellDao(), cursor, offset);
         entity.setColorMunsell(colorMunsell);
+        offset += daoSession.getColorMunsellDao().getAllColumns().length;
+
+        Usuario usuario = loadCurrentOther(daoSession.getUsuarioDao(), cursor, offset);
+        entity.setUsuario(usuario);
 
         return entity;    
     }

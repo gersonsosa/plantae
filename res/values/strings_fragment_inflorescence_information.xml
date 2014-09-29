@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="inflorescence_information_title">Inflorescence information</string>
+    <string name="prompt_inflorescence_alone">Alone?</string>
+    <string name="prompt_prophyll_nature">Prophyll Nature</string>
+    <string name="prompt_petiole_size">Petiole Size</string>
+    <string name="prompt_bracts_number">Bracts Number</string>
+    <string name="prompt_bracts_position">Bracts Position</string>
+    <string name="prompt_bracts_size">Bracts Size</string>
+    <string name="prompt_bracts_nature">Bracts Nature</string>
+    <string name="prompt_peduncle_size">Peduncle Size</string>
+    <string name="prompt_rachis_size">Rachis Size</string>
+    <string name="prompt_rachillae_number">Rachillae Number</string>
+    <string name="prompt_rachillae_size">Rachillae Size</string>
+
+    <string name="inflorescence_color_title">Inflorescence Color</string>
+    <string name="prompt_in_flower_color">In flower color</string>
+    <string name="prompt_in_fruit_color">In fruit color</string>
+    <string name="prompt_inflorescence_description">Inflorescence Description</string>
+</resources>

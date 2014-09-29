@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="no_travels_found">No travels were found</string>
-    <string name="add_new_travel">Add a new travel</string>
+    <string name="no_specimens">No specimens were found</string>
+    <string name="add_new_specimen">Add a new specimen</string>
     <string name="delete_specimen_confirmation_message">Delete Specimen? This will delete the specimen and its contents.</string>
-
+    <string name="action_rebuild_journey">Rebuild Journey</string>
+    <string name="action_add_detailed">Add new detailed</string>
 </resources>

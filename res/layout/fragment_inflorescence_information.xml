@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/inflorescence_information_title"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inflorescence_information_title"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/inflorescence_position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflorescence_information_title" />
+
+            <CheckBox
+                android:id="@+id/inflorescence_alone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflorescence_position"
+                android:text="@string/prompt_inflorescence_alone"/>
+
+            <EditText
+                android:id="@+id/prophyll_nature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflorescence_alone"
+                android:hint="@string/prompt_prophyll_nature"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/petiole_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/prophyll_nature"
+                android:hint="@string/prompt_petiole_size"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/peduncular_bracts_title"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inflorescence_information_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/bracts_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/peduncular_bracts_title"
+                android:hint="@string/prompt_bracts_number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/bracts_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bracts_number"
+                android:hint="@string/prompt_bracts_position"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/bracts_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bracts_position"
+                android:hint="@string/prompt_bracts_size"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/bracts_nature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bracts_size"
+                android:hint="@string/prompt_bracts_nature"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+
+            <EditText
+                android:id="@+id/peduncle_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_peduncle_size"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/rachis_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/peduncle_size"
+                android:hint="@string/prompt_rachis_size"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/rachillae_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rachis_size"
+                android:hint="@string/prompt_rachillae_number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/rachillae_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rachillae_number"
+                android:hint="@string/prompt_rachillae_size"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/inflorescence_color_title"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/inflorescence_color_title"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/in_flower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/inflorescence_color_title">
+                <EditText
+                    android:id="@+id/in_flower_color_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_in_flower_color"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+                <SurfaceView
+                    android:id="@+id/in_flower_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/in_fruit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/in_flower">
+                <EditText
+                    android:id="@+id/in_fruit_color_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_in_fruit_color"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+                <SurfaceView
+                    android:id="@+id/in_fruit_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <EditText
+                android:id="@+id/inflorescence_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/prompt_inflorescence_description"
+                android:inputType="text"
+                android:minLines="3"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

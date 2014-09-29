@@ -14,13 +14,13 @@ public class Localidad {
 
     private Long id;
     private String nombre;
-    private double latitud;
-    private double longitud;
     private String datum;
-    private double altitud;
     private String descripcion;
     private String marcaDispositivo;
-    private Region region;
+    private Double latitud;
+    private Double longitud;
+    private Double altitudMinima;
+    private Double altitudMaxima;
     private long regionID;
 
 	/** Used to resolve relations */
@@ -29,6 +29,7 @@ public class Localidad {
 	/** Used for active entity operations. */
 	private transient LocalidadDao myDao;
 
+    private Region region;
     private Long region__resolvedKey;
 
     /** called by internal mechanisms, do not call yourself. */
@@ -49,6 +50,7 @@ public class Localidad {
 	 * @param nombre    nombre
 	 */
 	public Localidad(String nombre){
+        this.nombre = nombre;
 	}
 
     public Long getId() {
@@ -111,40 +113,36 @@ public class Localidad {
         this.marcaDispositivo = marcaDispositivo;
     }
 
-    public double getLatitud() {
+    public Double getLatitud() {
         return latitud;
     }
 
-    /**
-     *
-     * @param latitud
-     */
-    public void setLatitud(double latitud) {
+    public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
 
-    public double getLongitud(){
+    public Double getLongitud() {
         return longitud;
     }
 
-    /**
-     *
-     * @param longitud
-     */
-    public void setLongitud(double longitud){
+    public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
 
-    public double getAltitud(){
-        return altitud;
+    public Double getAltitudMinima() {
+        return altitudMinima;
     }
 
-    /**
-     *
-     * @param altitud
-     */
-    public void setAltitud(double altitud){
-        this.altitud = altitud;
+    public void setAltitudMinima(Double altitudMinima) {
+        this.altitudMinima = altitudMinima;
+    }
+
+    public Double getAltitudMaxima() {
+        return altitudMaxima;
+    }
+
+    public void setAltitudMaxima(Double altitudMaxima) {
+        this.altitudMaxima = altitudMaxima;
     }
 
     public long getRegionID() {

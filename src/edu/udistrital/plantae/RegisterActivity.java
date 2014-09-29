@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
@@ -25,8 +26,6 @@ import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 import edu.udistrital.plantae.persistencia.*;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -51,6 +50,7 @@ public class RegisterActivity extends Activity {
 	private String mFullName;
 	private String mInstitution;
 	private String mFieldNumber;
+    private int mCollectorDataType;
 
 	// UI references.
 	private EditText mEmailView;
@@ -58,6 +58,7 @@ public class RegisterActivity extends Activity {
 	private EditText mFullNameView;
 	private EditText mFieldNumberView;
 	private EditText mInstitutionView;
+    private CheckBox mCollectorDataTypeView;
 	private View mRegisterFormView;
 	private View mRegisterStatusView;
 	private TextView mRegisterStatusMessageView;
@@ -98,6 +99,8 @@ public class RegisterActivity extends Activity {
 		
 		mInstitutionView = (EditText) findViewById(R.id.institution);
 
+        mCollectorDataTypeView = (CheckBox) findViewById(R.id.collector_data_type);
+
 		mRegisterFormView = findViewById(R.id.register_form);
 		mRegisterStatusView = findViewById(R.id.register_status);
 		mRegisterStatusMessageView = (TextView) findViewById(R.id.register_status_message);
@@ -111,9 +114,9 @@ public class RegisterActivity extends Activity {
 				});
 
         daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();
-		colectorPrincipalDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorPrincipalDao();
-		personaDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getPersonaDao();
-		usuarioDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getUsuarioDao();
+		colectorPrincipalDao = daoSession.getColectorPrincipalDao();
+		personaDao = daoSession.getPersonaDao();
+		usuarioDao = daoSession.getUsuarioDao();
 	}
 
 	/**
@@ -177,6 +180,7 @@ public class RegisterActivity extends Activity {
 		mFieldNumber = mFieldNumberView.getText().toString();
 		mInstitution = mInstitutionView.getText().toString();
 		mFullName = mFullNameView.getText().toString();
+        mCollectorDataType = mCollectorDataTypeView.isChecked() ? 1 : 0;
 		
 		if (TextUtils.isEmpty(mEmail)){
 			mEmailView.setError(getString(R.string.error_register_field_required));
@@ -203,72 +207,55 @@ public class RegisterActivity extends Activity {
 			focusView = mFullNameView;
 			//cancel = true;
 		}
-		
-		HashMap<String, String> datosRegistro = new HashMap<String, String>();
-		datosRegistro.put("email", mEmail);
-		datosRegistro.put("password", mPassword);
-		datosRegistro.put("institution", mInstitution);
-		datosRegistro.put("fullname", mFullName);
-		ColectorPrincipal colectorPrincipal = new ColectorPrincipal();
-		Persona persona = new Persona();
-		String[] names=TextUtils.split(mFullName, " ");
-		if (names.length == 2){
-			persona.setNombres(names[0]);
-			persona.setApellidos(names[1]);
-		} else {
-			persona.setApellidos(datosRegistro.get("fullname"));
-		}
-		persona.setInstitucion(mInstitution);
-		HashMap<String, String> errores = Usuario.validarDatosRegistro(datosRegistro, usuarioDao);
-		
-		if (!errores.isEmpty()){
-			Iterator<Entry<String, String>> iterator = ((Map<String, String>)errores).entrySet().iterator();
-			while (iterator.hasNext()) {
-				Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
-				
-				if (entry.getKey().equals("password")){
-					if (entry.getValue().equals("short")){
-						mPasswordView.setError(getString(R.string.error_register_short_password));
-					}else if (entry.getValue().equals("simple")){
-						mPasswordView.setError(getString(R.string.error_register_simple_password));
-					}
-					focusView = mPasswordView;
-				}
-				if (entry.getKey().equals("email")){
-					if (entry.getValue().equals("empty")){
-						mEmailView.setError(getString(R.string.error_field_required));
-					}else if (entry.getValue().equals("taken")){
-						mEmailView.setError(getString(R.string.error_register_being_used_email));
-					}else {
-						mEmailView.setError(getString(R.string.error_invalid_email));
-					}
-					focusView = mEmailView;
-				}
-				if (entry.getKey().equals("fullname")){
-					mFullNameView.setError(getString(R.string.error_register_incorrect_fullname));
-					focusView = mEmailView;
-				}
-				if (entry.getKey().equals("fieldnumber")){
-					mFullNameView.setError(getString(R.string.error_register_incorrect_fieldnumber));
-					focusView = mEmailView;
-				}
-				if (entry.getKey().equals("institution")){
-					mFullNameView.setError(getString(R.string.error_register_incorrect_institution));
-					focusView = mEmailView;
-				}
-			}
-			focusView.requestFocus();
-		} else {
-            Usuario usuario = Usuario.getUsuario(mEmail, mPassword);
-            colectorPrincipal.setNumeroColeccionActual(mFieldNumber);
-			mRegisterStatusMessageView.setText(R.string.register_progress);
-			showProgress(true);
-			mRegisterTask = new UserRegisterTask();
-			Object[] params = {colectorPrincipal, persona, usuario};
-			mRegisterTask.execute(params);
-		}
-
+        if (focusView != null) {
+            focusView.requestFocus();
+        }
+        mRegisterStatusMessageView.setText(R.string.register_progress);
+        showProgress(true);
+        mRegisterTask = new UserRegisterTask();
+        mRegisterTask.execute();
 	}
+
+    private void finishRegisterTask(HashMap<String, String> result){
+        View focusView = null;
+        if (!result.isEmpty()){
+            for (Entry<String, String> entry : result.entrySet()) {
+                if (entry.getKey().equals("password")) {
+                    if (entry.getValue().equals("short")) {
+                        mPasswordView.setError(getString(R.string.error_register_short_password));
+                    } else if (entry.getValue().equals("simple")) {
+                        mPasswordView.setError(getString(R.string.error_register_simple_password));
+                    }
+                    focusView = mPasswordView;
+                }
+                if (entry.getKey().equals("email")) {
+                    if (entry.getValue().equals("empty")) {
+                        mEmailView.setError(getString(R.string.error_field_required));
+                    } else if (entry.getValue().equals("taken")) {
+                        mEmailView.setError(getString(R.string.error_register_being_used_email));
+                    } else {
+                        mEmailView.setError(getString(R.string.error_invalid_email));
+                    }
+                    focusView = mEmailView;
+                }
+                if (entry.getKey().equals("fullname")) {
+                    mFullNameView.setError(getString(R.string.error_register_incorrect_fullname));
+                    focusView = mFullNameView;
+                }
+                if (entry.getKey().equals("fieldnumber")) {
+                    mFieldNumberView.setError(getString(R.string.error_register_incorrect_fieldnumber));
+                    focusView = mFieldNumberView;
+                }
+                if (entry.getKey().equals("institution")) {
+                    mInstitutionView.setError(getString(R.string.error_register_incorrect_institution));
+                    focusView = mInstitutionView;
+                }
+            }
+            if (focusView != null) {
+                focusView.requestFocus();
+            }
+        }
+    }
 
 	/**
 	 * Shows the progress UI and hides the register form.
@@ -315,30 +302,51 @@ public class RegisterActivity extends Activity {
 	 * Represents an asynchronous register task used to authenticate
 	 * the user.
 	 */
-	public class UserRegisterTask extends AsyncTask<Object, Void, Boolean> {
+	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-        private Usuario usuario;
         private ColectorPrincipal colectorPrincipal;
         private Persona persona;
+        private HashMap<String, String> errores;
+        private Usuario usuario;
 
-		@Override
-		protected Boolean doInBackground(Object... params) {
-			colectorPrincipal = (ColectorPrincipal) params[0];
-            persona = (Persona) params[1];
-            usuario = (Usuario) params[2];
-			// Get ORM data access object and create the Colectorprincipal
-			// Register the new account here.
-            daoSession.runInTx(new Runnable() {
-                @Override
-                public void run() {
-                    usuarioDao.insert(usuario);
-                    persona.setUsuario(usuario);
-                    personaDao.insert(persona);
-                    colectorPrincipal.setPersona(persona);
-                    colectorPrincipalDao.insert(colectorPrincipal);
-                }
-            });
-			Sesion.iniciarSesion(colectorPrincipal.getPersona().getUsuario());
+        @Override
+		protected Boolean doInBackground(Void...params) {
+            HashMap<String, String> datosRegistro = new HashMap<String, String>();
+            datosRegistro.put("email", mEmail);
+            datosRegistro.put("password", mPassword);
+            datosRegistro.put("institution", mInstitution);
+            datosRegistro.put("fullname", mFullName);
+            colectorPrincipal = new ColectorPrincipal();
+            colectorPrincipal.setNumeroColeccionActual(mFieldNumber);
+            colectorPrincipal.setTipoCapturaDatos(mCollectorDataType);
+            persona = new Persona();
+            String[] names=TextUtils.split(mFullName, " ");
+            if (names.length == 2){
+                persona.setNombres(names[0]);
+                persona.setApellidos(names[1]);
+            } else {
+                persona.setApellidos(datosRegistro.get("fullname"));
+            }
+            persona.setInstitucion(mInstitution);
+            errores = Usuario.validarDatosRegistro(datosRegistro, usuarioDao);
+            if (errores.isEmpty()){
+                // Get ORM data access object and create the Colectorprincipal
+                // Register the new account here.
+                usuario = Usuario.getUsuario(mEmail, mPassword);
+                daoSession.runInTx(new Runnable() {
+                    @Override
+                    public void run() {
+                        usuarioDao.insert(usuario);
+                        persona.setUsuario(usuario);
+                        personaDao.insert(persona);
+                        colectorPrincipal.setPersona(persona);
+                        colectorPrincipalDao.insert(colectorPrincipal);
+                    }
+                });
+                Sesion.iniciarSesion(usuario);
+            }else{
+                return false;
+            }
 			return true;
 		}
 
@@ -357,7 +365,9 @@ public class RegisterActivity extends Activity {
                 intent.putExtra("colectorPrincipal", colectorPrincipal.getId());
 				startActivity(intent);
 				finish();
-			}
+			}else{
+                finishRegisterTask(errores);
+            }
 		}
 
 		@Override

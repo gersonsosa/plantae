@@ -24,7 +24,7 @@ public class Genero extends Taxon {
 	 * @param nombre
 	 */
 	public Genero(String nombre){
-
+        super(nombre);
 	}
 
 	public List<EpitetoEspecifico> getEspecies(){

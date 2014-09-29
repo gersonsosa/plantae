@@ -1,10 +1,14 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
+import android.text.TextUtils;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
 import edu.udistrital.plantae.persistencia.*;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Sosa G., Mateus A.
@@ -15,10 +19,10 @@ public class ColectorPrincipal extends Persona {
 
 	private Long id;
     private String numeroColeccionActual;
-    private int tipoCapturaDatos;
+    private Integer tipoCapturaDatos;
     private List<Viaje> viajes;
     private List<Proyecto> proyectos;
-    private List<Recoleccion> recolecciones;
+    private List<Especimen> especimenes;
     private long personaID;
 
 	private Persona persona;
@@ -56,7 +60,7 @@ public class ColectorPrincipal extends Persona {
 	}
 
     @Override
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
@@ -65,7 +69,7 @@ public class ColectorPrincipal extends Persona {
      * @param id
      */
     @Override
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -85,7 +89,7 @@ public class ColectorPrincipal extends Persona {
         this.numeroColeccionActual = numeroColeccionActual;
 	}
 
-	public int getTipoCapturaDatos(){
+    public Integer getTipoCapturaDatos() {
 		return tipoCapturaDatos;
 	}
 
@@ -146,6 +150,10 @@ public class ColectorPrincipal extends Persona {
         return proyectos;
     }
 
+    public synchronized void setProyectos(List<Proyecto> proyectos) {
+        this.proyectos = proyectos;
+    }
+
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<Viaje> getViajes() {
         if (viajes == null) {
@@ -163,21 +171,48 @@ public class ColectorPrincipal extends Persona {
         return viajes;
     }
 
+    public synchronized void setViajes(List<Viaje> viajes) {this.viajes = viajes;}
+
+    /**
+     * Genera un nuevo número de colección de acuerdo al numero de colección actual del Colector Principal
+     * @return Un nuevo número de colección
+     */
+    public String generarNumeroDeColeccion(){
+        String numeroDeColeccionActual = getNumeroColeccionActual();
+        String numeroDeColeccion;
+        if (TextUtils.isDigitsOnly(numeroDeColeccionActual)){
+            Integer numeroColeccionActualInteger = Integer.parseInt(numeroDeColeccionActual);
+            numeroDeColeccion = Integer.toString(numeroColeccionActualInteger+1);
+        }else{
+            Pattern pattern = Pattern.compile("[0-9]+");
+            Matcher matcher = pattern.matcher(numeroDeColeccionActual);
+            try {
+                numeroDeColeccion = matcher.group();
+            } catch (IllegalStateException e) {
+                numeroDeColeccion = numeroDeColeccionActual + "1";
+            }
+        }
+        return numeroDeColeccion;
+    }
+
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<Recoleccion> getRecolecciones() {
-        if (recolecciones == null) {
+    public List<Especimen> getEspecimenes() {
+        if (especimenes == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            RecoleccionDao targetDao = daoSession.getRecoleccionDao();
-            List<Recoleccion> recoleccionesNew = targetDao._queryColectorPrincipal_Recolecciones(id);
+            EspecimenDao targetDao = daoSession.getEspecimenDao();
+            List<Especimen> especimenesNew = targetDao._queryColectorPrincipal_Especimenes(id);
             synchronized (this) {
-                if(recolecciones == null) {
-                    recolecciones = recoleccionesNew;
+                if(especimenes == null) {
+                    especimenes = especimenesNew;
                 }
             }
         }
-        return recolecciones;
+        return especimenes;
     }
 
+    public synchronized void setEspecimenes(List<Especimen> especimenes) {
+        this.especimenes = especimenes;
+    }
 }

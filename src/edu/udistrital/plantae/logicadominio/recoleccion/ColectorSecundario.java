@@ -42,7 +42,7 @@ public class ColectorSecundario extends Persona {
 	}
 
     @Override
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
@@ -51,7 +51,7 @@ public class ColectorSecundario extends Persona {
      * @param id
      */
     @Override
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 

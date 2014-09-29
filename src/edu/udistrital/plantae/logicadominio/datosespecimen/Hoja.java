@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
 import edu.udistrital.plantae.persistencia.DaoSession;
@@ -10,7 +12,7 @@ import edu.udistrital.plantae.persistencia.HojaDao;
  * @version 1.0
  * @created 26-Jun-2013 12:09:15 AM
  */
-public class Hoja {
+public class Hoja implements Parcelable {
 
     private Long id;
     private String coberturaDelPeciolo;
@@ -227,4 +229,63 @@ public class Hoja {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.coberturaDelPeciolo);
+        dest.writeParcelable(this.colorDeLasHojas, 0);
+        dest.writeParcelable(this.colorDelPeciolo, 0);
+        dest.writeString(this.dispocicionDeLasPinnas);
+        dest.writeString(this.disposicionDeLasHojas);
+        dest.writeString(this.formaDelPeciolo);
+        dest.writeString(this.longuitudDelRaquis);
+        dest.writeString(this.naturalezaDeLaVaina);
+        dest.writeString(this.naturalezaDelLimbo);
+        dest.writeString(this.numeroDePinnas);
+        dest.writeString(this.numeroHojas);
+        dest.writeString(this.tamañoDeLasHojas);
+        dest.writeString(this.tamañoDelPeciolo);
+        dest.writeString(this.descripcion);
+        dest.writeValue(this.colorDeLasHojasID);
+        dest.writeValue(this.colorDelPecioloID);
+        dest.writeValue(this.colorDeLasHojas__resolvedKey);
+        dest.writeValue(this.colorDelPeciolo__resolvedKey);
+    }
+
+    private Hoja(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.coberturaDelPeciolo = in.readString();
+        this.colorDeLasHojas = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.colorDelPeciolo = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.dispocicionDeLasPinnas = in.readString();
+        this.disposicionDeLasHojas = in.readString();
+        this.formaDelPeciolo = in.readString();
+        this.longuitudDelRaquis = in.readString();
+        this.naturalezaDeLaVaina = in.readString();
+        this.naturalezaDelLimbo = in.readString();
+        this.numeroDePinnas = in.readString();
+        this.numeroHojas = in.readString();
+        this.tamañoDeLasHojas = in.readString();
+        this.tamañoDelPeciolo = in.readString();
+        this.descripcion = in.readString();
+        this.colorDeLasHojasID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelPecioloID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLasHojas__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelPeciolo__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Hoja> CREATOR = new Parcelable.Creator<Hoja>() {
+        public Hoja createFromParcel(Parcel source) {
+            return new Hoja(source);
+        }
+
+        public Hoja[] newArray(int size) {
+            return new Hoja[size];
+        }
+    };
 }

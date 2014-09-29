@@ -2,15 +2,16 @@ package edu.udistrital.plantae.logicadominio.autenticacion;
 
 import android.text.TextUtils;
 import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.logicadominio.listasparametros.Colores;
-import edu.udistrital.plantae.logicadominio.listasparametros.Habitats;
-import edu.udistrital.plantae.logicadominio.listasparametros.Habitos;
-import edu.udistrital.plantae.logicadominio.listasparametros.Usos;
+import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
+import edu.udistrital.plantae.logicadominio.taxonomia.Uso;
+import edu.udistrital.plantae.logicadominio.ubicacion.Region;
 import edu.udistrital.plantae.persistencia.*;
 import edu.udistrital.plantae.persistencia.UsuarioDao.Properties;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,28 +28,19 @@ public class Usuario {
     private Sesion sesion;
     private static Usuario usuario;
 
-    private Long coloresID;
-    private Long habitatsID;
-    private Long habitosID;
-    private Long usosID;
-
     /** Used to resolve relations */
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
     private transient UsuarioDao myDao;
 
-    private Colores colores;
-    private Long colores__resolvedKey;
+    private List<ColorEspecimen> coloresEspecimen;
+    private List<Fenologia> fenologias;
+    private List<Habito> habitos;
+    private List<Uso> usos;
+    private List<Taxon> taxones;
+    private List<Region> regiones;
 
-    private Habitats habitats;
-    private Long habitats__resolvedKey;
-
-    private Habitos habitos;
-    private Long habitos__resolvedKey;
-
-    private Usos usos;
-    private Long usos__resolvedKey;
 
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
@@ -62,8 +54,8 @@ public class Usuario {
 
 	/**
 	 * 
-	 * @param nombreUsuario
-	 * @param contraseña
+	 * @param nombreUsuario nombre de usuario
+	 * @param contraseña contraseña
 	 */
 	private Usuario(String nombreUsuario, String contraseña){
 		this.nombreUsuario=nombreUsuario;
@@ -74,10 +66,6 @@ public class Usuario {
 	public static Usuario getUsuario(String nombreUsuario, String contraseña) {
 		if (usuario == null){
 			usuario = new Usuario(nombreUsuario, contraseña);
-            usuario.setColores(null);
-            usuario.setHabitats(null);
-            usuario.setHabitos(null);
-            usuario.setUsos(null);
 		}
 		// TODO Hacer que hale una excepción si el usuario ya existe?
 		return usuario;
@@ -85,25 +73,22 @@ public class Usuario {
 
 	/**
 	 * 
-	 * @param datosRegistro
-	 * @param usuarioDao
+	 * @param datosRegistro Map con los datos que el usuario ingresó
+	 * @param usuarioDao Data access object de usuario
 	 */
 	public static HashMap<String, String> validarDatosRegistro(HashMap<String,String> datosRegistro, UsuarioDao usuarioDao){
-		// TODO validar datos de un nuevo usuario
+		// validar datos de un nuevo usuario
 		String email = datosRegistro.get("email");
 		String password = datosRegistro.get("password");
 		String institution = datosRegistro.get("institution");
 		String fullName = datosRegistro.get("fullname");
 		HashMap<String, String> errores = new HashMap<String, String>();
 		
-		List<Usuario> usuarios = usuarioDao.loadAll();
-		Iterator<Usuario> iterator = usuarios.iterator();
-		while (iterator.hasNext()) {
-			Usuario usuario = (Usuario) iterator.next();
-			if (usuario.getNombreUsuario().equals(email)){
-				errores.put("email", "taken");
-			}
-		}
+		// No cargar todos los usuarios sino hacer la consulta directamente en la tabla
+        Usuario usuarioExistente = usuarioDao.queryBuilder().where(Properties.NombreUsuario.eq(email)).unique();
+        if (usuarioExistente != null) {
+            errores.put("email", "taken");
+        }
 		
 		if (!email.matches("^[a-zA-Z0-9]+[@]{1}[a-zA-Z.]+$")){
 			errores.put("email", "invalid");
@@ -159,7 +144,7 @@ public class Usuario {
 			}
 
 			if (!cancel) {
-				// TODO Check username and password in database
+				// Check username and password in database
 				usuario = usuarioDao.queryBuilder().where(Properties.NombreUsuario.eq(nombreUsuario)).unique();
 				if (usuario != null && usuario.getContraseña().equals(contraseña)){
 					return usuario;
@@ -181,6 +166,22 @@ public class Usuario {
 	public static Integer[] getErroresCredenciales(){
 		return erroresCredenciales;
 	}
+
+    public Sesion getSesion() {
+        return sesion;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNombreUsuario() {
 		return nombreUsuario;
@@ -206,152 +207,136 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public Sesion getSesion() {
-        return sesion;
-    }
-
-    public Long getColoresID() {
-        return coloresID;
-    }
-
-    public void setColoresID(Long coloresID) {
-        this.coloresID = coloresID;
-    }
-
-    public Long getHabitatsID() {
-        return habitatsID;
-    }
-
-    public void setHabitatsID(Long habitatsID) {
-        this.habitatsID = habitatsID;
-    }
-
-    public Long getHabitosID() {
-        return habitosID;
-    }
-
-    public void setHabitosID(Long habitosID) {
-        this.habitosID = habitosID;
-    }
-
-    public Long getUsosID() {
-        return usosID;
-    }
-
-    public void setUsosID(Long usosID) {
-        this.usosID = usosID;
-    }
-
-    /** To-one relationship, resolved on first access. */
-    public Colores getColores() {
-        Long __key = this.coloresID;
-        if (colores__resolvedKey == null || !colores__resolvedKey.equals(__key)) {
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<ColorEspecimen> getColoresEspecimen() {
+        if (coloresEspecimen == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            ColoresDao targetDao = daoSession.getColoresDao();
-            Colores coloresNew = targetDao.load(__key);
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            List<ColorEspecimen> coloresEspecimenNew = targetDao._queryUsuario_ColoresEspecimen(id);
             synchronized (this) {
-                colores = coloresNew;
-            	colores__resolvedKey = __key;
+                if(coloresEspecimen == null) {
+                    coloresEspecimen = coloresEspecimenNew;
+                }
             }
         }
-        return colores;
+        return coloresEspecimen;
     }
 
-    public void setColores(Colores colores) {
-        synchronized (this) {
-            this.colores = colores;
-            coloresID = colores == null ? null : colores.getId();
-            colores__resolvedKey = coloresID;
-        }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetColoresEspecimen() {
+        coloresEspecimen = null;
     }
 
-    /** To-one relationship, resolved on first access. */
-    public Habitats getHabitats() {
-        Long __key = this.habitatsID;
-        if (habitats__resolvedKey == null || !habitats__resolvedKey.equals(__key)) {
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Fenologia> getFenologias() {
+        if (fenologias == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            HabitatsDao targetDao = daoSession.getHabitatsDao();
-            Habitats habitatsNew = targetDao.load(__key);
+            FenologiaDao targetDao = daoSession.getFenologiaDao();
+            List<Fenologia> fenologiasNew = targetDao._queryUsuario_Fenologias(id);
             synchronized (this) {
-                habitats = habitatsNew;
-            	habitats__resolvedKey = __key;
+                if(fenologias == null) {
+                    fenologias = fenologiasNew;
+                }
             }
         }
-        return habitats;
+        return fenologias;
     }
 
-    public void setHabitats(Habitats habitats) {
-        synchronized (this) {
-            this.habitats = habitats;
-            habitatsID = habitats == null ? null : habitats.getId();
-            habitats__resolvedKey = habitatsID;
-        }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetFenologias() {
+        fenologias = null;
     }
 
-    /** To-one relationship, resolved on first access. */
-    public Habitos getHabitos() {
-        Long __key = this.habitosID;
-        if (habitos__resolvedKey == null || !habitos__resolvedKey.equals(__key)) {
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Habito> getHabitos() {
+        if (habitos == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            HabitosDao targetDao = daoSession.getHabitosDao();
-            Habitos habitosNew = targetDao.load(__key);
+            HabitoDao targetDao = daoSession.getHabitoDao();
+            List<Habito> habitosNew = targetDao._queryUsuario_Habitos(id);
             synchronized (this) {
-                habitos = habitosNew;
-            	habitos__resolvedKey = __key;
+                if(habitos == null) {
+                    habitos = habitosNew;
+                }
             }
         }
         return habitos;
     }
 
-    public void setHabitos(Habitos habitos) {
-        synchronized (this) {
-            this.habitos = habitos;
-            habitosID = habitos == null ? null : habitos.getId();
-            habitos__resolvedKey = habitosID;
-        }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetHabitos() {
+        habitos = null;
     }
 
-    /** To-one relationship, resolved on first access. */
-    public Usos getUsos() {
-        Long __key = this.usosID;
-        if (usos__resolvedKey == null || !usos__resolvedKey.equals(__key)) {
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Uso> getUsos() {
+        if (usos == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            UsosDao targetDao = daoSession.getUsosDao();
-            Usos usosNew = targetDao.load(__key);
+            UsoDao targetDao = daoSession.getUsoDao();
+            List<Uso> usosNew = targetDao._queryUsuario_Usos(id);
             synchronized (this) {
-                usos = usosNew;
-            	usos__resolvedKey = __key;
+                if(usos == null) {
+                    usos = usosNew;
+                }
             }
         }
         return usos;
     }
 
-    public void setUsos(Usos usos) {
-        synchronized (this) {
-            this.usos = usos;
-            usosID = usos == null ? null : usos.getId();
-            usos__resolvedKey = usosID;
-        }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetUsos() {
+        usos = null;
     }
 
-	public Long getId(){
-		return id;
-	}
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Taxon> getTaxones() {
+        if (taxones == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            TaxonDao targetDao = daoSession.getTaxonDao();
+            List<Taxon> taxonesNew = targetDao._queryUsuario_Taxones(id);
+            synchronized (this) {
+                if(taxones == null) {
+                    taxones = taxonesNew;
+                }
+            }
+        }
+        return taxones;
+    }
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public void setId(Long id){
-		this.id = id;
-	}
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetTaxones() {
+        taxones = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Region> getRegiones() {
+        if (regiones == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RegionDao targetDao = daoSession.getRegionDao();
+            List<Region> regionesNew = targetDao._queryUsuario_Regiones(id);
+            synchronized (this) {
+                if(regiones == null) {
+                    regiones = regionesNew;
+                }
+            }
+        }
+        return regiones;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetRegiones() {
+        regiones = null;
+    }
 
 }

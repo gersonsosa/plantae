@@ -74,10 +74,10 @@ public class ListImageTextAdapter extends BaseAdapter {
             NavigationDrawerItem navigationDrawerItem = objects.get(position);
             if (navigationDrawerItem != null && navigationDrawerItem.getId() != null){
                 Viaje viaje = viajeDao.load(navigationDrawerItem.getId());
-                especimenCount = viaje.getRecolecciones() != null ? viaje.getRecolecciones().size() : 0;
+                especimenCount = viaje.getEspecimenes() != null ? viaje.getEspecimenes().size() : 0;
             }
             if(especimenCount > 0){
-                viewHolder.countView.setText(especimenCount);
+                viewHolder.countView.setText(Integer.toString(especimenCount));
             }else{
                 // hide the counter view
                 viewHolder.countView.setVisibility(View.GONE);

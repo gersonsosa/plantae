@@ -24,7 +24,7 @@ public class Municipio extends Region {
 	 * @param nombre
 	 */
 	public Municipio(String nombre){
-
+        super(nombre);
 	}
 
 	public List<Localidad> getLocalidades(){

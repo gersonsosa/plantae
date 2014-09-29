@@ -56,8 +56,8 @@ public class CreateTravelActivity extends ActionBarActivity {
         List<Proyecto> proyectos = proyectoDao.loadAll();
         List<SpinnerItem> proyectoSpinnerItemList = new ArrayList<SpinnerItem>(proyectos.size());
         for (int i = 0; i < proyectos.size(); i++) {
-            Proyecto next = proyectos.get(i);
-            proyectoSpinnerItemList.add(new SpinnerItem(next.getId(), next.getNombre()));
+            Proyecto proyecto = proyectos.get(i);
+            proyectoSpinnerItemList.add(new SpinnerItem(proyecto.getId(), proyecto.getNombre()));
             if (viaje != null) {
                 projectPosition = i;
             }
@@ -90,7 +90,7 @@ public class CreateTravelActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.create_travel, menu);
+        getMenuInflater().inflate(R.menu.create, menu);
         return true;
     }
 
@@ -129,10 +129,9 @@ public class CreateTravelActivity extends ActionBarActivity {
     }
 
     private void createTravel(String nombre, Proyecto proyecto){
-        viaje = new Viaje();
+        viaje = new Viaje(colectorPrincipal);
         viaje.setNombre(nombre);
         viaje.setProyecto(proyecto);
-        viaje.setColectorPrincipal(colectorPrincipal);
         viajeDao.insert(viaje);
     }
 

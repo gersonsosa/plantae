@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.NombreComunDao;
@@ -10,7 +12,7 @@ import edu.udistrital.plantae.persistencia.TaxonDao;
  * @version 1.0
  * @created 26-Jun-2013 11:33:38 PM
  */
-public class NombreComun {
+public class NombreComun implements Parcelable {
 
     private Long id;
     private String idioma;
@@ -117,4 +119,35 @@ public class NombreComun {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.idioma);
+        dest.writeString(this.nombre);
+        dest.writeLong(this.taxonID);
+        dest.writeValue(this.taxon__resolvedKey);
+    }
+
+    private NombreComun(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.idioma = in.readString();
+        this.nombre = in.readString();
+        this.taxonID = in.readLong();
+        this.taxon__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<NombreComun> CREATOR = new Parcelable.Creator<NombreComun>() {
+        public NombreComun createFromParcel(Parcel source) {
+            return new NombreComun(source);
+        }
+
+        public NombreComun[] newArray(int size) {
+            return new NombreComun[size];
+        }
+    };
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mature_information_title">Mature fruit</string>
+    <string name="prompt_exocarp">Excarp</string>
+    <string name="prompt_mesocarp">Mesocarp</string>
+    <string name="immature_fruit_title">Immature fruit</string>
+    <string name="prompt_fruits_description">Fruits Description</string>
+</resources>

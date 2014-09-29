@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_card">
+        <TextView
+            android:id="@+id/locality_information_title"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="@string/locality_information_title"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/update_locality_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/locality_information_title"
+            android:src="@drawable/ic_action_device_access_location_found"
+            android:contentDescription="@string/update_location"/>
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/update_locality_button"
+            android:src="@drawable/ic_action_content_edit"
+            android:contentDescription="@string/edit_location"/>
+
+        <EditText
+            android:id="@+id/locality_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locality_information_title"
+            android:hint="@string/prompt_locality_name"
+            android:inputType="text"
+            android:maxLines="3"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/county"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/locality_name"
+            android:hint="@string/prompt_county"
+            android:inputType="text"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/county"
+            android:hint="@string/prompt_state"
+            android:inputType="text"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/state"
+            android:hint="@string/prompt_country"
+            android:inputType="text"/>
+
+        <LinearLayout
+            android:id="@+id/elevation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/country">
+            <EditText
+                android:id="@+id/min_elevation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_min_elevation"
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/line_separator"/>
+
+            <EditText
+                android:id="@+id/max_elevation"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="@string/prompt_max_elevation"
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/coordinates"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_below="@+id/elevation">
+            <EditText
+                android:id="@+id/longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_longitude"
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/line_separator"/>
+
+            <EditText
+                android:id="@+id/latitude"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="@string/prompt_latitude"
+                android:inputType="numberDecimal"
+                android:maxLines="1"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/locality_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_locality_description"
+            android:layout_below="@+id/coordinates"
+            android:inputType="text"
+            android:minLines="3"/>
+
+    </RelativeLayout>
+</ScrollView>

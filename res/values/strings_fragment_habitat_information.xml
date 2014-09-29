@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habitat_information_title">Habitat information</string>
+    <string name="prompt_vegetation">Vegetation</string>
+    <string name="prompt_soil_substratum">Soil - Substratum</string>
+    <string name="prompt_associated_species">Associated Species</string>
+</resources>

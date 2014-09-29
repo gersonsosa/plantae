@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
 import edu.udistrital.plantae.persistencia.DaoSession;
@@ -10,7 +12,7 @@ import edu.udistrital.plantae.persistencia.FrutoDao;
  * @version 1.0
  * @created 26-Jun-2013 12:09:14 AM
  */
-public class Fruto {
+public class Fruto implements Parcelable {
 
     private Long id;
     private ColorEspecimen colorDelEndocarpio;
@@ -140,4 +142,43 @@ public class Fruto {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeParcelable(this.colorDelEndocarpio, 0);
+        dest.writeParcelable(this.colorDelExocarpio, 0);
+        dest.writeString(this.consistenciaDelPericarpio);
+        dest.writeString(this.descripcion);
+        dest.writeValue(this.colorDelEndocarpioID);
+        dest.writeValue(this.colorDelExocarpioID);
+        dest.writeValue(this.colorDelEndocarpio__resolvedKey);
+        dest.writeValue(this.colorDelExocarpio__resolvedKey);
+    }
+
+    private Fruto(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelEndocarpio = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.colorDelExocarpio = in.readParcelable(ColorEspecimen.class.getClassLoader());
+        this.consistenciaDelPericarpio = in.readString();
+        this.descripcion = in.readString();
+        this.colorDelEndocarpioID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelExocarpioID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelEndocarpio__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelExocarpio__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Fruto> CREATOR = new Parcelable.Creator<Fruto>() {
+        public Fruto createFromParcel(Parcel source) {
+            return new Fruto(source);
+        }
+
+        public Fruto[] newArray(int size) {
+            return new Fruto[size];
+        }
+    };
 }

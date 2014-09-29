@@ -1,10 +1,8 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
 import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.persistencia.DaoSession;
-import edu.udistrital.plantae.persistencia.NombreComunDao;
-import edu.udistrital.plantae.persistencia.TaxonDao;
-import edu.udistrital.plantae.persistencia.UsoDao;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
+import edu.udistrital.plantae.persistencia.*;
 
 import java.util.List;
 
@@ -22,13 +20,17 @@ public abstract class Taxon {
 	private Taxon taxonPadre;
 	private String autor;
 	private String nombreCientifico;
-	
+    private long usuarioId;
+
 	/* greendao specific properties */
 	/** Used to resolve relations */
 	private transient DaoSession daoSession;
 
 	/** Used for active entity operations. */
 	private transient TaxonDao myDao;
+
+    private Usuario usuario;
+    private Long usuario__resolvedKey;
 
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
@@ -55,6 +57,7 @@ public abstract class Taxon {
 	 * @param nombre
 	 */
 	public Taxon(String nombre){
+        this.nombre = nombre;
 	}
 
     public Long getId() {
@@ -103,6 +106,42 @@ public abstract class Taxon {
      */
     public void setNombreCientifico(String nombreCientifico) {
         this.nombreCientifico = nombreCientifico;
+    }
+
+    public long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Usuario getUsuario() {
+        long __key = this.usuarioId;
+        if (usuario__resolvedKey == null || !usuario__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UsuarioDao targetDao = daoSession.getUsuarioDao();
+            Usuario usuarioNew = targetDao.load(__key);
+            synchronized (this) {
+                usuario = usuarioNew;
+            	usuario__resolvedKey = __key;
+            }
+        }
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        if (usuario == null) {
+            throw new DaoException("To-one property 'usuarioId' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.usuario = usuario;
+            usuarioId = usuario.getId();
+            usuario__resolvedKey = usuarioId;
+        }
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */

@@ -33,8 +33,9 @@ public class LocalidadDao extends AbstractDao<Localidad, Long> {
         public final static Property MarcaDispositivo = new Property(4, String.class, "marcaDispositivo", false, "MARCA_DISPOSITIVO");
         public final static Property Latitud = new Property(5, Double.class, "latitud", false, "LATITUD");
         public final static Property Longitud = new Property(6, Double.class, "longitud", false, "LONGITUD");
-        public final static Property Altitud = new Property(7, Double.class, "altitud", false, "ALTITUD");
-        public final static Property RegionID = new Property(8, long.class, "regionID", false, "REGION_ID");
+        public final static Property AltitudMinima = new Property(7, Double.class, "altitudMinima", false, "ALTITUD_MINIMA");
+        public final static Property AltitudMaxima = new Property(8, Double.class, "altitudMaxima", false, "ALTITUD_MAXIMA");
+        public final static Property RegionID = new Property(9, long.class, "regionID", false, "REGION_ID");
     };
 
     private DaoSession daoSession;
@@ -60,8 +61,9 @@ public class LocalidadDao extends AbstractDao<Localidad, Long> {
                 "'MARCA_DISPOSITIVO' TEXT," + // 4: marcaDispositivo
                 "'LATITUD' REAL," + // 5: latitud
                 "'LONGITUD' REAL," + // 6: longitud
-                "'ALTITUD' REAL," + // 7: altitud
-                "'REGION_ID' INTEGER NOT NULL );"); // 8: regionID
+                "'ALTITUD_MINIMA' REAL," + // 7: altitudMinima
+                "'ALTITUD_MAXIMA' REAL," + // 8: altitudMaxima
+                "'REGION_ID' INTEGER NOT NULL );"); // 9: regionID
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_LOCALIDAD_NOMBRE ON LOCALIDAD" +
                 " (NOMBRE);");
@@ -115,11 +117,16 @@ public class LocalidadDao extends AbstractDao<Localidad, Long> {
             stmt.bindDouble(7, longitud);
         }
  
-        Double altitud = entity.getAltitud();
-        if (altitud != null) {
-            stmt.bindDouble(8, altitud);
+        Double altitudMinima = entity.getAltitudMinima();
+        if (altitudMinima != null) {
+            stmt.bindDouble(8, altitudMinima);
         }
-        stmt.bindLong(9, entity.getRegionID());
+
+        Double altitudMaxima = entity.getAltitudMaxima();
+        if (altitudMaxima != null) {
+            stmt.bindDouble(9, altitudMaxima);
+    }
+        stmt.bindLong(10, entity.getRegionID());
     }
 
     @Override
@@ -152,8 +159,9 @@ public class LocalidadDao extends AbstractDao<Localidad, Long> {
         entity.setMarcaDispositivo(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setLatitud(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
         entity.setLongitud(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
-        entity.setAltitud(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
-        entity.setRegionID(cursor.getLong(offset + 8));
+        entity.setAltitudMinima(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
+        entity.setAltitudMaxima(cursor.isNull(offset + 8) ? null : cursor.getDouble(offset + 8));
+        entity.setRegionID(cursor.getLong(offset + 9));
      }
     
     /** @inheritdoc */

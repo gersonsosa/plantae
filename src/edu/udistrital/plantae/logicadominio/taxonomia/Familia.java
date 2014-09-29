@@ -24,7 +24,7 @@ public class Familia extends Taxon {
 	 * @param nombre
 	 */
 	public Familia(String nombre){
-
+        super(nombre);
 	}
 
 	public List<Genero> getGeneros(){

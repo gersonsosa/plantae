@@ -56,3 +56,7 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+.gradle
+/local.properties
+.DS_Store

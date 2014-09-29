@@ -126,7 +126,7 @@ public class TalloDao extends AbstractDao<Tallo, Long> {
  
         Boolean desnudoCubierto = entity.getDesnudoCubierto();
         if (desnudoCubierto != null) {
-            stmt.bindLong(9, desnudoCubierto ? 1l : 0l);
+            stmt.bindLong(9, desnudoCubierto ? 1l: 0l);
         }
  
         Boolean entrenudosConspicuos = entity.getEntrenudosConspicuos();

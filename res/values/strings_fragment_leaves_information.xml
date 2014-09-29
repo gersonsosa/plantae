@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="leaves_information_title">Leaves information</string>
+    <string name="prompt_leaves_number">Leaves number</string>
+    <string name="prompt_leaf_color">Leaf color</string>
+    <string name="prompt_leaf_size">Leaf Size</string>
+    <string name="prompt_rachis_length">Rachis Length</string>
+    <string name="prompt_petiole_form">Petiole form</string>
+    <string name="prompt_petiole_color">Petiole Color</string>
+    <string name="prompt_pinnae_number">Pinnae Number</string>
+    <string name="prompt_pinnae_arrangement">Pinnae Arrangement</string>
+    <string name="prompt_leaves_description">Leaves Description</string>
+</resources>

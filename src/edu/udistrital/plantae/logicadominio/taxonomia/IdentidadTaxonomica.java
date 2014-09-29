@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
@@ -12,7 +14,7 @@ import java.util.Date;
  * @version 1.0
  * @created 26-Jun-2013 11:33:38 PM
  */
-public class IdentidadTaxonomica {
+public class IdentidadTaxonomica implements Parcelable {
 
     private Long id;
     private Date fechaIdentificacion;
@@ -200,4 +202,44 @@ public class IdentidadTaxonomica {
 	    }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeLong(fechaIdentificacion != null ? fechaIdentificacion.getTime() : -1);
+        dest.writeString(this.tipo);
+        dest.writeValue(this.especimenID);
+        dest.writeLong(this.taxonID);
+        dest.writeValue(this.personaID);
+        dest.writeValue(this.determinador__resolvedKey);
+        dest.writeValue(this.especimen__resolvedKey);
+        dest.writeValue(this.taxon__resolvedKey);
+    }
+
+    private IdentidadTaxonomica(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        long tmpFechaIdentificacion = in.readLong();
+        this.fechaIdentificacion = tmpFechaIdentificacion == -1 ? null : new Date(tmpFechaIdentificacion);
+        this.tipo = in.readString();
+        this.especimenID = (Long) in.readValue(Long.class.getClassLoader());
+        this.taxonID = in.readLong();
+        this.personaID = (Long) in.readValue(Long.class.getClassLoader());
+        this.determinador__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+        this.especimen__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+        this.taxon__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<IdentidadTaxonomica> CREATOR = new Parcelable.Creator<IdentidadTaxonomica>() {
+        public IdentidadTaxonomica createFromParcel(Parcel source) {
+            return new IdentidadTaxonomica(source);
+        }
+
+        public IdentidadTaxonomica[] newArray(int size) {
+            return new IdentidadTaxonomica[size];
+        }
+    };
 }

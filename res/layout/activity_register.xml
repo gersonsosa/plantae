@@ -57,7 +57,7 @@
                 android:hint="@string/prompt_register_collector_number"
                 android:ems="10"
                 android:maxLines="1"
-                android:inputType="text|number"
+                android:inputType="text"
                 android:singleLine="true" />
             
             <EditText

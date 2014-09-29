@@ -1,16 +1,19 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
  * @created 26-Jun-2013 12:09:14 AM
  */
-public class ColorMunsell {
+public class ColorMunsell implements Parcelable {
 
     private Long id;
-    private int hue;
-    private int value;
-    private int chroma;
+    private Integer hue;
+    private Integer value;
+    private Integer chroma;
 
 	public void finalize() throws Throwable {
 
@@ -32,31 +35,23 @@ public class ColorMunsell {
         this.id = id;
     }
 
-	public int getHue(){
+    public Integer getHue() {
 		return hue;
 	}
 
-	/**
-	 *
-	 * @param newVal
-	 */
-	public void setHue(int newVal){
-		hue = newVal;
+    public void setHue(Integer hue) {
+        this.hue = hue;
 	}
 
-	public int getValue(){
+    public Integer getValue() {
 		return value;
 	}
 
-	/**
-	 *
-	 * @param newVal
-	 */
-	public void setValue(int newVal){
-		value = newVal;
+    public void setValue(Integer value) {
+        this.value = value;
 	}
 
-	public int getChroma(){
+    public Integer getChroma() {
 		return chroma;
 	}
 
@@ -64,8 +59,46 @@ public class ColorMunsell {
 	 *
 	 * @param newVal
 	 */
-	public void setChroma(int newVal){
+	public void setChroma(Integer newVal){
 		chroma = newVal;
 	}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeInt(this.hue);
+        dest.writeInt(this.value);
+        dest.writeInt(this.chroma);
+    }
+
+    public ColorMunsell() {
+    }
+
+    public ColorMunsell(int hue, int value, int chroma){
+        this.hue = hue;
+        this.value = value;
+        this.chroma = chroma;
+    }
+
+    private ColorMunsell(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.hue = in.readInt();
+        this.value = in.readInt();
+        this.chroma = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ColorMunsell> CREATOR = new Parcelable.Creator<ColorMunsell>() {
+        public ColorMunsell createFromParcel(Parcel source) {
+            return new ColorMunsell(source);
+        }
+
+        public ColorMunsell[] newArray(int size) {
+            return new ColorMunsell[size];
+        }
+    };
 }

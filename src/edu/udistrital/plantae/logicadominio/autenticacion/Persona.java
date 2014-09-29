@@ -1,11 +1,11 @@
 package edu.udistrital.plantae.logicadominio.autenticacion;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.PersonaDao;
 import edu.udistrital.plantae.persistencia.UsuarioDao;
-
-import java.io.Serializable;
 
 
 /**
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @version 1.0
  * @created 19-May-2013 11:50:34 PM
  */
-public class Persona implements Serializable {
+public class Persona implements Parcelable {
 
     private Long id;
     private String nombres;
@@ -39,6 +39,12 @@ public class Persona implements Serializable {
 
 	public void finalize() throws Throwable {
 
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getPersonaDao() : null;
 	}
 
 	/**
@@ -135,10 +141,41 @@ public class Persona implements Serializable {
 	    }
     }
 
-	/** called by internal mechanisms, do not call yourself. */
-	public void __setDaoSession(DaoSession daoSession) {
-		this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getPersonaDao() : null;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.nombres);
+        dest.writeString(this.apellidos);
+        dest.writeString(this.direccion);
+        dest.writeString(this.telefono);
+        dest.writeString(this.institucion);
+        dest.writeValue(this.usuarioID);
+        dest.writeValue(this.usuario__resolvedKey);
+    }
+
+    private Persona(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.nombres = in.readString();
+        this.apellidos = in.readString();
+        this.direccion = in.readString();
+        this.telefono = in.readString();
+        this.institucion = in.readString();
+        this.usuarioID = (Long) in.readValue(Long.class.getClassLoader());
+        this.usuario__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Persona> CREATOR = new Parcelable.Creator<Persona>() {
+        public Persona createFromParcel(Parcel source) {
+            return new Persona(source);
+        }
+
+        public Persona[] newArray(int size) {
+            return new Persona[size];
+        }
+    };
 }

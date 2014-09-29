@@ -38,16 +38,21 @@
         </activity>
         <activity
             android:name=".CreateTravelActivity"
+            android:parentActivityName="edu.udistrital.plantae.MainActivity"
             android:label="New travel"/>
         <activity
             android:name=".CreateProjectActivity"
+            android:parentActivityName="edu.udistrital.plantae.CreateTravelActivity"
             android:label="Create project"/>
         <activity
             android:name=".SettingsAcivity"
             android:label="Settings"/>
         <activity
             android:name=".CreateSpecimenActivity"
+            android:parentActivityName="edu.udistrital.plantae.MainActivity"
             android:label="Create Specimen"/>
+
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     </application>
 
 </manifest>

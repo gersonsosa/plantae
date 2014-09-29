@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="plants_attributes_information_title">Plant Attributes Information</string>
+    <string name="prompt_habit">Habit</string>
+    <string name="prompt_height">Height</string>
+    <string name="prompt_DAP">DAP</string>
+    <string name="prompt_abundance">Abundance</string>
+    <string name="prompt_fenology">Fenology</string>
+    <string name="prompt_plant_description">Plant description</string>
+    <string name="colors_title">Colors</string>
+    <string name="prompt_color_description">Plant organ/description</string>
+    <string name="color_munsell">Color Munsell</string>
+    <string name="add_color_action">Add Color</string>
+    <string name="associated_samples_action">Associated Samples</string>
+    <string name="prompt_characteristics">Additional Characteristics</string>
+</resources>

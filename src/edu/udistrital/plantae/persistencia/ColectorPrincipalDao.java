@@ -82,10 +82,7 @@ public class ColectorPrincipalDao extends AbstractDao<ColectorPrincipal, Long> {
         if (tipoCapturaDatos != null) {
             stmt.bindLong(3, tipoCapturaDatos);
         }
-
-        if (entity.getPersona() != null){
-            stmt.bindLong(4, entity.getPersona().getId());
-        }
+        stmt.bindLong(4, entity.getPersonaID());
     }
 
     @Override

@@ -1,6 +1,6 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
 
-import com.google.android.maps.MapView;
+import com.google.android.gms.maps.MapView;
 
 /**
  * @author Sosa G., Mateus A.

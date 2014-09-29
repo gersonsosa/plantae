@@ -1,11 +1,14 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
  * @created 26-Jun-2013 12:09:14 AM
  */
-public class Fotografia {
+public class Fotografia implements Parcelable {
 
     private Long id;
     private String rutaArchivo;
@@ -58,4 +61,33 @@ public class Fotografia {
         this.especimenID = especimenID;
 	}
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.rutaArchivo);
+        dest.writeString(this.contexto);
+        dest.writeValue(this.especimenID);
+    }
+
+    private Fotografia(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.rutaArchivo = in.readString();
+        this.contexto = in.readString();
+        this.especimenID = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Fotografia> CREATOR = new Parcelable.Creator<Fotografia>() {
+        public Fotografia createFromParcel(Parcel source) {
+            return new Fotografia(source);
+        }
+
+        public Fotografia[] newArray(int size) {
+            return new Fotografia[size];
+        }
+    };
 }

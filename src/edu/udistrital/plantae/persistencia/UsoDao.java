@@ -9,6 +9,7 @@ import de.greenrobot.dao.internal.DaoConfig;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
 import edu.udistrital.plantae.logicadominio.taxonomia.Uso;
 
@@ -30,13 +31,13 @@ public class UsoDao extends AbstractDao<Uso, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Descripcion = new Property(1, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property UsosID = new Property(2, Long.class, "usosID", false, "USOS_ID");
+        public final static Property UsuarioID = new Property(2, Long.class, "usuarioID", false, "USUARIO_ID");
         public final static Property TaxonID = new Property(3, long.class, "taxonID", false, "TAXON_ID");
     };
 
     private DaoSession daoSession;
 
-    private Query<Uso> usos_DataQuery;
+    private Query<Uso> usuario_UsosQuery;
     private Query<Uso> taxon_UsosQuery;
 
     public UsoDao(DaoConfig config) {
@@ -54,11 +55,11 @@ public class UsoDao extends AbstractDao<Uso, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'USO' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'DESCRIPCION' TEXT," + // 1: descripcion
-                "'USOS_ID' INTEGER," + // 2: usosID
+                "'USUARIO_ID' INTEGER," + // 2: usuarioID
                 "'TAXON_ID' INTEGER NOT NULL );"); // 3: taxonID
         // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_USO_USOS_ID ON USO" +
-                " (USOS_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_USO_USUARIO_ID ON USO" +
+                " (USUARIO_ID);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_USO_TAXON_ID ON USO" +
                 " (TAXON_ID);");
     }
@@ -84,9 +85,9 @@ public class UsoDao extends AbstractDao<Uso, Long> {
             stmt.bindString(2, descripcion);
         }
  
-        Long usosID = entity.getUsosID();
-        if (usosID != null) {
-            stmt.bindLong(3, usosID);
+        Long usuarioID = entity.getUsuarioID();
+        if (usuarioID != null) {
+            stmt.bindLong(3, usuarioID);
         }
         stmt.bindLong(4, entity.getTaxonID());
     }
@@ -116,7 +117,7 @@ public class UsoDao extends AbstractDao<Uso, Long> {
     public void readEntity(Cursor cursor, Uso entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDescripcion(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setUsosID(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setUsuarioID(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setTaxonID(cursor.getLong(offset + 3));
      }
     
@@ -143,17 +144,17 @@ public class UsoDao extends AbstractDao<Uso, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "data" to-many relationship of Usos. */
-    public List<Uso> _queryUsos_Data(Long usosID) {
+    /** Internal query to resolve the "usos" to-many relationship of Usuario. */
+    public List<Uso> _queryUsuario_Usos(Long usuarioID) {
         synchronized (this) {
-            if (usos_DataQuery == null) {
+            if (usuario_UsosQuery == null) {
                 QueryBuilder<Uso> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.UsosID.eq(null));
-                usos_DataQuery = queryBuilder.build();
+                queryBuilder.where(Properties.UsuarioID.eq(null));
+                usuario_UsosQuery = queryBuilder.build();
             }
         }
-        Query<Uso> query = usos_DataQuery.forCurrentThread();
-        query.setParameter(0, usosID);
+        Query<Uso> query = usuario_UsosQuery.forCurrentThread();
+        query.setParameter(0, usuarioID);
         return query.list();
     }
 
@@ -178,9 +179,12 @@ public class UsoDao extends AbstractDao<Uso, Long> {
             StringBuilder builder = new StringBuilder("SELECT ");
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T0", daoSession.getTaxonDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T0", daoSession.getUsuarioDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T1", daoSession.getTaxonDao().getAllColumns());
             builder.append(" FROM USO T");
-            builder.append(" LEFT JOIN TAXON T0 ON T.'TAXON_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN USUARIO T0 ON T.'USUARIO_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN TAXON T1 ON T.'TAXON_ID'=T1.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -190,6 +194,10 @@ public class UsoDao extends AbstractDao<Uso, Long> {
     protected Uso loadCurrentDeep(Cursor cursor, boolean lock) {
         Uso entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
+
+        Usuario usuario = loadCurrentOther(daoSession.getUsuarioDao(), cursor, offset);
+        entity.setUsuario(usuario);
+        offset += daoSession.getUsuarioDao().getAllColumns().length;
 
         Taxon taxon = loadCurrentOther(daoSession.getTaxonDao(), cursor, offset);
          if(taxon != null) {

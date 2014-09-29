@@ -10,8 +10,6 @@ import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.*;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
@@ -27,8 +25,8 @@ public class TravelListFragment extends ListFragment implements View.OnClickList
     private ViajeDao viajeDao;
     private Long[] itemsSelected;
     private ActionMode actionMode;
-    private Animation checkToMiddle;
-    private Animation checkFromMiddle;
+    /*private Animation checkToMiddle;
+    private Animation checkFromMiddle;*/
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,14 +37,12 @@ public class TravelListFragment extends ListFragment implements View.OnClickList
         actionMode = null;
         colectorPrincipalID = getArguments().getLong("colectorPrincipal");
         viajeDao = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession().getViajeDao();
-        checkToMiddle = AnimationUtils.loadAnimation(getActivity(), R.anim.check_to_middle);
-        checkFromMiddle = AnimationUtils.loadAnimation(getActivity(), R.anim.check_from_middle);
         loadTravels();
         setHasOptionsMenu(true);
 		return rootView;
 	}
 
-    /**
+    /**private ActionMode actionMode;
      * Cargar los viajes del Colector principal loggeado o un aviso de agregar un nuevo viaje
      */
     private void loadTravels(){
@@ -103,16 +99,16 @@ public class TravelListFragment extends ListFragment implements View.OnClickList
     public void onClick(View v) {
         int position = getListView().getPositionForView(v);
         ImageView imageView = (ImageView) v;
-        imageView.clearAnimation();
+        /*imageView.clearAnimation();
         imageView.setAnimation(checkToMiddle);
-        imageView.startAnimation(checkToMiddle);
+        imageView.startAnimation(checkToMiddle);*/
         ListItem listItem = ((ListItem)getListAdapter().getItem(position));
         if (itemsSelected[position] != null && itemsSelected[position].equals(listItem.getId())){
             itemsSelected[position] = null;
             imageView.setImageResource(R.drawable.ic_action_location_map);
-            imageView.clearAnimation();
+            /*imageView.clearAnimation();
             imageView.setAnimation(checkFromMiddle);
-            imageView.startAnimation(checkFromMiddle);
+            imageView.startAnimation(checkFromMiddle);*/
             actionMode.invalidate();
             if (itemsSelectedCount() == 0 && actionMode != null){
                 actionMode.finish();
@@ -120,11 +116,11 @@ public class TravelListFragment extends ListFragment implements View.OnClickList
         }else{
             itemsSelected[position]= listItem.getId();
             imageView.setImageResource(R.drawable.ic_action_navigation_accept);
-            imageView.clearAnimation();
+            /*imageView.clearAnimation();
             imageView.setAnimation(checkFromMiddle);
-            imageView.startAnimation(checkFromMiddle);
+            imageView.startAnimation(checkFromMiddle);*/
             if (actionMode == null) {
-                actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(new ListMultiSelectionActionMode());
+                actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(new TravelListMultiSelectionActionMode());
             }else{
                 actionMode.invalidate();
             }
@@ -148,17 +144,9 @@ public class TravelListFragment extends ListFragment implements View.OnClickList
         Intent editTravelIntent = new Intent(getActivity().getApplicationContext(), CreateTravelActivity.class);
         editTravelIntent.putExtra("viaje", viaje.getId());
         startActivityForResult(editTravelIntent, 0);
-        loadTravels();
     }
 
-    private final class ListMultiSelectionActionMode implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater menuInflater = mode.getMenuInflater();
-            menuInflater.inflate(R.menu.travel_list_contextual, menu);
-            return true;
-        }
+    private class TravelListMultiSelectionActionMode extends ListMultiSelectionActionMode {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {

@@ -6,4 +6,21 @@
           android:icon="@drawable/ic_action_add"
           specimenList:showAsAction="always" />
 
+    <item android:id="@+id/action_add_detailed"
+          android:title="@string/action_add_detailed"
+          android:visible="false"
+          android:icon="@drawable/ic_action_content_new_event"
+          specimenList:showAsAction="always" />
+
+    <item android:id="@+id/action_search"
+          android:title="@string/action_search"
+          android:icon="@drawable/ic_action_action_search"
+          specimenList:showAsAction="always" />
+
+    <item android:id="@+id/action_rebuild_journey"
+          android:title="@string/action_rebuild_journey"
+          android:icon="@drawable/ic_action_location_map"
+          specimenList:showAsAction="always" />
+
+
 </menu>

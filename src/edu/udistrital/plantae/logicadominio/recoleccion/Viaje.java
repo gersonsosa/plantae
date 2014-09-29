@@ -1,11 +1,13 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
-import com.google.android.maps.MapView;
+import com.google.android.gms.maps.MapView;
 import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
-import edu.udistrital.plantae.logicadominio.datosespecimen.FabricaEspecimen;
-import edu.udistrital.plantae.logicadominio.datosespecimen.FabricaPrototipadoEspecimen;
+import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
+import edu.udistrital.plantae.logicadominio.datosespecimen.*;
+import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 import edu.udistrital.plantae.persistencia.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,12 +19,12 @@ public class Viaje {
 
     private Long id;
     private String nombre;
-    private FabricaEspecimen fabricaEspecimen;
+    private BuilderEspecimen builderEspecimen;
     private FabricaPrototipadoEspecimen fabricaPrototipadoEspecimen;
     private ColectorPrincipal colectorPrincipal;
     private Trayecto trayecto;
     private Proyecto proyecto;
-    private List<Recoleccion> recolecciones;
+    private List<Especimen> especimenes;
 	private List<ColectorSecundario> colectoresSecundarios;
     private Long colectorPrincipalID;
     private Long proyectoID;
@@ -41,18 +43,31 @@ public class Viaje {
 
 	}
 
-	public void finalize() throws Throwable {
+    public Viaje(ColectorPrincipal colectorPrincipal) {
+        setColectorPrincipal(colectorPrincipal);
+        //builderEspecimen = colectorPrincipal.getTipoCapturaDatos() == 1 ? new BuilderEspecimenDetallado():new BuilderEspecimenSencillo();
+    }
 
+    public void finalize() throws Throwable {
+
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getViajeDao() : null;
 	}
 
 	/**
-	 *
-	 * @param colectores
-	 * @param proyecto
+	 * Crea el viaje en base a los datos que se pasan como paramentros.
+	 * @param colectores Colectores secundarios del viaje
+	 * @param proyecto Proyecto al que pertenece el viaje
 	 * @param nombre    nombre
 	 */
 	public Viaje(ColectorSecundario[] colectores, Proyecto proyecto, String nombre){
-
+        colectoresSecundarios = new ArrayList<ColectorSecundario>(Arrays.asList(colectores));
+        this.proyecto = proyecto;
+        this.nombre = nombre;
 	}
 
 	/**
@@ -61,7 +76,8 @@ public class Viaje {
 	 * @param nombre    nombre
 	 */
 	public Viaje(Proyecto proyecto, String nombre){
-
+        this.proyecto = proyecto;
+        this.nombre = nombre;
 	}
 
     public Long getId() {
@@ -113,12 +129,19 @@ public class Viaje {
 	}
 
 	/**
-	 *
-	 * @param apellido
-	 * @param nombre    nombre
+	 * Crea un colector secundario nuevo con el apellido y nombre y lo agrega
+     * a la lista de colectores secundarios del viaje.
+     * @<NOTE>Este método solo se debe llamar luego de guardar el viaje.</NOTE>
+     * @param nombre del nuevo colector secundario
+	 * @param apellido del nuevo colector secundario
 	 */
-	public void agregarColector(String apellido, String nombre){
-
+	public void agregarColector(String nombre, String apellido){
+        ColectorSecundario colectorSecundario = new ColectorSecundario();
+        Persona colectorSecundarioPersona = new Persona(apellido, nombre);
+        daoSession.getPersonaDao().insert(colectorSecundarioPersona);
+        colectorSecundario.setPersona(colectorSecundarioPersona);
+        colectorSecundario.setEspecimenID(this.getId());
+        daoSession.getColectorSecundarioDao().insert(colectorSecundario);
 	}
 
 	/**
@@ -129,8 +152,9 @@ public class Viaje {
 
 	}
 
-	public void agregarEspecimen(){
-
+	public void agregarEspecimen(EspecimenDTO especimenDTO){
+//        builderEspecimen.build(especimenDTO);
+//        builderEspecimen.getEspecimen();
 	}
 
 	/**
@@ -146,12 +170,8 @@ public class Viaje {
         return trayecto;
     }
 
-    /**
-     *
-     * @param newVal
-     */
-    public void setTrayecto(Trayecto newVal){
-        trayecto = newVal;
+    public void setTrayecto(Trayecto trayecto){
+        this.trayecto = trayecto;
     }
 
     public ColectorPrincipal getColectorPrincipal() {
@@ -225,31 +245,25 @@ public class Viaje {
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<Recoleccion> getRecolecciones() {
-        if (recolecciones == null) {
+    public List<Especimen> getEspecimenes() {
+        if (especimenes == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            RecoleccionDao targetDao = daoSession.getRecoleccionDao();
-            List<Recoleccion> recoleccionesNew = targetDao._queryViaje_Recolecciones(id);
+            EspecimenDao targetDao = daoSession.getEspecimenDao();
+            List<Especimen> especimenesNew = targetDao._queryViaje_Especimenes(id);
             synchronized (this) {
-                if(recolecciones == null) {
-                    recolecciones = recoleccionesNew;
+                if(especimenes == null) {
+                    especimenes = especimenesNew;
                 }
             }
         }
-        return recolecciones;
+        return especimenes;
     }
 
-    public void setRecolecciones(List<Recoleccion> recolecciones) {
-        this.recolecciones = recolecciones;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetEspecimenes() {
+        especimenes = null;
     }
-
-	/** called by internal mechanisms, do not call yourself. */
-	public void __setDaoSession(DaoSession daoSession) {
-		// TODO Auto-generated method stub
-		this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getViajeDao() : null;
-	}
 
 }

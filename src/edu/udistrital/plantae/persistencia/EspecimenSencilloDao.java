@@ -3,14 +3,14 @@ package edu.udistrital.plantae.persistencia;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
-import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenSencillo;
+
 
 public class EspecimenSencilloDao {
 	
 	public EspecimenSencilloDao() {
 	}
 	
-	protected void bindValues(SQLiteStatement stmt, EspecimenSencillo entity) {
+	protected void bindValues(SQLiteStatement stmt, Especimen entity) {
         String numeroDeColeccion = entity.getNumeroDeColeccion();
         if (numeroDeColeccion != null) {
             stmt.bindString(2, numeroDeColeccion);
@@ -40,12 +40,6 @@ public class EspecimenSencilloDao {
         if (dap != null) {
             stmt.bindLong(7, dap);
         }
-        stmt.bindLong(8, entity.getRecoleccionID());
-
-        Long identidadTaxonomicaID = entity.getIdentidadTaxonomicaID();
-        if (identidadTaxonomicaID != null) {
-            stmt.bindLong(9, identidadTaxonomicaID);
-        }
 
         Long habitoID = entity.getHabitoID();
         if (habitoID != null) {
@@ -71,12 +65,12 @@ public class EspecimenSencilloDao {
     }
 	
 	public Especimen readEntity(Cursor cursor, int offset) {
-        EspecimenSencillo entity = new EspecimenSencillo();
+        Especimen entity = new Especimen();
         readEntity(cursor, entity, offset);
         return entity;
     }
 
-    public void readEntity(Cursor cursor, EspecimenSencillo entity, int offset) {
+    public void readEntity(Cursor cursor, Especimen entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setNumeroDeColeccion(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setAbundancia(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
@@ -84,8 +78,6 @@ public class EspecimenSencilloDao {
         entity.setDescripcionEspecimen(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setAlturaDeLaPlanta(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
         entity.setDap(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
-        entity.setRecoleccionID(cursor.getLong(offset + 7));
-        entity.setIdentidadTaxonomicaID(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
         entity.setHabitoID(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
         entity.setHabitatID(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
         entity.setLocalidadID(cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11));

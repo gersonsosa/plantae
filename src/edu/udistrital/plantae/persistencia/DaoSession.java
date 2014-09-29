@@ -8,11 +8,10 @@ import de.greenrobot.dao.internal.DaoConfig;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.datosespecimen.*;
-import edu.udistrital.plantae.logicadominio.listasparametros.Colores;
-import edu.udistrital.plantae.logicadominio.listasparametros.Habitats;
-import edu.udistrital.plantae.logicadominio.listasparametros.Habitos;
-import edu.udistrital.plantae.logicadominio.listasparametros.Usos;
-import edu.udistrital.plantae.logicadominio.recoleccion.*;
+import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
+import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
+import edu.udistrital.plantae.logicadominio.recoleccion.Proyecto;
+import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
 import edu.udistrital.plantae.logicadominio.taxonomia.IdentidadTaxonomica;
 import edu.udistrital.plantae.logicadominio.taxonomia.NombreComun;
 import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
@@ -36,7 +35,6 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig colectorPrincipalDaoConfig;
     private final DaoConfig colectorSecundarioDaoConfig;
     private final DaoConfig proyectoDaoConfig;
-    private final DaoConfig recoleccionDaoConfig;
     private final DaoConfig viajeDaoConfig;
     private final DaoConfig especimenDaoConfig;
     private final DaoConfig colorEspecimenDaoConfig;
@@ -45,16 +43,13 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig fotografiaDaoConfig;
     private final DaoConfig frutoDaoConfig;
     private final DaoConfig habitatDaoConfig;
+    private final DaoConfig fenologiaDaoConfig;
     private final DaoConfig habitoDaoConfig;
     private final DaoConfig hojaDaoConfig;
     private final DaoConfig inflorescenciaDaoConfig;
     private final DaoConfig raizDaoConfig;
     private final DaoConfig talloDaoConfig;
     private final DaoConfig muestraAsociadaDaoConfig;
-    private final DaoConfig coloresDaoConfig;
-    private final DaoConfig habitatsDaoConfig;
-    private final DaoConfig habitosDaoConfig;
-    private final DaoConfig usosDaoConfig;
     private final DaoConfig identidadTaxonomicaDaoConfig;
     private final DaoConfig nombreComunDaoConfig;
     private final DaoConfig taxonDaoConfig;
@@ -67,7 +62,6 @@ public class DaoSession extends AbstractDaoSession {
     private final ColectorPrincipalDao colectorPrincipalDao;
     private final ColectorSecundarioDao colectorSecundarioDao;
     private final ProyectoDao proyectoDao;
-    private final RecoleccionDao recoleccionDao;
     private final ViajeDao viajeDao;
     private final EspecimenDao especimenDao;
     private final ColorEspecimenDao colorEspecimenDao;
@@ -76,16 +70,13 @@ public class DaoSession extends AbstractDaoSession {
     private final FotografiaDao fotografiaDao;
     private final FrutoDao frutoDao;
     private final HabitatDao habitatDao;
+    private final FenologiaDao fenologiaDao;
     private final HabitoDao habitoDao;
     private final HojaDao hojaDao;
     private final InflorescenciaDao inflorescenciaDao;
     private final RaizDao raizDao;
     private final TalloDao talloDao;
     private final MuestraAsociadaDao muestraAsociadaDao;
-    private final ColoresDao coloresDao;
-    private final HabitatsDao habitatsDao;
-    private final HabitosDao habitosDao;
-    private final UsosDao usosDao;
     private final IdentidadTaxonomicaDao identidadTaxonomicaDao;
     private final NombreComunDao nombreComunDao;
     private final TaxonDao taxonDao;
@@ -112,9 +103,6 @@ public class DaoSession extends AbstractDaoSession {
         proyectoDaoConfig = daoConfigMap.get(ProyectoDao.class).clone();
         proyectoDaoConfig.initIdentityScope(type);
 
-        recoleccionDaoConfig = daoConfigMap.get(RecoleccionDao.class).clone();
-        recoleccionDaoConfig.initIdentityScope(type);
-
         viajeDaoConfig = daoConfigMap.get(ViajeDao.class).clone();
         viajeDaoConfig.initIdentityScope(type);
 
@@ -139,6 +127,9 @@ public class DaoSession extends AbstractDaoSession {
         habitatDaoConfig = daoConfigMap.get(HabitatDao.class).clone();
         habitatDaoConfig.initIdentityScope(type);
 
+        fenologiaDaoConfig = daoConfigMap.get(FenologiaDao.class).clone();
+        fenologiaDaoConfig.initIdentityScope(type);
+
         habitoDaoConfig = daoConfigMap.get(HabitoDao.class).clone();
         habitoDaoConfig.initIdentityScope(type);
 
@@ -156,18 +147,6 @@ public class DaoSession extends AbstractDaoSession {
 
         muestraAsociadaDaoConfig = daoConfigMap.get(MuestraAsociadaDao.class).clone();
         muestraAsociadaDaoConfig.initIdentityScope(type);
-
-        coloresDaoConfig = daoConfigMap.get(ColoresDao.class).clone();
-        coloresDaoConfig.initIdentityScope(type);
-
-        habitatsDaoConfig = daoConfigMap.get(HabitatsDao.class).clone();
-        habitatsDaoConfig.initIdentityScope(type);
-
-        habitosDaoConfig = daoConfigMap.get(HabitosDao.class).clone();
-        habitosDaoConfig.initIdentityScope(type);
-
-        usosDaoConfig = daoConfigMap.get(UsosDao.class).clone();
-        usosDaoConfig.initIdentityScope(type);
 
         identidadTaxonomicaDaoConfig = daoConfigMap.get(IdentidadTaxonomicaDao.class).clone();
         identidadTaxonomicaDaoConfig.initIdentityScope(type);
@@ -192,7 +171,6 @@ public class DaoSession extends AbstractDaoSession {
         colectorPrincipalDao = new ColectorPrincipalDao(colectorPrincipalDaoConfig, this);
         colectorSecundarioDao = new ColectorSecundarioDao(colectorSecundarioDaoConfig, this);
         proyectoDao = new ProyectoDao(proyectoDaoConfig, this);
-        recoleccionDao = new RecoleccionDao(recoleccionDaoConfig, this);
         viajeDao = new ViajeDao(viajeDaoConfig, this);
         especimenDao = new EspecimenDao(especimenDaoConfig, this);
         colorEspecimenDao = new ColorEspecimenDao(colorEspecimenDaoConfig, this);
@@ -201,16 +179,13 @@ public class DaoSession extends AbstractDaoSession {
         fotografiaDao = new FotografiaDao(fotografiaDaoConfig, this);
         frutoDao = new FrutoDao(frutoDaoConfig, this);
         habitatDao = new HabitatDao(habitatDaoConfig, this);
+        fenologiaDao = new FenologiaDao(fenologiaDaoConfig, this);
         habitoDao = new HabitoDao(habitoDaoConfig, this);
         hojaDao = new HojaDao(hojaDaoConfig, this);
         inflorescenciaDao = new InflorescenciaDao(inflorescenciaDaoConfig, this);
         raizDao = new RaizDao(raizDaoConfig, this);
         talloDao = new TalloDao(talloDaoConfig, this);
         muestraAsociadaDao = new MuestraAsociadaDao(muestraAsociadaDaoConfig, this);
-        coloresDao = new ColoresDao(coloresDaoConfig, this);
-        habitatsDao = new HabitatsDao(habitatsDaoConfig, this);
-        habitosDao = new HabitosDao(habitosDaoConfig, this);
-        usosDao = new UsosDao(usosDaoConfig, this);
         identidadTaxonomicaDao = new IdentidadTaxonomicaDao(identidadTaxonomicaDaoConfig, this);
         nombreComunDao = new NombreComunDao(nombreComunDaoConfig, this);
         taxonDao = new TaxonDao(taxonDaoConfig, this);
@@ -223,7 +198,6 @@ public class DaoSession extends AbstractDaoSession {
         registerDao(ColectorPrincipal.class, colectorPrincipalDao);
         registerDao(ColectorSecundario.class, colectorSecundarioDao);
         registerDao(Proyecto.class, proyectoDao);
-        registerDao(Recoleccion.class, recoleccionDao);
         registerDao(Viaje.class, viajeDao);
         registerDao(Especimen.class, especimenDao);
         registerDao(ColorEspecimen.class, colorEspecimenDao);
@@ -232,16 +206,13 @@ public class DaoSession extends AbstractDaoSession {
         registerDao(Fotografia.class, fotografiaDao);
         registerDao(Fruto.class, frutoDao);
         registerDao(Habitat.class, habitatDao);
+        registerDao(Fenologia.class, fenologiaDao);
         registerDao(Habito.class, habitoDao);
         registerDao(Hoja.class, hojaDao);
         registerDao(Inflorescencia.class, inflorescenciaDao);
         registerDao(Raiz.class, raizDao);
         registerDao(Tallo.class, talloDao);
         registerDao(MuestraAsociada.class, muestraAsociadaDao);
-        registerDao(Colores.class, coloresDao);
-        registerDao(Habitats.class, habitatsDao);
-        registerDao(Habitos.class, habitosDao);
-        registerDao(Usos.class, usosDao);
         registerDao(IdentidadTaxonomica.class, identidadTaxonomicaDao);
         registerDao(NombreComun.class, nombreComunDao);
         registerDao(Taxon.class, taxonDao);
@@ -256,7 +227,6 @@ public class DaoSession extends AbstractDaoSession {
         colectorPrincipalDaoConfig.getIdentityScope().clear();
         colectorSecundarioDaoConfig.getIdentityScope().clear();
         proyectoDaoConfig.getIdentityScope().clear();
-        recoleccionDaoConfig.getIdentityScope().clear();
         viajeDaoConfig.getIdentityScope().clear();
         especimenDaoConfig.getIdentityScope().clear();
         colorEspecimenDaoConfig.getIdentityScope().clear();
@@ -265,16 +235,13 @@ public class DaoSession extends AbstractDaoSession {
         fotografiaDaoConfig.getIdentityScope().clear();
         frutoDaoConfig.getIdentityScope().clear();
         habitatDaoConfig.getIdentityScope().clear();
+        fenologiaDaoConfig.getIdentityScope().clear();
         habitoDaoConfig.getIdentityScope().clear();
         hojaDaoConfig.getIdentityScope().clear();
         inflorescenciaDaoConfig.getIdentityScope().clear();
         raizDaoConfig.getIdentityScope().clear();
         talloDaoConfig.getIdentityScope().clear();
         muestraAsociadaDaoConfig.getIdentityScope().clear();
-        coloresDaoConfig.getIdentityScope().clear();
-        habitatsDaoConfig.getIdentityScope().clear();
-        habitosDaoConfig.getIdentityScope().clear();
-        usosDaoConfig.getIdentityScope().clear();
         identidadTaxonomicaDaoConfig.getIdentityScope().clear();
         nombreComunDaoConfig.getIdentityScope().clear();
         taxonDaoConfig.getIdentityScope().clear();
@@ -301,10 +268,6 @@ public class DaoSession extends AbstractDaoSession {
 
     public ProyectoDao getProyectoDao() {
         return proyectoDao;
-    }
-
-    public RecoleccionDao getRecoleccionDao() {
-        return recoleccionDao;
     }
 
     public ViajeDao getViajeDao() {
@@ -339,6 +302,10 @@ public class DaoSession extends AbstractDaoSession {
         return habitatDao;
     }
 
+    public FenologiaDao getFenologiaDao() {
+        return fenologiaDao;
+    }
+
     public HabitoDao getHabitoDao() {
         return habitoDao;
     }
@@ -361,22 +328,6 @@ public class DaoSession extends AbstractDaoSession {
 
     public MuestraAsociadaDao getMuestraAsociadaDao() {
         return muestraAsociadaDao;
-    }
-
-    public ColoresDao getColoresDao() {
-        return coloresDao;
-    }
-
-    public HabitatsDao getHabitatsDao() {
-        return habitatsDao;
-    }
-
-    public HabitosDao getHabitosDao() {
-        return habitosDao;
-    }
-
-    public UsosDao getUsosDao() {
-        return usosDao;
     }
 
     public IdentidadTaxonomicaDao getIdentidadTaxonomicaDao() {

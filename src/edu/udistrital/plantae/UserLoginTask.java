@@ -25,12 +25,9 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 	};
 	
 	private LoginActivity context;
-	private String mEmail;
-	private String mPassword;
 	private UsuarioDao usuarioDao;
     private PersonaDao personaDao;
     private ColectorPrincipalDao colectorPrincipalDao;
-    private Usuario usuario;
     private ColectorPrincipal colectorPrincipal;
 	
 	public UserLoginTask(Context context) {
@@ -42,12 +39,12 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 	
 	@Override
 	protected Boolean doInBackground(String... credentials) {
-		mEmail=credentials[0];
-		mPassword=credentials[1];
+        String mEmail=credentials[0];
+        String mPassword=credentials[1];
 		// Validate the user object password and email
-		usuario = Usuario.validarDatosInicioSesion(mEmail, mPassword, usuarioDao);
-		if (usuario != null){
-			return true;
+		Usuario usuario = Usuario.validarDatosInicioSesion(mEmail, mPassword, usuarioDao);
+		if (usuario == null){
+			return false;
 		}
 
         SharedPreferences preferences = context.getSharedPreferences("plantae_prefs", 0);
@@ -71,18 +68,16 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 				return pieces[1].equals(mPassword);
 			}
 		}*/
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void onPostExecute(final Boolean success) {
-		//mAuthTask = null;
 		context.finishLoginTask(colectorPrincipal);
 	}
 
 	@Override
 	protected void onCancelled() {
-		//mAuthTask = null;
 		context.showProgress(false);
 	}
 	

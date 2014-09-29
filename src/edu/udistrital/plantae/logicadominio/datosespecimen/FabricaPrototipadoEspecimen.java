@@ -1,16 +1,11 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
-import java.util.ArrayList;
-
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
  * @created 26-Jun-2013 12:09:14 AM
  */
 public class FabricaPrototipadoEspecimen {
-
-	private ArrayList<Especimen> especimenDetallado;
-	private ArrayList<Especimen> especimenSencillo;
 
 	public FabricaPrototipadoEspecimen(){
 
@@ -22,18 +17,13 @@ public class FabricaPrototipadoEspecimen {
 
 	/**
 	 * 
-	 * @param especimenDetallado
-	 * @param especimenSencillo
+	 * @param especimen
 	 */
-	public FabricaPrototipadoEspecimen(EspecimenDetallado especimenDetallado, EspecimenSencillo especimenSencillo){
+	public FabricaPrototipadoEspecimen(Especimen especimen){
 
 	}
 
-	public EspecimenDetallado getEspecimenDetallado(){
-		return null;
-	}
-
-	public EspecimenSencillo getEspecimenSencillo(){
+	public Especimen getEspecimen(){
 		return null;
 	}
 

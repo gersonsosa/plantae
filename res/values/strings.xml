@@ -14,13 +14,10 @@
     <string name="action_add">Add new</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="action_search">Search</string>
     <string name="action_delete_travel">Delete Travel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="delete_travel_confirmation_message"> Delete Travel? This will delete the travel and its contents.</string>
-
-    <string name="no_specimens">No Specimenes Were Found</string>
-    <string name="add_new_specimen">Add a new specimen</string>
 
     <string name="no_travels">No Travels Were Found</string>
     <string name="add_new_travels">Add a new travel</string>
