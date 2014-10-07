@@ -52,6 +52,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
 
     private void loadSpecimens() {
         viaje = viajeDao.loadDeep(viaje.getId());
+        viaje.resetEspecimenes();
         List<Especimen> especimens = viaje.getEspecimenes();
         if (especimens.size()>0){
             List<ListItem> listItems = new ArrayList<ListItem>(especimens.size());
@@ -116,16 +117,10 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
     public void onClick(View v) {
         int position = getListView().getPositionForView(v);
         ImageView imageView = (ImageView) v;
-        /*imageView.clearAnimation();
-        imageView.setAnimation(checkToMiddle);
-        imageView.startAnimation(checkToMiddle);*/
         ListItem listItem = ((ListItem)getListAdapter().getItem(position));
         if (itemsSelected[position] != null && itemsSelected[position].equals(listItem.getId())){
             itemsSelected[position] = null;
             imageView.setImageResource(R.drawable.ic_action_location_map);
-            /*imageView.clearAnimation();
-            imageView.setAnimation(checkFromMiddle);
-            imageView.startAnimation(checkFromMiddle);*/
             actionMode.invalidate();
             if (itemsSelectedCount() == 0 && actionMode != null){
                 actionMode.finish();
@@ -133,9 +128,6 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
         }else{
             itemsSelected[position]= listItem.getId();
             imageView.setImageResource(R.drawable.ic_action_navigation_accept);
-            /*imageView.clearAnimation();
-            imageView.setAnimation(checkFromMiddle);
-            imageView.startAnimation(checkFromMiddle);*/
             if (actionMode == null) {
                 actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(new SpecimenListMultiSelectionActionMode());
             }else{
@@ -148,11 +140,21 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
     }
 
     private void deleteSpecimens(){
-
+        // TODO delete specimens
+        for (Long id : itemsSelected) {
+            Especimen especimen = especimenDao.load(id);
+            if (especimen != null) {
+                especimenDao.delete(especimen);
+            }
+        }
     }
 
     private void editSpecimen(Long id){
-
+        // TODO edit selected especimen
+        Especimen especimen = especimenDao.load(id);
+        Intent editEspecimen = new Intent(getActivity().getApplicationContext(), CreateSpecimenActivity.class);
+        editEspecimen.putExtra("viaje", viaje.getId());
+        startActivityForResult(editEspecimen, 0);
     }
 
     private class SpecimenListMultiSelectionActionMode extends ListMultiSelectionActionMode {

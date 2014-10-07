@@ -52,10 +52,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             finish();
             return;
         }else{
+            // Se comprueba que no se este llamando esta actividad desde otra actividad
             // Se carga el usuario en base al identificador almacenado en el Intent con el que se inicio la actividad
             colectorPrincipal = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorPrincipalDao().queryBuilder().where(ColectorPrincipalDao.Properties.Id.eq(getIntent().getLongExtra("colectorPrincipal", 0l))).unique();
             if (colectorPrincipal == null) {
-                // Es la primera vez que se carga el colector principal en esta ejecución
+                // [Inicio applicación] Es la primera vez que se carga el colector principal en esta ejecución
                 // Cargar la persona y el colector principal en base al identificador del archivo de preferencias
                 Persona persona = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getPersonaDao().queryBuilder().where(PersonaDao.Properties.UsuarioID.eq(idUsuarioLoggedIn)).unique();
                 colectorPrincipal = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorPrincipalDao().queryBuilder().where(ColectorPrincipalDao.Properties.PersonaID.eq(persona.getId())).unique();

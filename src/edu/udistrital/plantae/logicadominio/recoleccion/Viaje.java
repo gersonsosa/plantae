@@ -153,8 +153,6 @@ public class Viaje {
 	}
 
 	public void agregarEspecimen(EspecimenDTO especimenDTO){
-//        builderEspecimen.build(especimenDTO);
-//        builderEspecimen.getEspecimen();
 	}
 
 	/**

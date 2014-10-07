@@ -108,6 +108,7 @@ public class CreateSpecimenActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveSpecimen();
+                setResult(RESULT_OK);
                 finish();
                 return true;
             case R.id.action_discard:
@@ -147,8 +148,14 @@ public class CreateSpecimenActivity extends ActionBarActivity {
                     if (especimenDTO.getRegion() != null) {
                         Region region = null;
                         if (especimenDTO.getRegion().getId() == null) {
-                            Region pais = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Pais.eq(especimenDTO.getRegion().getPais())).where(RegionDao.Properties.Rango.eq("pais")).unique();
-                            Region departamento = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Departamento.eq(especimenDTO.getRegion().getDepartamento())).where(RegionDao.Properties.Rango.eq("departamento")).unique();
+                            Region pais = null;
+                            if (especimenDTO.getRegion().getPais() != null) {
+                                pais = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Pais.eq(especimenDTO.getRegion().getPais())).where(RegionDao.Properties.Rango.eq("pais")).unique();
+                            }
+                            Region departamento = null;
+                            if (especimenDTO.getRegion().getDepartamento() != null) {
+                                departamento = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Departamento.eq(especimenDTO.getRegion().getDepartamento())).where(RegionDao.Properties.Rango.eq("departamento")).unique();
+                            }
                             if (pais == null) {
                                 pais = new Pais(especimenDTO.getRegion().getPais());
                                 pais.setUsuarioId(especimenDTO.getUsuarioId());
@@ -188,8 +195,14 @@ public class CreateSpecimenActivity extends ActionBarActivity {
                 if (especimenDTO.getTaxon() != null) {
                     Taxon taxon = null;
                     if (especimenDTO.getTaxon().getId() == null) {
-                        Taxon genero = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(especimenDTO.getTaxon().getGenero())).where(TaxonDao.Properties.Rango.eq("genero")).unique();
-                        Taxon familia = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(especimenDTO.getTaxon().getFamilia())).where(TaxonDao.Properties.Rango.eq("familia")).unique();
+                        Taxon genero = null;
+                        if (especimenDTO.getTaxon().getGenero() != null) {
+                            genero = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(especimenDTO.getTaxon().getGenero())).where(TaxonDao.Properties.Rango.eq("genero")).unique();
+                        }
+                        Taxon familia = null;
+                        if (especimenDTO.getTaxon().getFamilia() != null) {
+                            familia = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(especimenDTO.getTaxon().getFamilia())).where(TaxonDao.Properties.Rango.eq("familia")).unique();
+                        }
                         if (familia == null) {
                             familia = new Familia(especimenDTO.getTaxon().getFamilia());
                             familia.setUsuarioId(especimenDTO.getUsuarioId());

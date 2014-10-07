@@ -179,15 +179,21 @@ public class ColectorPrincipal extends Persona {
      */
     public String generarNumeroDeColeccion(){
         String numeroDeColeccionActual = getNumeroColeccionActual();
-        String numeroDeColeccion;
+        String numeroDeColeccion = "";
         if (TextUtils.isDigitsOnly(numeroDeColeccionActual)){
             Integer numeroColeccionActualInteger = Integer.parseInt(numeroDeColeccionActual);
             numeroDeColeccion = Integer.toString(numeroColeccionActualInteger+1);
         }else{
-            Pattern pattern = Pattern.compile("[0-9]+");
+            Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(numeroDeColeccionActual);
             try {
-                numeroDeColeccion = matcher.group();
+                int i = 0;
+                while (matcher.find()) {
+                    numeroDeColeccion = matcher.group(i);
+                    i++;
+                }
+                int end = numeroDeColeccionActual.indexOf(numeroDeColeccion);
+                numeroDeColeccion = numeroDeColeccionActual.substring(0,end) + Integer.toString(Integer.parseInt(numeroDeColeccion)+1);
             } catch (IllegalStateException e) {
                 numeroDeColeccion = numeroDeColeccionActual + "1";
             }
