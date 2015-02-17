@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:createTravel="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_save"
+          android:title="@string/string_action_save"
+          android:icon="@drawable/ic_action_navigation_accept"
+          createTravel:showAsAction="always" />
+</menu>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/main_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/toolbar_actionbar" />
+
+        <RelativeLayout
+            android:id="@+id/form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?actionBarSize"
+            android:background="@color/plantae_12_white">
+            <RelativeLayout
+                android:id="@+id/viaje_proyecto_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+                <TextView
+                    android:id="@+id/titulo_proyecto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_project"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/viaje_proyecto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="false"
+                    android:layout_below="@+id/titulo_proyecto"/>
+                </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/viaje_nombre_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viaje_proyecto_card"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <EditText
+                    android:id="@+id/viaje_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/promtp_travel_name"
+                    android:ems="10"
+                    android:maxLines="1"
+                    android:inputType="textPersonName"
+                    android:singleLine="true" />
+                </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/colectores_secundarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viaje_nombre_card"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/titulo_colectores_secundarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/titulo_colectores_secundarios"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/secondary_collectors_normal_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/titulo_colectores_secundarios"
+                    android:text="@string/no_secondary_collectors_selected"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/project_selection_mode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/edit_mode_fragment_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/plantae_fallback"/>
+        </LinearLayout>
+
+        </FrameLayout>
+</FrameLayout>

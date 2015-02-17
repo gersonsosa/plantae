@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="plantae_main_color">#009688</color>
+    <color name="plantae_light">#b2dfdb</color>
+    <color name="plantae_dark">#00796b</color>
+    <color name="plantae_accent_main_color">#ffd740</color>
+    <color name="plantae_fallback">#fff</color>
+    <color name="plantae_accent_light">#ffe57f</color>
+    <color name="plantae_accent_dark">#ffc400</color>
+    
+    <color name="plantae_black">#000000</color>
+    <color name="plantae_87_grey">#87000000</color>
+    <color name="plantae_54_grey">#54000000</color>
+    <color name="plantae_26_grey">#26000000</color>
+    <color name="plantae_12_grey">#12000000</color>
+
+    <color name="plantae_12_white">#12FFFFFF</color>
+    <color name="plantae_30_white">#30FFFFFF</color>
+    <color name="plantae_70_white">#70FFFFFF</color>
+
+    <color name="plantae_card_background">#E5E5E5</color>
+
+    <color name="list_item_title">#87000000</color>
+    <color name="list_background">#fff</color>
+    <color name="list_background_pressed">#30FFFFFF</color>
+    <color name="list_divider">#12000000</color>
+    <color name="counter_text_bg">#FFFFFF</color>
+    <color name="counter_text_color">#26000000</color>
+</resources>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Strings -->
+    <string name="app_name">Plantae</string>
+    <string name="action_settings">Settings</string>
+    <string name="log_out_string">Log out</string>
+    <string name="content_desc">Image</string>
+    <string name="items_selected">Items Selected</string>
+    <string name="title_projects">Projects</string>
+    <string name="title_travels">Travels</string>
+    <string name="title_specimens">Specimens</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_add">Add new</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_search">Search</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="and">and</string>
+    <string name="comma">,</string>
+    <string name="action_delete_travel">Delete Travel</string>
+    <string name="action_edit_travel">Edit Travel</string>
+    <string name="no_travels">No Travels Were Found</string>
+    <string name="add_new_travels">Add a new travel</string>
+    <string name="open_nav_drawer">Open The Navigation Drawer and</string>
+    <string name="manage_text">Manage</string>
+    <string name="manage_travels">Manage Travels</string>
+    <string name="select_travel">Select a travel to show its contents</string>
+    <string name="string_action_save">Save</string>
+    <string name="string_action_discard">Discard</string>
+    <string name="title_activity_viaje_list_fragment">Travel List</string>
+    <string name="title_activity_proyecto_list_fragment">Project List</string>
+
+    <!-- Specimen strings -->
+    <string name="take_photo">Take a picture</string>
+    <string name="view_pictures">View pictures</string>
+    <string name="pick_color">Pick a color</string>
+    <string name="no_specimens">No specimens were found</string>
+    <string name="add_new_specimen">Add a new specimen</string>
+    <string name="delete_specimen_confirmation_message">Delete Specimen? This will delete the specimen and its contents.</string>
+    <string name="action_rebuild_journey">Rebuild Journey</string>
+    <string name="action_add_detailed">Add new detailed</string>
+
+    <!-- Travel strings -->
+    <string name="title_activity_create_travel">Create Travel</string>
+    <string name="promtp_travel_name">Travel Name</string>
+    <string name="promtp_travel_description">Description</string>
+    <string name="prompt_agregar_colector_secundario">Add</string>
+    <string name="titulo_colectores_secundarios">Sencondary Colectors</string>
+    <string name="no_secondary_collectors_selected">No secondary collectors selected</string>
+    <string name="title_project">Project</string>
+    <string name="create_project">Create project</string>
+    <string name="select_project">Select a project</string>
+    <string name="default_project_name">Default project</string>
+    <string name="add_project">Add New Project</string>
+    <string name="delete_project">Delete Project(s)</string>
+    <string name="edit_project">Edit Project</string>
+    <string name="title_secondary_collector">Secondary Collector</string>
+    <string name="create_secondary_collector">Create Secondary Collector</string>
+    <string name="select_secondary_collectors">Collectors</string>
+    <string name="add_secondary_collector">Add Secondary Collector</string>
+    <string name="delete_secondary_collector">Delete Secondary Collector(s)</string>
+    <string name="edit_secondary_collector">Edit Secondary Collector</string>
+    <string name="no_travels_found">No travels were found</string>
+    <string name="add_new_travel">Add a new travel</string>
+    <string name="delete_travel_confirmation_message">Delete Travel? This will delete the travel and its contents.</string>
+
+    <!-- Login Strings -->
+    <string name="title_activity_login">Login</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_forgot_password">Recover lost password</string>
+    <string name="login_progress_signing_in">Signing in…</string>
+    <string name="error_invalid_email">The email address is invalid</string>
+    <string name="error_incorrect_password">This email and or password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <!-- Register Strings -->
+    <string name="title_activity_register">Register</string>
+    <string name="prompt_register_email">Email</string>
+    <string name="prompt_register_password">Password</string>
+    <string name="prompt_register_fullname">Full Name</string>
+    <string name="action_register"><b>Register</b></string>
+    <string name="action_register_short"><b>Register</b></string>
+    <string name="register_progress">Registering…</string>
+    <string name="error_register_invalid_email">This email address is invalid</string>
+    <string name="error_register_being_used_email">This email address is already being used</string>
+    <string name="error_register_short_password">This password is too short</string>
+    <string name="error_register_simple_password">This password is too simple</string>
+    <string name="error_register_incorrect_fieldnumber">This field number is invalid</string>
+    <string name="error_register_incorrect_institution">This institution is invalid</string>
+    <string name="error_register_incorrect_fullname">This name is invalid</string>
+    <string name="error_register_field_required">This field is required</string>
+    <string name="collector_data_type">Detailed data capture mode</string>
+    <string name="simple_data_type">Simple data capture mode is designed for biologists who store few data about their specimens and omit physiologic data of the plants.</string>
+    <string name="detailed_data_type">Detailed data capture mode is designed for biologists who store more data of their specimens including physiologic measures.</string>
+    <string name="prompt_register_collector_number">Field number</string>
+    <string name="prompt_register_institution">Institution</string>
+
+    <!-- Collecting Information -->
+    <string name="collecting_information_title">Collecting information</string>
+    <string name="prompt_collecting_date">Collecting date</string>
+    <string name="prompt_collector_number">Collector number</string>
+    <string name="prompt_collecting_method">Collecting method</string>
+    <string name="prompt_collecting_station">Station</string>
+
+    <!-- Flowers Information -->
+    <string name="flowers_information_title">Flowers</string>
+    <string name="flowers_information_subtitle">Flowers information</string>
+    <string name="prompt_calyx">Calyx</string>
+    <string name="prompt_corolla">Corolla</string>
+    <string name="prompt_stamens">Stamens</string>
+    <string name="prompt_pistiliodio">Pistiliodio</string>
+    <string name="prompt_gineceo">Gineceo</string>
+    <string name="prompt_stigmata">Stigmata</string>
+    <string name="prompt_flowers_description">Flowers Description</string>
+
+    <!-- Fruits Information -->
+    <string name="fruits_information_title">Fruits</string>
+    <string name="mature_information_title">Mature fruit</string>
+    <string name="prompt_exocarp">Excarp</string>
+    <string name="prompt_endocarp">Endocarp</string>
+    <string name="prompt_mesocarp">Mesocarp</string>
+    <string name="immature_fruit_title">Immature fruit</string>
+    <string name="prompt_fruits_description">Fruits Description</string>
+
+    <!-- Habitat Information -->
+    <string name="habitat_information_title">Habitat</string>
+    <string name="habitat_information_subtitle">Habitat information</string>
+    <string name="prompt_vegetation">Vegetation</string>
+    <string name="prompt_soil_substratum">Soil - Substratum</string>
+    <string name="prompt_associated_species">Associated Species</string>
+
+    <!-- Inflorescense Information -->
+    <string name="inflorescence_information_title">Inflorescence</string>
+    <string name="inflorescence_information_subtitle">Inflorescence information</string>
+    <string name="prompt_inflorescence_alone">Alone?</string>
+    <string name="prompt_prophyll_nature">Prophyll Nature</string>
+    <string name="prompt_petiole_size">Petiole Size</string>
+    <string name="prompt_bracts_number">Bracts Number</string>
+    <string name="prompt_bracts_position">Bracts Position</string>
+    <string name="prompt_bracts_size">Bracts Size</string>
+    <string name="prompt_bracts_nature">Bracts Nature</string>
+    <string name="prompt_peduncle_size">Peduncle Size</string>
+    <string name="prompt_rachis_size">Rachis Size</string>
+    <string name="prompt_rachillae_number">Rachillae Number</string>
+    <string name="prompt_rachillae_size">Rachillae Size</string>
+    <string name="inflorescence_color_title">Inflorescence Color</string>
+    <string name="prompt_in_flower_color">In flower color</string>
+    <string name="prompt_in_fruit_color">In fruit color</string>
+    <string name="prompt_inflorescence_description">Inflorescence Description</string>
+
+    <!-- Leaves Information -->
+    <string name="leaves_information_title">Leaves</string>
+    <string name="leaves_information_subtitle">Leaves information</string>
+    <string name="prompt_leaves_number">Leaves number</string>
+    <string name="prompt_leaf_color">Leaf color</string>
+    <string name="prompt_leaf_size">Leaf Size</string>
+    <string name="prompt_rachis_length">Rachis Length</string>
+    <string name="prompt_petiole_form">Petiole form</string>
+    <string name="prompt_petiole_color">Petiole Color</string>
+    <string name="prompt_pinnae_number">Pinnae Number</string>
+    <string name="prompt_pinnae_arrangement">Pinnae Arrangement</string>
+    <string name="prompt_leaves_description">Leaves Description</string>
+
+    <!-- Locality Information -->
+    <string name="locality_information_title">Locality</string>
+    <string name="locality_information_subtitle">Locality information</string>
+    <string name="prompt_locality_name">Locality Name</string>
+    <string name="prompt_county">County</string>
+    <string name="prompt_state">State</string>
+    <string name="prompt_country">Country</string>
+    <string name="prompt_min_elevation">Min elevation</string>
+    <string name="prompt_max_elevation">Max elevation</string>
+    <string name="line_separator">-</string>
+    <string name="prompt_longitude">Longitude</string>
+    <string name="prompt_latitude">Latitude</string>
+    <string name="prompt_locality_description">Description</string>
+    <string name="update_location">Update Location</string>
+    <string name="edit_location">Edit Location</string>
+
+    <!-- Plant Attributes -->
+    <string name="plants_attributes_information_title">Plant Attributes</string>
+    <string name="plants_attributes_information_subtitle">Plant Attributes Information</string>
+    <string name="prompt_habit">Habit</string>
+    <string name="prompt_height">Height</string>
+    <string name="prompt_DAP">DAP</string>
+    <string name="prompt_abundance">Abundance</string>
+    <string name="prompt_fenology">Fenology</string>
+    <string name="prompt_plant_description">Plant description</string>
+
+    <string name="colors_title">Colors</string>
+    <string name="prompt_color_description">Plant organ/description</string>
+    <string name="color_munsell">Color Munsell</string>
+    <string name="set_color_action">Set Color</string>
+    <string name="add_color_action">Add Color</string>
+    <string name="edit_color_action">Edit Color</string>
+    <string name="delete_colors_action">Delete Color(s)</string>
+    <string name="no_colors">No Colors</string>
+    <string name="delete_colors_confirmation_message">Delete color(s)? This will delete the color(s) and its contents.</string>
+
+    <string name="associated_samples_action">Associated Samples</string>
+    <string name="no_associated_samples">No Associated Samples</string>
+    <string name="prompt_characteristics">Additional Characteristics</string>
+
+    <!-- Plant Sample Information -->
+    <string name="plant_sample_title">Plant Sample</string>
+    <string name="prompt_plant_sample_description">Sample Description</string>
+    <string name="add_plant_sample_action">Add Plant Sample</string>
+    <string name="delete_plant_sample_action">Delete Associated Sample(s)</string>
+    <string name="edit_plant_sample_action">Edit Associated Sample</string>
+    <string name="no_plant_samples_found">No Plant Samples Found</string>
+    <string name="delete_associated_sample_confirmation_message">Delete Associated Sample? This will delete the Associated sample and its contents.</string>
+    <string name="error_description_required">The description is required</string>
+
+    <!-- Roots Information -->
+    <string name="root_information_title">Root</string>
+    <string name="root_information_subtitle">Root information</string>
+    <string name="prompt_cone_height">Cone Height</string>
+    <string name="prompt_in_base_diameter">In base diameter</string>
+    <string name="prompt_roots_diameter">Roots diameter</string>
+    <string name="armed_text">Armed?</string>
+    <string name="prompt_spines_shape">Spines shape</string>
+    <string name="prompt_spines_size">Spines size</string>
+    <string name="prompt_roots_description">Roots Description</string>
+
+    <!-- Stem Information -->
+    <string name="stem_information_title">Stem</string>
+    <string name="stem_information_subtitle">Stem information</string>
+    <string name="prompt_stem_height">Stem height</string>
+    <string name="prompt_stem_diameter">Stem diameter</string>
+    <string name="prompt_stem_color">Stem color</string>
+    <string name="prompt_conspicuous_internodes">Conspicuous internodes</string>
+    <string name="prompt_internodes_length">Internodes length</string>
+    <string name="prompt_stem_naked">Stem naked</string>
+    <string name="prompt_stem_covered">Stem covered</string>
+    <string name="prompt_thorns">Thorns?</string>
+    <string name="prompt_stem_description">Inflorescence Description</string>
+
+    <!-- Taxon Information -->
+    <string name="taxon_information_title">Taxon</string>
+    <string name="taxon_information_subtitle">Taxon information</string>
+    <string name="prompt_family">Family</string>
+    <string name="prompt_genus">Genus</string>
+    <string name="prompt_species">Species</string>
+
+    <!-- Project strings -->
+    <string name="create_project_title">Create project</string>
+    <string name="prompt_project_name">Project name</string>
+    <string name="prompt_financial_agency">Financial agency</string>
+    <string name="prompt_convention_number">Convention number</string>
+    <string name="prompt_executix_agency">Executix agency</string>
+    <string name="prompt_collecting_permission">Collecting permission</string>
+    <string name="prompt_permission_number">Permission number</string>
+    <string name="error_project_name_required">The name of the project is required</string>
+    <string name="no_projects_found">No projects were found</string>
+    <string name="add_new_project">Add a new project</string>
+    <string name="delete_project_confirmation_message">Delete Project? This will delete the project and its contents.</string>
+    <string name="no_secondary_collectors_found">No secondary collectors were found</string>
+    <string name="delete_secondary_collector_confirmation_message">Delete Secondary Collector?</string>
+    <string name="error_collector_name_required">Collector Name Required</string>
+    <string name="prompt_secondary_collector_names">Collector name</string>
+    <string name="prompt_secondary_collector_lastname">Collector LastName</string>
+    <string name="page">Page:</string>
+    <string name="plantae_failed_create_directory">Plantae failed to create directory to save images.</string>
+
+    <!-- Picture gallery -->
+    <string name="edit_picture">Edit Picture</string>
+    <string name="delete_pictures">Delete picture(s)</string>
+    <string name="create_associated_sample_title">Create Associated Sample</string>
+    <string name="associated_sample_description">Description</string>
+    <string name="prompt_associated_sample_treatment_method">Associated Sample Treatment</string>
+    <string name="action_export_csv">Export CSV</string>
+    <string name="exporting_travel">Exporting travel…</string>
+    <string name="title_activity_trayecto">Trayecto</string>
+    <string name="search_hint">Type to search</string>
+    <string name="title_activity_search">Search</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_create_color">CreateColorActivity</string>
+    <string name="color_name">Color name</string>
+    <string name="color_description">Color description</string>
+    <string name="color_plant_organ">Plant organ</string>
+    <string name="search_by_hint">Search by Collection number, Locality, Scientific Name, Colors, Collection date, Specimen description</string>
+
+    <string-array name="plant_organs">
+        <item>Flower Corolla</item>
+        <item>Flower Calyx</item>
+        <item>Flower Gineceo</item>
+        <item>Flower Stamens</item>
+        <item>Flower Stigmata</item>
+        <item>Flower Pistiliodios</item>
+        <item>Fruit Endocarp</item>
+        <item>Fruit Excarp</item>
+        <item>Inflorescence Flower</item>
+        <item>Inflorescence Fruit</item>
+        <item>Leaves</item>
+        <item>Leaves Petiole</item>
+        <item>Stem</item>
+    </string-array>
+
+</resources>

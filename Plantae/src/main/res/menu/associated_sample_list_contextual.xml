@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:sampleList="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_add_associated_sample"
+          android:title="@string/add_plant_sample_action"
+          android:icon="@drawable/ic_action_add"
+          sampleList:showAsAction="ifRoom" />
+    <item android:id="@+id/action_edit_associated_sample"
+          android:title="@string/edit_plant_sample_action"
+          android:icon="@drawable/ic_action_content_edit"
+          sampleList:showAsAction="ifRoom" />
+    <item android:id="@+id/action_delete_associated_samples"
+          android:title="@string/delete_plant_sample_action"
+          android:icon="@drawable/ic_action_content_discard"
+          sampleList:showAsAction="ifRoom" />
+
+
+</menu>

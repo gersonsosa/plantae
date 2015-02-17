@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Plantae</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="action_add">Agregar nuevo</string>
+    <string name="action_add_detailed">Agregar nuevo detallado</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_delete_travel">Eliminar viaje</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_edit_travel">Editar Viaje</string>
+    <string name="action_export_csv">Exportar CSV</string>
+    <string name="action_forgot_password">Recuperar contraseña</string>
+    <string name="action_rebuild_journey">Recnstruir trayecto</string>
+    <string name="action_register">Registrar</string>
+    <string name="action_register_short">Registrar</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_settings">Configuración</string>
+    <string name="action_sign_in">Ingresar</string>
+    <string name="action_sign_in_short">Ingresar</string>
+    <string name="action_sign_up">Registrarse</string>
+    <string name="add_color_action">Agregar color</string>
+    <string name="add_new_project">Agregar nuevo proyecto</string>
+    <string name="add_new_specimen">Agregar nuevo espécimen</string>
+    <string name="add_new_travel">Agregar nuevo viaje</string>
+</resources>

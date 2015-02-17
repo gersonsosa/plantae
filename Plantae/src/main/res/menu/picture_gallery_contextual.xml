@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:pictureGalleryContextual="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/edit_picture"
+          android:title="@string/edit_picture"
+          android:icon="@drawable/ic_action_content_edit"
+          pictureGalleryContextual:showAsAction="ifRoom" />
+    <item android:id="@+id/delete_pictures"
+          android:title="@string/delete_pictures"
+          android:icon="@drawable/ic_action_content_discard"
+          pictureGalleryContextual:showAsAction="ifRoom" />
+
+</menu>

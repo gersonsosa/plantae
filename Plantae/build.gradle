@@ -1,0 +1,54 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+apply plugin: 'com.android.application'
+
+dependencies {
+    repositories {
+        mavenCentral()
+    }
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'de.greenrobot:greendao:1.3.7'
+    compile 'com.larswerkman:HoloColorPicker:1.4'
+}
+
+/**
+ * Gets the version name from the latest Git tag.
+ */
+
+android {
+    compileSdkVersion 'Google Inc.:Google APIs:21'
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "edu.udistrital.plantae"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('my.keystore')
+            storePassword 'storepassword'
+            keyAlias 'keyalias'
+            keyPassword 'keypassword'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}

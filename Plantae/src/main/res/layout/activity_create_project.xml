@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_actionbar" />
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/create_project_title"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/create_project_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/project_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/create_project_title"
+                android:hint="@string/prompt_project_name"
+                android:inputType="text"
+                android:maxLines="3"/>
+
+            <EditText
+                android:id="@+id/financial_agency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/project_name"
+                android:hint="@string/prompt_financial_agency"
+                android:inputType="text"
+                android:maxLines="3"/>
+            <EditText
+                android:id="@+id/convention_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/financial_agency"
+                android:hint="@string/prompt_convention_number"
+                android:inputType="numberDecimal"
+                android:maxLines="3"/>
+
+            <EditText
+                android:id="@+id/executix_agency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/convention_number"
+                android:hint="@string/prompt_executix_agency"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+            <EditText
+                android:id="@+id/collecting_permission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/executix_agency"
+                android:hint="@string/prompt_collecting_permission"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+            <EditText
+                android:id="@+id/permission_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/collecting_permission"
+                android:hint="@string/prompt_permission_number"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="collecting_information_title">Collecting information</string>
-    <string name="prompt_collecting_date">Collecting date</string>
-    <string name="prompt_collector_number">Collector number</string>
-    <string name="prompt_collecting_method">Collecting method</string>
-    <string name="prompt_collecting_station">Station</string>
-</resources>

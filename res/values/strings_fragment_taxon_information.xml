@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="taxon_information_title">Taxon information</string>
-    <string name="prompt_family">Family</string>
-    <string name="prompt_genus">Genus</string>
-    <string name="prompt_species">Species</string>
-</resources>

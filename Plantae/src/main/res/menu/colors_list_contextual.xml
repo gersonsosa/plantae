@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:colorsList="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.udistrital.plantae.ui.CreateColorActivity">
+    <item android:id="@+id/action_add_color"
+        android:title="@string/add_color_action"
+        android:icon="@drawable/ic_action_add"
+        colorsList:showAsAction="ifRoom" />
+    <item android:id="@+id/action_edit_color"
+        android:title="@string/edit_color_action"
+        android:icon="@drawable/ic_action_content_edit"
+        colorsList:showAsAction="ifRoom" />
+    <item android:id="@+id/action_delete_colors"
+        android:title="@string/delete_colors_action"
+        android:icon="@drawable/ic_action_content_discard"
+        colorsList:showAsAction="ifRoom" />
+</menu>
