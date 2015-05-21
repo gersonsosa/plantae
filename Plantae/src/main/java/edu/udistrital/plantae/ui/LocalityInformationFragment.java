@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.ubicacion.Region;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
-import edu.udistrital.plantae.objetotransferenciadatos.RegionDTO;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.RegionDao;
+import edu.udistrital.plantae.utils.Devices;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,13 +29,15 @@ import java.util.Locale;
  * Created by hghar on 6/25/14.
  */
 public class LocalityInformationFragment extends Fragment {
-    private EspecimenDTO especimenDTO;
-    private EditText descriptionEditText;
-    private EditText maxElevationEditText;
-    private EditText minElevationEditText;
+
     private EditText localityNameEditText;
     private EditText longitudeEditText;
     private EditText latitudeEditText;
+    private EditText maxElevationEditText;
+    private EditText minElevationEditText;
+    private EditText datumEditText;
+    private EditText deviceBrandEditText;
+    private EditText descriptionEditText;
     private ProgressBar progressBarCoordinates;
     private AutoCompleteTextView countyAutoCompleteTextView;
     private AutoCompleteTextView stateAutoCompleteTextView;
@@ -46,10 +47,25 @@ public class LocalityInformationFragment extends Fragment {
     private ImageButton editLocalityButton;
     private DaoSession daoSession;
     private OnLocationUpdateRequest onLocationUpdateRequest;
+    private OnLocalityChangeListener onLocalityChangeListener;
     private boolean isEditable;
 
     public interface OnLocationUpdateRequest {
         public void onLocationUpdateRequested();
+    }
+
+    public interface OnLocalityChangeListener {
+        public void onLocalityNameChanged(String localityName);
+        public void onCountyChanged(String county);
+        public void onStateChanged(String state);
+        public void onCountryChanged( String country);
+        public void onMinAltitudeChanged(double minAltidude);
+        public void onMaxAltitudeChanged(double maxAltitude);
+        public void onLatitudeChanged(double lat);
+        public void onLongitudeChanged(double lon);
+        public void onDatumChanged(String datum);
+        public void onDeviceBrandChanged(String deviceBrand);
+        public void onLocalityDescriptionChanged(String localityDescription);
     }
 
     @Override
@@ -57,10 +73,10 @@ public class LocalityInformationFragment extends Fragment {
         super.onAttach(activity);
         try {
             onLocationUpdateRequest = (OnLocationUpdateRequest) activity;
+            onLocalityChangeListener = (OnLocalityChangeListener) activity;
         }catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement LocalityInformationFragment.OnLocationUpdateRequest");
+            throw new ClassCastException(activity.toString() + "must implement LocalityInformationFragment.OnLocationUpdateRequest and LocalityInformationFragment.OnLocalityChangeListener");
         }
-
     }
 
     @Override
@@ -76,7 +92,40 @@ public class LocalityInformationFragment extends Fragment {
                 ((ViewGroup) viewHolder.fragmentView.getParent()).removeView(viewHolder.fragmentView);
             }
         }
-        especimenDTO = getArguments().getParcelable("especimen");
+        Bundle arguments = getArguments();
+        Long localidadId = arguments.getLong("localidadId");
+        String localidadNombre = arguments.getString("localidadNombre");
+        Double latitud = arguments.getDouble("latitud");
+        latitud = latitud.equals(Double.valueOf(0.0d)) ? null : latitud;
+        Double longitud = arguments.getDouble("longitud");
+        longitud = longitud.equals(Double.valueOf(0.0d)) ? null : longitud;
+        String datum = arguments.getString("datum");
+        Double altitudMinima = arguments.getDouble("altitudMinima");
+        altitudMinima = altitudMinima.equals(Double.valueOf(0.0d)) ? null : altitudMinima;
+        Double altitudMaxima = arguments.getDouble("altitudMaxima");
+        altitudMaxima = altitudMaxima.equals(Double.valueOf(0.0d)) ? null : altitudMaxima;
+        String localidadDescripcion = arguments.getString("localidadDescripcion");
+        String marcaDispositivo = arguments.getString("marcaDispositivo");
+        String municipio = arguments.getString("municipio");
+        String departamento = arguments.getString("departamento");
+        String pais = arguments.getString("pais");
+
+        if (marcaDispositivo == null || TextUtils.isEmpty(marcaDispositivo)) {
+            marcaDispositivo = Devices.getDeviceName();
+        }
+
+        localityNameEditText.setText(localidadNombre);
+        latitudeEditText.setText(latitud == null ? "":latitud.toString());
+        longitudeEditText.setText(longitud  == null ? "":longitud.toString());
+        minElevationEditText.setText(altitudMinima == null ? "":altitudMinima.toString());
+        maxElevationEditText.setText(altitudMaxima == null ? "":altitudMaxima.toString());
+        datumEditText.setText(datum);
+        deviceBrandEditText.setText(marcaDispositivo);
+        descriptionEditText.setText(localidadDescripcion);
+        countyAutoCompleteTextView.setText(municipio);
+        stateAutoCompleteTextView.setText(departamento);
+        countryAutoCompleteTextView.setText(pais);
+
         daoSession = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession();
 
         maxElevationEditText.setFocusableInTouchMode(isEditable);
@@ -98,20 +147,7 @@ public class LocalityInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    especimenDTO.setLocalidadNombre(((EditText) v).getText().toString());
-                }
-            }
-        });
-        countyAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Region itemAtPosition = (Region) parent.getItemAtPosition(position);
-                if (itemAtPosition != null) {
-                    RegionDTO regionDTO = new RegionDTO(itemAtPosition);
-                    stateAutoCompleteTextView.setText(itemAtPosition.getRegionPadre().getNombre());
-                    countryAutoCompleteTextView.setText(itemAtPosition.getRegionPadre().getRegionPadre().getNombre());
-                    especimenDTO.setRegion(regionDTO);
-                    stateAutoCompleteTextView.requestFocus();
+                    onLocalityChangeListener.onLocalityNameChanged(((EditText) v).getText().toString());
                 }
             }
         });
@@ -120,26 +156,11 @@ public class LocalityInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    RegionDTO regionDTO = null;
                     // No selecciono ninguna opción de autocompletado
                     String name = ((AutoCompleteTextView) v).getText().toString();
                     if (!TextUtils.isEmpty(name)) {
-                        if (especimenDTO.getRegion() != null) {
-                            regionDTO = especimenDTO.getRegion();
-                        } else {
-                            regionDTO = new RegionDTO();
-                        }
-                        Region municipio = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Municipio.eq(name)).unique();
-                        if (municipio != null) {
-                            stateAutoCompleteTextView.setText(municipio.getRegionPadre().getNombre());
-                            countryAutoCompleteTextView.setText(municipio.getRegionPadre().getRegionPadre().getNombre());
-                            regionDTO.setId(municipio.getId());
-                            regionDTO.setDepartamento(municipio.getRegionPadre().getNombre());
-                            regionDTO.setPais(municipio.getRegionPadre().getRegionPadre().getNombre());
-                        }
-                        regionDTO.setMunicipio(name);
+                        onLocalityChangeListener.onCountyChanged(name);
                     }
-                    especimenDTO.setRegion(regionDTO);
                 }
             }
         });
@@ -147,29 +168,8 @@ public class LocalityInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    RegionDTO regionDTO;
                     String name = ((AutoCompleteTextView) v).getText().toString();
-                    if (!TextUtils.isEmpty(name)) {
-                        if (especimenDTO.getRegion() != null) {
-                            regionDTO = especimenDTO.getRegion();
-                        } else {
-                            regionDTO = new RegionDTO();
-                        }
-
-                        Region departamento = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("departamento")).where(RegionDao.Properties.Departamento.eq(name)).unique();
-                        if (departamento != null) {
-                            List<Region> countys = daoSession.getRegionDao()
-                                    .queryBuilder()
-                                    .where(RegionDao.Properties.Departamento.eq(departamento.getNombre()))
-                                    .where(RegionDao.Properties.Rango.eq("municipio")).list();
-                            countyAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_dropdown_item_1line, countys));
-                            countryAutoCompleteTextView.setText(departamento.getRegionPadre().getNombre());
-                            regionDTO.setPais(departamento.getRegionPadre().getNombre());
-                            regionDTO.setId(departamento.getId());
-                        }
-                        regionDTO.setDepartamento(name);
-                        especimenDTO.setRegion(regionDTO);
-                    }
+                    onLocalityChangeListener.onStateChanged(name);
                 }
             }
         });
@@ -177,27 +177,8 @@ public class LocalityInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    RegionDTO regionDTO;
                     String name = ((AutoCompleteTextView) v).getText().toString();
-                    if (!TextUtils.isEmpty(name)) {
-                        if (especimenDTO.getRegion() != null) {
-                            regionDTO = especimenDTO.getRegion();
-                        } else {
-                            regionDTO = new RegionDTO();
-                        }
-
-                        Region pais = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("pais")).where(RegionDao.Properties.Pais.eq(name)).unique();
-                        if (pais != null) {
-                            List<Region> states = daoSession.getRegionDao()
-                                    .queryBuilder()
-                                    .where(RegionDao.Properties.Departamento.eq(pais.getNombre()))
-                                    .where(RegionDao.Properties.Rango.eq("departamento")).list();
-                            stateAutoCompleteTextView.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_dropdown_item_1line, states));
-                            regionDTO.setId(pais.getId());
-                        }
-                        regionDTO.setPais(name);
-                        especimenDTO.setRegion(regionDTO);
-                    }
+                    onLocalityChangeListener.onCountryChanged(name);
                 }
             }
         });
@@ -208,36 +189,82 @@ public class LocalityInformationFragment extends Fragment {
                 if (!hasFocus) {
                     String value = ((EditText) v).getText().toString();
                     if (!TextUtils.isEmpty(value)) {
-                        especimenDTO.setAltitudMinima(Double.parseDouble(value));
+                        onLocalityChangeListener.onMinAltitudeChanged(Double.parseDouble(value));
                     }
                 }
             }
         });
+
         maxElevationEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String value = ((EditText) v).getText().toString();
                     if (!TextUtils.isEmpty(value)) {
-                        especimenDTO.setAltitudMaxima(Double.parseDouble(value));
+                        onLocalityChangeListener.onMaxAltitudeChanged(Double.parseDouble(value));
                     }
                 }
             }
         });
+
+        longitudeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String value = ((EditText) v).getText().toString();
+                    if (!TextUtils.isEmpty(value)) {
+                        onLocalityChangeListener.onLongitudeChanged(Double.parseDouble(value));
+                    }
+                }
+            }
+        });
+
+        latitudeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String value = ((EditText) v).getText().toString();
+                    if (!TextUtils.isEmpty(value)) {
+                        onLocalityChangeListener.onLatitudeChanged(Double.parseDouble(value));
+                    }
+                }
+            }
+        });
+
+        datumEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    onLocalityChangeListener.onDatumChanged(((EditText) v).getText().toString());
+                }
+            }
+        });
+
+        deviceBrandEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    onLocalityChangeListener.onDeviceBrandChanged(((EditText) v).getText().toString());
+                }
+            }
+        });
+
         descriptionEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    especimenDTO.setLocalidadDescripcion(((EditText) v).getText().toString());
+                    onLocalityChangeListener.onLocalityDescriptionChanged(((EditText) v).getText().toString());
                 }
             }
         });
+
         updateLocalityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onLocationUpdateRequest.onLocationUpdateRequested();
             }
         });
+
         editLocalityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,21 +286,21 @@ public class LocalityInformationFragment extends Fragment {
             }
         });
         localityFragmentLoadTask = new LocalityFragmentLoadTask();
-        localityFragmentLoadTask.execute();
+        localityFragmentLoadTask.execute(pais, departamento);
         return viewHolder.fragmentView;
     }
 
     public void updateLocation(Location location) {
         if (minElevationEditText != null && maxElevationEditText != null && latitudeEditText != null && longitudeEditText != null) {
             minElevationEditText.setText(Double.toString(location.getAltitude()));
+            onLocalityChangeListener.onMinAltitudeChanged(location.getAltitude());
             location.getAccuracy();
-            especimenDTO.setAltitudMinima(location.getAltitude());
             maxElevationEditText.setText(Double.toString(location.getAltitude()));
-            especimenDTO.setAltitudMaxima(location.getAltitude());
+            onLocalityChangeListener.onMaxAltitudeChanged(location.getAltitude());
             latitudeEditText.setText(Double.toString(location.getLatitude()));
-            especimenDTO.setLatitud(location.getLatitude());
+            onLocalityChangeListener.onLatitudeChanged(location.getLatitude());
             longitudeEditText.setText(Double.toString(location.getLongitude()));
-            especimenDTO.setLongitud(location.getLongitude());
+            onLocalityChangeListener.onLongitudeChanged(location.getLongitude());
             // Ensure that a Geocoder services is available
             if (Build.VERSION.SDK_INT >=
                     Build.VERSION_CODES.GINGERBREAD
@@ -281,22 +308,24 @@ public class LocalityInformationFragment extends Fragment {
                     Geocoder.isPresent()) {
                 // Show the activity indicator
                 progressBarCoordinates.setVisibility(View.VISIBLE);
-            /*
-             * Reverse geocoding is long-running and synchronous.
-             * Run it on a background thread.
-             * Pass the current location to the background task.
-             * When the task finishes,
-             * onPostExecute() displays the address.
-             */
+                /*
+                 * Reverse geocoding is long-running and synchronous.
+                 * Run it on a background thread.
+                 * Pass the current location to the background task.
+                 * When the task finishes,
+                 * onPostExecute() displays the address.
+                 */
                 (new DetermineLocationTask()).execute(location);
             }
         }
     }
 
-    private void setAdapters(ArrayAdapter<Region> countyArrayAdapter, ArrayAdapter<Region> statesArrayAdapter, ArrayAdapter<Region> countrysArrayAdapter) {
-        countyAutoCompleteTextView.setAdapter(countyArrayAdapter);
-        stateAutoCompleteTextView.setAdapter(statesArrayAdapter);
-        countryAutoCompleteTextView.setAdapter(countrysArrayAdapter);
+    public void updateRegion(String pais, String departamento, boolean clearCounty) {
+        if (clearCounty) {
+            countyAutoCompleteTextView.setText("");
+        }
+        localityFragmentLoadTask = new LocalityFragmentLoadTask();
+        localityFragmentLoadTask.execute(pais, departamento);
     }
 
     private void retrieveViews(ViewHolder viewHolder){
@@ -306,6 +335,8 @@ public class LocalityInformationFragment extends Fragment {
         countryAutoCompleteTextView = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.country);
         minElevationEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.min_elevation);
         maxElevationEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.max_elevation);
+        datumEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.locality_datum);
+        deviceBrandEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.locality_device_brand);
         descriptionEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.locality_description);
         latitudeEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.latitude);
         longitudeEditText = (EditText) viewHolder.fragmentView.findViewById(R.id.longitude);
@@ -318,26 +349,72 @@ public class LocalityInformationFragment extends Fragment {
         View fragmentView;
     }
 
-    public class LocalityFragmentLoadTask extends AsyncTask<Void, Void, Boolean> {
+    public class LocalityFragmentLoadTask extends AsyncTask<String, Void, Boolean> {
 
         private ArrayAdapter<Region> countyArrayAdapter;
         private ArrayAdapter<Region> statesArrayAdapter;
         private ArrayAdapter<Region> countrysArrayAdapter;
+        private String country;
+        private String state;
 
         @Override
-        protected Boolean doInBackground(Void...params) {
-            List<Region> countys = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("municipio")).list();
-            countyArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,countys);
-            List<Region> states = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("departamento")).list();
-            statesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,states);
-            List<Region> countrys = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("pais")).list();
-            countrysArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,countrys);
+        protected Boolean doInBackground(String...params) {
+            if (params != null && params.length > 0) {
+                country = params[0];
+                state = params[1];
+            }
+            if (country == null && state == null) {
+                List<Region> countys = daoSession.getRegionDao()
+                        .queryBuilder()
+                        .where(RegionDao.Properties.Rango.eq("municipio"))
+                        .list();
+                countyArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, countys);
+                List<Region> states = daoSession.getRegionDao()
+                        .queryBuilder()
+                        .where(RegionDao.Properties.Rango.eq("departamento"))
+                        .list();
+                statesArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, states);
+                List<Region> countrys = daoSession.getRegionDao()
+                        .queryBuilder()
+                        .where(RegionDao.Properties.Rango.eq("pais"))
+                        .list();
+                countrysArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, countrys);
+            }else if (country != null && state == null) {
+                List<Region> states = daoSession.getRegionDao()
+                        .queryBuilder()
+                        .where(RegionDao.Properties.Departamento.eq(country))
+                        .where(RegionDao.Properties.Rango.eq("departamento"))
+                        .list();
+                statesArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, states);
+            }else{
+                List<Region> countys = daoSession.getRegionDao()
+                        .queryBuilder()
+                        .where(RegionDao.Properties.Departamento.eq(state))
+                        .where(RegionDao.Properties.Rango.eq("municipio"))
+                        .list();
+                countyArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, countys);
+            }
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            setAdapters(countyArrayAdapter, statesArrayAdapter, countrysArrayAdapter);
+            if (countyArrayAdapter != null) {
+                countyAutoCompleteTextView.setAdapter(countyArrayAdapter);
+            }
+            if (statesArrayAdapter != null) {
+                stateAutoCompleteTextView.setAdapter(statesArrayAdapter);
+            }
+            if (countrysArrayAdapter != null) {
+                countryAutoCompleteTextView.setAdapter(countrysArrayAdapter);
+            }
+            if (!countryAutoCompleteTextView.getText().toString().equals(country)) {
+                countryAutoCompleteTextView.setText(country);
+            }
+            if (!stateAutoCompleteTextView.getText().toString().equals(state)) {
+                stateAutoCompleteTextView.setText(state);
+            }
+
         }
 
         @Override
@@ -363,7 +440,7 @@ public class LocalityInformationFragment extends Fragment {
                 addresses = geocoder.getFromLocation(loc.getLatitude(),
                         loc.getLongitude(), 1);
             } catch (IOException e1) {
-                Log.e("LocalityInformationFragment",
+                Log.e("Plantae",
                         "IO Exception in getFromLocation()");
                 e1.printStackTrace();
                 return null;
@@ -374,7 +451,7 @@ public class LocalityInformationFragment extends Fragment {
                         " , " +
                         Double.toString(loc.getLongitude()) +
                         " passed to address service";
-                Log.e("LocalityInformationFragment", errorString);
+                Log.e("Plantae", errorString);
                 e2.printStackTrace();
                 return null;
             }
@@ -382,6 +459,7 @@ public class LocalityInformationFragment extends Fragment {
             if (addresses != null && addresses.size() > 0) {
                 // Get the first address
                 Address address = addresses.get(0);
+
                 String[] result = new String[3];
                 result[0] = address.getLocality();
                 result[1] = address.getAdminArea();
@@ -398,14 +476,16 @@ public class LocalityInformationFragment extends Fragment {
             progressBarCoordinates.setVisibility(View.INVISIBLE);
             if (result != null) {
                 countyAutoCompleteTextView.setText(result[0]);
+                if (result[0] != null) {
+                    onLocalityChangeListener.onCountyChanged(result[0]);
+                }
                 stateAutoCompleteTextView.setText(result[1]);
+                if (result[1] != null) {
+                    onLocalityChangeListener.onStateChanged(result[1]);
+                }
                 countryAutoCompleteTextView.setText(result[2]);
-                if (especimenDTO != null) {
-                    RegionDTO regionDTO = new RegionDTO();
-                    regionDTO.setMunicipio(result[0]);
-                    regionDTO.setDepartamento(result[1]);
-                    regionDTO.setPais(result[2]);
-                    especimenDTO.setRegion(regionDTO);
+                if (result[2] != null) {
+                    onLocalityChangeListener.onCountryChanged(result[2]);
                 }
             }
         }

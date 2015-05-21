@@ -14,7 +14,7 @@
             android:id="@+id/specimen_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/ic_action_location_map"/>
+            android:src="@drawable/plantae"/>
 
     </LinearLayout>
     <TextView
@@ -64,7 +64,7 @@
         android:id="@+id/item_located"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_device_access_location_found"
+        android:src="@drawable/map_marker_primary"
         android:layout_alignTop="@+id/scientific_name"
         android:gravity="right"
         android:layout_alignParentRight="true"

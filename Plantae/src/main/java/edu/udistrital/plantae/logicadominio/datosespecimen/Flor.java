@@ -284,15 +284,57 @@ public class Flor {
         }
 	}
 
+    public String aString() {
+        String string = "";
+        if (getColorDeLaCorola() != null) {
+            string = string + colorDeLaCorola.aString();
+        }
+        if (getColorDelCaliz() != null) {
+            string = string + (string.equals("") ? "":", ") + colorDelCaliz.aString();
+        }
+        if (getColorDelGineceo() != null) {
+            string = string + (string.equals("") ? "":", ") + colorDelGineceo.aString();
+        }
+        if (getColorDeLosEstambres() != null) {
+            string = string + (string.equals("") ? "":", ") + colorDeLosEstambres.aString();
+        }
+        if (getColorDeLosEstigmas() != null) {
+            string = string + (string.equals("") ? "":", ") + colorDeLosEstigmas.aString();
+        }
+        if (getColorDeLosPistiliodios() != null) {
+            string = string + (string.equals("") ? "":", ") + colorDeLosPistiliodios.aString();
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? "":", ") + descripcion;
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return "Flower: " +
-                colorDeLaCorola +
-                ", " + colorDelCaliz +
-                ", " + colorDelGineceo +
-                ", " + colorDeLosEstambres +
-                ", " + colorDeLosEstigmas +
-                ", " + colorDeLosPistiliodios +
-                ", " + descripcion;
+        return "Flor{" +
+                "id=" + id +
+                ", descripcion='" + descripcion + '\'' +
+                ", colorDeLaCorolaID=" + colorDeLaCorolaID +
+                ", colorDelCalizID=" + colorDelCalizID +
+                ", colorDelGineceoID=" + colorDelGineceoID +
+                ", colorDeLosEstambresID=" + colorDeLosEstambresID +
+                ", colorDeLosEstigmasID=" + colorDeLosEstigmasID +
+                ", colorDeLosPistiliodiosID=" + colorDeLosPistiliodiosID +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", colorDeLaCorola=" + colorDeLaCorola +
+                ", colorDeLaCorola__resolvedKey=" + colorDeLaCorola__resolvedKey +
+                ", colorDelCaliz=" + colorDelCaliz +
+                ", colorDelCaliz__resolvedKey=" + colorDelCaliz__resolvedKey +
+                ", colorDelGineceo=" + colorDelGineceo +
+                ", colorDelGineceo__resolvedKey=" + colorDelGineceo__resolvedKey +
+                ", colorDeLosEstambres=" + colorDeLosEstambres +
+                ", colorDeLosEstambres__resolvedKey=" + colorDeLosEstambres__resolvedKey +
+                ", colorDeLosEstigmas=" + colorDeLosEstigmas +
+                ", colorDeLosEstigmas__resolvedKey=" + colorDeLosEstigmas__resolvedKey +
+                ", colorDeLosPistiliodios=" + colorDeLosPistiliodios +
+                ", colorDeLosPistiliodios__resolvedKey=" + colorDeLosPistiliodios__resolvedKey +
+                '}';
     }
 }

@@ -7,13 +7,16 @@ public class ListItem {
     private Long id;
     private String title;
     private String descriptionText;
+    private String classType;
     private int image;
     private String imagePath;
     private String subitemCount;
     private boolean isLocated;
     private boolean isChecked;
 
-    public ListItem(String title, String descriptionText) {
+    public ListItem(Long id, String classType, String title, String descriptionText) {
+        this.id = id;
+        this.classType = classType;
         this.title = title;
         this.descriptionText = descriptionText;
     }
@@ -71,6 +74,14 @@ public class ListItem {
 
     public void setDescriptionText(String descriptionText) {
         this.descriptionText = descriptionText;
+    }
+
+    public String getClassType() {
+        return classType;
+    }
+
+    public void setClassType(String classType) {
+        this.classType = classType;
     }
 
     public int getImage() {

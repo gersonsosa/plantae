@@ -49,8 +49,8 @@
                 android:value=".ui.LoginActivity" />
         </activity>
         <activity
-            android:name=".ui.CreateTravelActivity"
-            android:label="New travel"
+            android:name=".ui.CreateTripActivity"
+            android:label="@string/trip_activity_name"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity" >
             <meta-data
@@ -59,11 +59,11 @@
         </activity>
         <activity
             android:name=".ui.CreateProjectActivity"
-            android:label="Create project"
-            android:parentActivityName=".ui.CreateTravelActivity" >
+            android:label="@string/create_project_activity_name"
+            android:parentActivityName=".ui.CreateTripActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.CreateTravelActivity" />
+                android:value=".ui.CreateTripActivity" />
         </activity>
         <activity
             android:name=".ui.SettingsAcivity"
@@ -88,10 +88,10 @@
         <activity
             android:name=".ui.PictureGalleryActivity"
             android:label="Pictures"
-            android:parentActivityName=".ui.CreateTravelActivity" >
+            android:parentActivityName=".ui.CreateTripActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.CreateTravelActivity" />
+                android:value=".ui.CreateTripActivity" />
         </activity>
         <activity
             android:name=".ui.PictureViewActivity"
@@ -100,26 +100,30 @@
             android:name=".ui.CreateAssociatedSampleActivity"
             android:label="Associated Sample" />
         <activity
-            android:name=".ui.TrayectoActivity"
+            android:name=".ui.RouteActivity"
             android:label="@string/title_activity_trayecto" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.udistrital.plantae.ui.MainActivity" />
+                android:value=".ui.MainActivity" />
         </activity>
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".ui.MainActivity" />
+
         <activity
             android:name=".ui.SearchActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-            <!-- <meta-data -->
-            <!-- android:name="android.app.default_searchable" -->
-            <!-- android:value=".ui.SearchActivity" /> -->
         </activity>
 
         <meta-data
@@ -135,7 +139,24 @@
             android:parentActivityName=".ui.CreateSpecimenActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.udistrital.plantae.ui.CreateSpecimenActivity" />
+                android:value=".ui.CreateSpecimenActivity" />
+        </activity>
+        <activity
+            android:name=".ui.AutoCompleteListActivity"
+            android:label="@string/title_activity_auto_complete_list"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/FilePickerTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 

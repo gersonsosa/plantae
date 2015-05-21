@@ -77,7 +77,9 @@ public class FTSEspecimenDao {
         Property[] properties = new Property[0];
         try {
             properties = reflectProperties(this.getClass());
-        } catch (ClassNotFoundException | IllegalAccessException e) {
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         columns = new String[properties.length];
@@ -179,6 +181,7 @@ public class FTSEspecimenDao {
         String estacionDelAño  = cursor.getString(7);
         String colores  = cursor.getString(8);
         String localidad  = cursor.getString(9);
+        localidad = localidad == null ? "" : localidad;
         String determinacion  = cursor.getString(10);
         return new SpecimenListItem(id, numeroDeColeccion, determinacion, localidad, descripcionEspecimen, R.drawable.plantae, !localidad.isEmpty());
     }

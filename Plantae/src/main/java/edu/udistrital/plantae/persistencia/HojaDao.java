@@ -36,10 +36,10 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
         public final static Property NaturalezaDelLimbo = new Property(7, String.class, "naturalezaDelLimbo", false, "NATURALEZA_DEL_LIMBO");
         public final static Property NumeroDePinnas = new Property(8, String.class, "numeroDePinnas", false, "NUMERO_DE_PINNAS");
         public final static Property NumeroHojas = new Property(9, String.class, "numeroHojas", false, "NUMERO_HOJAS");
-        public final static Property TamañoDeLasHojas = new Property(10, String.class, "tamañoDeLasHojas", false, "TAMAÑO_DE_LAS_HOJAS");
+        public final static Property TamañoDeLaVaina = new Property(10, String.class, "tamañoDeLaVaina", false, "TAMAÑO_DE_LA_VAINA");
         public final static Property TamañoDelPeciolo = new Property(11, String.class, "tamañoDelPeciolo", false, "TAMAÑO_DEL_PECIOLO");
         public final static Property Descripcion = new Property(12, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property ColorDeLasHojasID = new Property(13, Long.class, "colorDeLasHojasID", false, "COLOR_DE_LAS_HOJAS_ID");
+        public final static Property ColorDeLaVainaID = new Property(13, Long.class, "colorDeLaVainaID", false, "COLOR_DE_LA_VAINA_ID");
         public final static Property ColorDelPecioloID = new Property(14, Long.class, "colorDelPecioloID", false, "COLOR_DEL_PECIOLO_ID");
     };
 
@@ -69,14 +69,14 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
                 "'NATURALEZA_DEL_LIMBO' TEXT," + // 7: naturalezaDelLimbo
                 "'NUMERO_DE_PINNAS' TEXT," + // 8: numeroDePinnas
                 "'NUMERO_HOJAS' TEXT," + // 9: numeroHojas
-                "'TAMAÑO_DE_LAS_HOJAS' TEXT," + // 10: tamañoDeLasHojas
+                "'TAMAÑO_DE_LA_VAINA' TEXT," + // 10: tamañoDeLaVaina
                 "'TAMAÑO_DEL_PECIOLO' TEXT," + // 11: tamañoDelPeciolo
                 "'DESCRIPCION' TEXT," + // 12: descripcion
-                "'COLOR_DE_LAS_HOJAS_ID' INTEGER," + // 13: colorDeLasHojasID
+                "'COLOR_DE_LA_VAINA_ID' INTEGER," + // 13: colorDeLaVainaID
                 "'COLOR_DEL_PECIOLO_ID' INTEGER);"); // 14: colorDelPecioloID
         // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_HOJA_COLOR_DE_LAS_HOJAS_ID ON HOJA" +
-                " (COLOR_DE_LAS_HOJAS_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_HOJA_COLOR_DE_LA_VAINA_ID ON HOJA" +
+                " (COLOR_DE_LA_VAINA_ID);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_HOJA_COLOR_DEL_PECIOLO_ID ON HOJA" +
                 " (COLOR_DEL_PECIOLO_ID);");
     }
@@ -142,9 +142,9 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
             stmt.bindString(10, numeroHojas);
         }
  
-        String tamañoDeLasHojas = entity.getTamañoDeLasHojas();
-        if (tamañoDeLasHojas != null) {
-            stmt.bindString(11, tamañoDeLasHojas);
+        String tamañoDeLaVaina = entity.getTamañoDeLaVaina();
+        if (tamañoDeLaVaina != null) {
+            stmt.bindString(11, tamañoDeLaVaina);
         }
  
         String tamañoDelPeciolo = entity.getTamañoDelPeciolo();
@@ -157,9 +157,9 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
             stmt.bindString(13, descripcion);
         }
  
-        Long colorDeLasHojasID = entity.getColorDeLasHojasID();
-        if (colorDeLasHojasID != null) {
-            stmt.bindLong(14, colorDeLasHojasID);
+        Long colorDeLaVainaID = entity.getColorDeLaVainaID();
+        if (colorDeLaVainaID != null) {
+            stmt.bindLong(14, colorDeLaVainaID);
         }
  
         Long colorDelPecioloID = entity.getColorDelPecioloID();
@@ -201,10 +201,10 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
         entity.setNaturalezaDelLimbo(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setNumeroDePinnas(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setNumeroHojas(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setTamañoDeLasHojas(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setTamañoDeLaVaina(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setTamañoDelPeciolo(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setDescripcion(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setColorDeLasHojasID(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
+        entity.setColorDeLaVainaID(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
         entity.setColorDelPecioloID(cursor.isNull(offset + 14) ? null : cursor.getLong(offset + 14));
      }
     
@@ -242,7 +242,7 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
             builder.append(',');
             SqlUtils.appendColumns(builder, "T1", daoSession.getColorEspecimenDao().getAllColumns());
             builder.append(" FROM HOJA T");
-            builder.append(" LEFT JOIN COLOR_ESPECIMEN T0 ON T.'COLOR_DE_LAS_HOJAS_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN COLOR_ESPECIMEN T0 ON T.'COLOR_DE_LA_VAINA_ID'=T0.'_id'");
             builder.append(" LEFT JOIN COLOR_ESPECIMEN T1 ON T.'COLOR_DEL_PECIOLO_ID'=T1.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
@@ -254,8 +254,8 @@ public class HojaDao extends AbstractDao<Hoja, Long> {
         Hoja entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
 
-        ColorEspecimen colorDeLasHojas = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
-        entity.setColorDeLasHojas(colorDeLasHojas);
+        ColorEspecimen colorDeLaVaina = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
+        entity.setColorDeLaVaina(colorDeLaVaina);
         offset += daoSession.getColorEspecimenDao().getAllColumns().length;
 
         ColorEspecimen colorDelPeciolo = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);

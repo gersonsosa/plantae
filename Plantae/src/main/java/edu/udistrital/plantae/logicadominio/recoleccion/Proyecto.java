@@ -155,7 +155,6 @@ public class Proyecto {
 	
 	/** called by internal mechanisms, do not call yourself. */
 	public void __setDaoSession(DaoSession daoSession) {
-		// TODO Auto-generated method stub
 		this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getProyectoDao() : null;
 	}

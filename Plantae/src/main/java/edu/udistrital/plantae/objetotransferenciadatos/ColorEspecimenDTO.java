@@ -11,16 +11,21 @@ public class ColorEspecimenDTO implements Parcelable {
     private Long id;
     private String nombre;
     private String descripcion;
+    private String organoDeLaPlanta;
     private Integer colorRGB;
     private Long colorMunsellId;
     private Integer hue;
     private Integer value;
     private Integer chroma;
 
-    public ColorEspecimenDTO(Long id, String nombre, String descripcion, Integer colorRGB, Long colorMunsellId, Integer hue, Integer value, Integer chroma) {
+    public ColorEspecimenDTO(Long id, String nombre, String descripcion,
+                             String organoDeLaPlanta, Integer colorRGB,
+                             Long colorMunsellId, Integer hue,
+                             Integer value, Integer chroma) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.organoDeLaPlanta = organoDeLaPlanta;
         this.colorRGB = colorRGB;
         this.colorMunsellId = colorMunsellId;
         this.hue = hue;
@@ -28,9 +33,15 @@ public class ColorEspecimenDTO implements Parcelable {
         this.chroma = chroma;
     }
 
-    public ColorEspecimenDTO(String nombre, String descripcion, Integer colorRGB, Integer hue, Integer value, Integer chroma) {
+    public ColorEspecimenDTO() {
+    }
+
+    public ColorEspecimenDTO(String nombre, String descripcion,
+                             String organoDeLaPlanta, Integer colorRGB,
+                             Integer hue, Integer value, Integer chroma) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.organoDeLaPlanta = organoDeLaPlanta;
         this.colorRGB = colorRGB;
         this.hue = hue;
         this.value = value;
@@ -59,6 +70,14 @@ public class ColorEspecimenDTO implements Parcelable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getOrganoDeLaPlanta() {
+        return organoDeLaPlanta;
+    }
+
+    public void setOrganoDeLaPlanta(String organoDeLaPlanta) {
+        this.organoDeLaPlanta = organoDeLaPlanta;
     }
 
     public Integer getColorRGB() {
@@ -111,20 +130,21 @@ public class ColorEspecimenDTO implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.nombre);
         dest.writeString(this.descripcion);
+        dest.writeString(this.organoDeLaPlanta);
         dest.writeValue(this.colorRGB);
+        dest.writeValue(this.colorMunsellId);
         dest.writeValue(this.hue);
         dest.writeValue(this.value);
         dest.writeValue(this.chroma);
-    }
-
-    public ColorEspecimenDTO() {
     }
 
     private ColorEspecimenDTO(Parcel in) {
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.nombre = in.readString();
         this.descripcion = in.readString();
+        this.organoDeLaPlanta = in.readString();
         this.colorRGB = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.colorMunsellId = (Long) in.readValue(Long.class.getClassLoader());
         this.hue = (Integer) in.readValue(Integer.class.getClassLoader());
         this.value = (Integer) in.readValue(Integer.class.getClassLoader());
         this.chroma = (Integer) in.readValue(Integer.class.getClassLoader());

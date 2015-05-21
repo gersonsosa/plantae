@@ -90,7 +90,7 @@ public class AssociatedSamplesFragment extends ListFragment implements View.OnCl
         for (MuestraAsociada muestraAsociada:muestraAsociadas) {
             listItems.add(new ListItem((long) muestraAsociadas.indexOf(muestraAsociada), muestraAsociada.getDescripcion(), muestraAsociada.getMetodoDeTratamiento(), "0", false, false));
         }
-        setListAdapter(new ListItemCheckAdapter(getActivity().getApplicationContext(), R.layout.list_item_check, listItems));
+        setListAdapter(new ListItemCheckAdapter(getActivity().getApplicationContext(), R.layout.list_item_check, this, listItems));
     }
 
     @Override

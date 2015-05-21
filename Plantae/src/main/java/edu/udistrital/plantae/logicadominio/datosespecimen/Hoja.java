@@ -16,8 +16,6 @@ public class Hoja {
 
     private Long id;
     private String coberturaDelPeciolo;
-    private ColorEspecimen colorDeLasHojas;
-    private ColorEspecimen colorDelPeciolo;
     private String dispocicionDeLasPinnas;
     private String disposicionDeLasHojas;
     private String formaDelPeciolo;
@@ -26,10 +24,10 @@ public class Hoja {
     private String naturalezaDelLimbo;
     private String numeroDePinnas;
     private String numeroHojas;
-    private String tamañoDeLasHojas;
+    private String tamañoDeLaVaina;
     private String tamañoDelPeciolo;
     private String descripcion;
-    private Long colorDeLasHojasID;
+    private Long colorDeLaVainaID;
     private Long colorDelPecioloID;
 
     /** Used to resolve relations */
@@ -38,8 +36,13 @@ public class Hoja {
     /** Used for active entity operations. */
     private transient HojaDao myDao;
 
-    private Long colorDeLasHojas__resolvedKey;
+    private ColorEspecimen colorDeLaVaina;
+    private Long colorDeLaVaina__resolvedKey;
+
+    private ColorEspecimen colorDelPeciolo;
     private Long colorDelPeciolo__resolvedKey;
+
+
 
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
@@ -68,12 +71,12 @@ public class Hoja {
     }
 
     public String getCoberturaDelPeciolo() {
-		return coberturaDelPeciolo;
-	}
+        return coberturaDelPeciolo;
+    }
 
     public void setCoberturaDelPeciolo(String coberturaDelPeciolo) {
         this.coberturaDelPeciolo = coberturaDelPeciolo;
-	}
+    }
 
     public String getDispocicionDeLasPinnas() {
         return dispocicionDeLasPinnas;
@@ -139,12 +142,12 @@ public class Hoja {
         this.numeroHojas = numeroHojas;
     }
 
-    public String getTamañoDeLasHojas() {
-        return tamañoDeLasHojas;
+    public String getTamañoDeLaVaina() {
+        return tamañoDeLaVaina;
     }
 
-    public void setTamañoDeLasHojas(String tamañoDeLasHojas) {
-        this.tamañoDeLasHojas = tamañoDeLasHojas;
+    public void setTamañoDeLaVaina(String tamañoDeLaVaina) {
+        this.tamañoDeLaVaina = tamañoDeLaVaina;
     }
 
     public String getTamañoDelPeciolo() {
@@ -163,12 +166,12 @@ public class Hoja {
         this.descripcion = descripcion;
     }
 
-    public Long getColorDeLasHojasID() {
-        return colorDeLasHojasID;
+    public Long getColorDeLaVainaID() {
+        return colorDeLaVainaID;
     }
 
-    public void setColorDeLasHojasID(Long colorDeLasHojasID) {
-        this.colorDeLasHojasID = colorDeLasHojasID;
+    public void setColorDeLaVainaID(Long colorDeLaVainaID) {
+        this.colorDeLaVainaID = colorDeLaVainaID;
     }
 
     public Long getColorDelPecioloID() {
@@ -180,28 +183,28 @@ public class Hoja {
     }
 
     /** To-one relationship, resolved on first access. */
-    public ColorEspecimen getColorDeLasHojas() {
-        Long __key = this.colorDeLasHojasID;
-        if (colorDeLasHojas__resolvedKey == null || !colorDeLasHojas__resolvedKey.equals(__key)) {
+    public ColorEspecimen getColorDeLaVaina() {
+        Long __key = this.colorDeLaVainaID;
+        if (colorDeLaVaina__resolvedKey == null || !colorDeLaVaina__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
-            ColorEspecimen colorDeLasHojasNew = targetDao.load(__key);
+            ColorEspecimen colorDeLaVainaNew = targetDao.load(__key);
             synchronized (this) {
-                colorDeLasHojas = colorDeLasHojasNew;
-            	colorDeLasHojas__resolvedKey = __key;
+                colorDeLaVaina = colorDeLaVainaNew;
+            	colorDeLaVaina__resolvedKey = __key;
             }
         }
-		return colorDeLasHojas;
-	}
+        return colorDeLaVaina;
+    }
 
-    public void setColorDeLasHojas(ColorEspecimen colorDeLasHojas) {
+    public void setColorDeLaVaina(ColorEspecimen colorDeLaVaina) {
         synchronized (this) {
-            this.colorDeLasHojas = colorDeLasHojas;
-            colorDeLasHojasID = colorDeLasHojas == null ? null : colorDeLasHojas.getId();
-            colorDeLasHojas__resolvedKey = colorDeLasHojasID;
-	    }
+            this.colorDeLaVaina = colorDeLaVaina;
+            colorDeLaVainaID = colorDeLaVaina == null ? null : colorDeLaVaina.getId();
+            colorDeLaVaina__resolvedKey = colorDeLaVainaID;
+        }
     }
 
     /** To-one relationship, resolved on first access. */
@@ -218,8 +221,8 @@ public class Hoja {
             	colorDelPeciolo__resolvedKey = __key;
             }
         }
-		return colorDelPeciolo;
-	}
+        return colorDelPeciolo;
+    }
 
     public void setColorDelPeciolo(ColorEspecimen colorDelPeciolo) {
         synchronized (this) {
@@ -229,4 +232,50 @@ public class Hoja {
         }
     }
 
+    public String aString() {
+        String string = "";
+        if (coberturaDelPeciolo != null) {
+            string = string + (string.equals("") ? "Cobertura del peciolo: ":", Cobertura del peciolo: ") + coberturaDelPeciolo;
+        }
+        if (dispocicionDeLasPinnas != null) {
+            string = string + (string.equals("") ? "Dispocicion de las pinnas: ":", Dispocicion de las pinnas: ") + dispocicionDeLasPinnas;
+        }
+        if (disposicionDeLasHojas != null) {
+            string = string + (string.equals("") ? "Disposicion de las hojas: ":", Disposicion de las hojas: ") + disposicionDeLasHojas;
+        }
+        if (formaDelPeciolo != null) {
+            string = string + (string.equals("") ? "Forma del peciolo: ":", Forma del peciolo: ") + formaDelPeciolo;
+        }
+        if (longuitudDelRaquis != null) {
+            string = string + (string.equals("") ? "Longuitud del raquis: ":", Longuitud del raquis: ") + longuitudDelRaquis;
+        }
+        if (naturalezaDeLaVaina != null) {
+            string = string + (string.equals("") ? "Naturaleza de la vaina: ":", Naturaleza de la vaina: ") + naturalezaDeLaVaina;
+        }
+        if (naturalezaDelLimbo != null) {
+            string = string + (string.equals("") ? "Naturaleza del limbo: ":", Naturaleza del limbo: ") + naturalezaDelLimbo;
+        }
+        if (numeroDePinnas != null) {
+            string = string + (string.equals("") ? "Numero de pinnas: ":", Numero de pinnas: ") + numeroDePinnas;
+        }
+        if (numeroHojas != null) {
+            string = string + (string.equals("") ? "Numero hojas: ":", Numero hojas: ") + numeroHojas;
+        }
+        if (tamañoDeLaVaina != null) {
+            string = string + (string.equals("") ? "Tamaño de la vaina: ":", Tamaño de la vaina: ") + tamañoDeLaVaina;
+        }
+        if (tamañoDelPeciolo != null) {
+            string = string + (string.equals("") ? "Tamaño del peciolo: ":", Tamaño del peciolo: ") + tamañoDelPeciolo;
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? "Descripcion: ":", Descripcion: ") + descripcion;
+        }
+        if (colorDeLaVaina != null) {
+            string = string + (string.equals("") ? "Color de la vaina: ":", Color de la vaina: ") + colorDeLaVaina.aString();
+        }
+        if (colorDelPeciolo != null) {
+            string = string + (string.equals("") ? "Color del peciolo: ":", Color del peciolo: ") + colorDelPeciolo.aString();
+        }
+        return string;
+    }
 }

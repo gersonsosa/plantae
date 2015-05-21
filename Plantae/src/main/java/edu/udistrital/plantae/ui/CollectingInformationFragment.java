@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -13,7 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.*;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
+import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
 import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 
 /**
@@ -21,7 +30,6 @@ import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
  */
 public class CollectingInformationFragment extends Fragment {
 
-    private EspecimenDTO especimenDTO;
     private ViewHolder viewHolder;
     private SecondaryCollectorsListFragment fragmentSecondaryCollectosList;
     private final Rect mTmpRect = new Rect();
@@ -30,15 +38,23 @@ public class CollectingInformationFragment extends Fragment {
     private int ANIMATION_DURATION = 400;
     private OnEditModeStarted onEditModeStarted;
     private String secondaryCollectorsNames;
+    private OnCollectingInformationUpdated onCollectingInformationUpdated;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             onEditModeStarted = (OnEditModeStarted) activity;
+            onCollectingInformationUpdated = (OnCollectingInformationUpdated) activity;
         }catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement CollectingInformationFragment.OnEditModeStarted");
+            throw new ClassCastException(activity.toString() + "must implement CollectingInformationFragment.OnEditModeStarted And CollectingInformationFragment.OnCollectingInformationUpdated");
         }
+    }
+
+    public interface OnCollectingInformationUpdated {
+        public void onCollectorNumberUpdated(String collectorNumber);
+        public void onCollectionMethodUpdated(String collectionMethod);
+        public void onStationUpdated(String station);
     }
 
     public interface OnEditModeStarted {
@@ -72,24 +88,32 @@ public class CollectingInformationFragment extends Fragment {
             }
         });
 
-        especimenDTO = getArguments().getParcelable("especimen");
+        Bundle arguments = getArguments();
+        String numeroDeColeccion = arguments.getString("numeroDeColeccion");
+        String metodoColeccion = arguments.getString("metodoColeccion");
+        String estacionDelAño = arguments.getString("estacionDelAño");
+        Date fechaInicial =  new Date(arguments.getLong("fechaInicial", 0l));
         if (TextUtils.isEmpty(secondaryCollectorsNames)) {
             secondaryCollectorsNames = getArguments().getString("secondaryCollectorsNames");
         }
-
-        viewHolder.collectionDate.setText(especimenDTO.getFechaInicial().toString());
-        viewHolder.collectorNumber.setText(especimenDTO.getNumeroDeColeccion());
-        viewHolder.collectionMethod.setText(especimenDTO.getMetodoColeccion());
-        viewHolder.collectionStation.setText(especimenDTO.getEstacionDelAño());
-        if (especimenDTO.getColectoresSecundarios() != null && ! especimenDTO.getColectoresSecundarios().isEmpty()) {
-            // TODO LOAD secondary collectos from specimen
-        }
+        viewHolder.collectionDate.setText(SimpleDateFormat.getDateInstance().format(fechaInicial));
+        viewHolder.collectorNumber.setText(numeroDeColeccion);
+        viewHolder.collectionMethod.setText(metodoColeccion);
+        viewHolder.collectionStation.setText(estacionDelAño);
         viewHolder.specimenSecondaryCollectors.setText(secondaryCollectorsNames);
+        viewHolder.collectorNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    onCollectingInformationUpdated.onCollectorNumberUpdated(((EditText) v).getText().toString());
+                }
+            }
+        });
         viewHolder.collectionMethod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    especimenDTO.setMetodoColeccion(((EditText) v).getText().toString());
+                    onCollectingInformationUpdated.onCollectionMethodUpdated(((EditText) v).getText().toString());
                 }
             }
         });
@@ -97,11 +121,12 @@ public class CollectingInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
-                    especimenDTO.setEstacionDelAño(((EditText) v).getText().toString());
+                    onCollectingInformationUpdated.onStationUpdated(((EditText) v).getText().toString());
                 }
             }
         });
         fragmentSecondaryCollectosList = new SecondaryCollectorsListFragment();
+        fragmentSecondaryCollectosList.setArguments(getArguments());
         viewHolder.secondaryCollectorsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Sesion;
@@ -34,7 +35,7 @@ import edu.udistrital.plantae.persistencia.PersonaDao;
 
 import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		
 	public static final String PREFS_NAME = "plantae_prefs";
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -117,7 +118,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             updateContent(fragment, "specimenList");
         }else{
             mNavigationDrawerFragment.selectItem(3);
-            fragment = new TravelListFragment();
+            fragment = new TripListFragment();
             Bundle args = new Bundle();
             args.putLong("colectorPrincipal", colectorPrincipal.getId());
             fragment.setArguments(args);
@@ -143,7 +144,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(true);
+        }
     }
 
 	private Long checkLogin(SharedPreferences preferences) {
@@ -169,10 +172,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 	    case R.id.log_out_action:
             logout();
 	        return true;
-        case R.id.action_settings:
-            Intent settingsIntent = new Intent(getApplicationContext(), SettingsAcivity.class);
-            startActivity(settingsIntent);
-            finish();
+        case R.id.action_autocomplete_lists:
+            Intent autoCompleteIntent = new Intent(getApplicationContext(), AutoCompleteListActivity.class);
+            autoCompleteIntent.putExtra("usuarioId1", colectorPrincipal.getPersona().getUsuarioID());
+            startActivity(autoCompleteIntent);
             return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -328,21 +331,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 if (navigationDrawerItem.getName().equals(getString(R.string.add_new_travels))){
                     // Mostrar pantalla que indique que no existen viajes creados
                     mNavigationDrawerFragment.getmDrawerListView().setItemChecked(position, false);
-                    Intent createTravelIntent = new Intent(getApplicationContext(), CreateTravelActivity.class);
+                    Intent createTravelIntent = new Intent(getApplicationContext(), CreateTripActivity.class);
                     createTravelIntent.putExtra("colectorPrincipal", colectorPrincipal.getId());
                     startActivityForResult(createTravelIntent, CREATE_TRAVEL_REQUEST);
                 }else if (navigationDrawerItem.getName().equals(getString(R.string.manage_travels))){
                     // Replace fragment manage travels
-                    fragment = new TravelListFragment();
+                    fragment = new TripListFragment();
                     Bundle args = new Bundle();
                     args.putLong("colectorPrincipal", colectorPrincipal.getId());
                     fragment.setArguments(args);
                     updateContent(fragment, "viajeList");
-                }else if (navigationDrawerItem.getName().equals(getString(R.string.action_settings))){
-                    // Start settings activity
-                    Intent settingsIntent = new Intent(getApplicationContext(), SettingsAcivity.class);
-                    settingsIntent.putExtra("colectorPrincipal", colectorPrincipal.getId());
-                    startActivity(settingsIntent);
+                }else if (navigationDrawerItem.getName().equals(getString(R.string.autocomplete_lists))){
+                    Intent autoCompleteIntent = new Intent(getApplicationContext(), AutoCompleteListActivity.class);
+                    autoCompleteIntent.putExtra("usuarioId1", colectorPrincipal.getPersona().getUsuarioID());
+                    startActivity(autoCompleteIntent);
                 }else{
                     fragment = new SpecimenListFragment();
                     Bundle args = new Bundle();

@@ -1,5 +1,6 @@
 package edu.udistrital.plantae.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -9,14 +10,29 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 
 /**
  * Created by hghar on 6/25/14.
  */
 public class HabitatInformationFragment extends Fragment {
 
-    private EspecimenDTO especimenDTO;
+    private OnHabitatChangedListener onHabitatChangedListener;
+
+    public interface OnHabitatChangedListener {
+        public void onVegetationChanged(String vegetation);
+        public void onSoilSubstratumChanged(String soilSubstratum);
+        public void onAssociatedSpeciesChanged(String associatedSpecies);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            onHabitatChangedListener = (OnHabitatChangedListener) activity;
+        }catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "must implement HabitatInformationFragment.OnHabitatChangedListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,20 +46,27 @@ public class HabitatInformationFragment extends Fragment {
                 ((ViewGroup) viewHolder.fragmentView.getParent()).removeView(viewHolder.fragmentView);
             }
         }
-        especimenDTO = getArguments().getParcelable("especimen");
+
+        Bundle fragmentsBundle = getArguments();
+
+        String especiasAsociadas = fragmentsBundle.getString("especiesAsociadas");
+        String sueloSustrato = fragmentsBundle.getString("sueloSustrato");
+        String vegetacion = fragmentsBundle.getString("vegetacion");
+
         EditText vegetation = (EditText) viewHolder.fragmentView.findViewById(R.id.vegetation);
         EditText soilSubstratum = (EditText) viewHolder.fragmentView.findViewById(R.id.soil_substratum);
         EditText associatedSpecies = (EditText) viewHolder.fragmentView.findViewById(R.id.associated_species);
+
+        vegetation.setText(vegetacion);
+        soilSubstratum.setText(sueloSustrato);
+        associatedSpecies.setText(especiasAsociadas);
         vegetation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Habitat habitat = null;
                     String value = ((EditText)v).getText().toString();
                     if (!TextUtils.isEmpty(value)) {
-                        habitat = especimenDTO.getHabitat() != null ? especimenDTO.getHabitat() : new Habitat();
-                        habitat.setVegetacion(value);
-                        especimenDTO.setHabitat(habitat);
+                        onHabitatChangedListener.onVegetationChanged(value);
                     }
                 }
             }
@@ -52,12 +75,9 @@ public class HabitatInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Habitat habitat = null;
                     String value = ((EditText)v).getText().toString();
                     if (!TextUtils.isEmpty(value)) {
-                        habitat = especimenDTO.getHabitat() != null ? especimenDTO.getHabitat() : new Habitat();
-                        habitat.setSueloSustrato(value);
-                        especimenDTO.setHabitat(habitat);
+                        onHabitatChangedListener.onSoilSubstratumChanged(value);
                     }
                 }
             }
@@ -66,12 +86,9 @@ public class HabitatInformationFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Habitat habitat = null;
                     String value = ((EditText)v).getText().toString();
                     if (!TextUtils.isEmpty(value)) {
-                        habitat = especimenDTO.getHabitat() != null ? especimenDTO.getHabitat() : new Habitat();
-                        habitat.setEspeciesAsociadas(value);
-                        especimenDTO.setHabitat(habitat);
+                        onHabitatChangedListener.onAssociatedSpeciesChanged(value);
                     }
                 }
             }

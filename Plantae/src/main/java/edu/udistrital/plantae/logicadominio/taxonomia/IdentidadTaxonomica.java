@@ -7,7 +7,9 @@ import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
 import edu.udistrital.plantae.persistencia.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Sosa G., Mateus A.
@@ -243,11 +245,41 @@ public class IdentidadTaxonomica implements Parcelable {
         }
     };
 
+    public String aString() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String string = "";
+        if (taxon != null) {
+            string = taxon.aString();
+        }
+        if (fechaIdentificacion != null) {
+            string = string + (string.equals("") ? "" : ", ") + simpleDateFormat.format(fechaIdentificacion);
+        }
+        if (tipo != null) {
+            string = string + (string.equals("") ? "" : ", ") + tipo;
+        }
+        if (determinador != null) {
+            string = string + (string.equals("") ? "" : ", ") + determinador.aString();
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return taxon +
-                ", " + fechaIdentificacion +
-                ", " + tipo +
-                ", " + determinador;
+        return "IdentidadTaxonomica{" +
+                "id=" + id +
+                ", fechaIdentificacion=" + fechaIdentificacion +
+                ", tipo='" + tipo + '\'' +
+                ", determinador=" + determinador +
+                ", especimen=" + especimen +
+                ", taxon=" + taxon +
+                ", especimenID=" + especimenID +
+                ", taxonID=" + taxonID +
+                ", personaID=" + personaID +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", determinador__resolvedKey=" + determinador__resolvedKey +
+                ", especimen__resolvedKey=" + especimen__resolvedKey +
+                ", taxon__resolvedKey=" + taxon__resolvedKey +
+                '}';
     }
 }

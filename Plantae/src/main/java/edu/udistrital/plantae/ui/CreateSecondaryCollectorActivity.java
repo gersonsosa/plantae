@@ -32,7 +32,7 @@ public class CreateSecondaryCollectorActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_secondary_collector);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_back);
+        toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
 
         colectorSecundarioDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorSecundarioDao();

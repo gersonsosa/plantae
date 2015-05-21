@@ -41,7 +41,7 @@ public class CreateColorActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_color);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_back);
+        toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
 
         retrieveViews();
@@ -64,9 +64,7 @@ public class CreateColorActivity extends ActionBarActivity {
         plantOrgan.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                Log.v("Test", "Focus changed");
                 if (v.getId() == R.id.plant_organ && !hasFocus) {
-                    Log.v("Test", "Performing validation");
                     ((AutoCompleteTextView)v).performValidation();
                 }
             }
@@ -77,12 +75,20 @@ public class CreateColorActivity extends ActionBarActivity {
             // Edit color
             colorNameEditText.setText(colorEspecimen.getNombre());
             colorDescriptionEditText.setText(colorEspecimen.getDescripcion());
+            plantOrgan.setText(colorEspecimen.getOrganoDeLaPlanta());
             picker.setColor(colorEspecimen.getColorRGB());
         }else{
             colorEspecimen = new ColorEspecimenDTO();
             colorEspecimen.setHue(opacityBar.getOpacity());
             colorEspecimen.setValue(valueBar.getColor());
             colorEspecimen.setChroma(saturationBar.getColor());
+        }
+
+        String plantOrgan = getIntent().getStringExtra("plantOrgan");
+        if (plantOrgan != null) {
+            this.plantOrgan.setText(plantOrgan);
+            // Disable change the organ
+            this.plantOrgan.setFocusable(false);
         }
 
         opacityBar.setOnOpacityChangedListener(new OpacityBar.OnOpacityChangedListener() {
@@ -141,9 +147,13 @@ public class CreateColorActivity extends ActionBarActivity {
             colorEspecimen.setDescripcion(TextUtils.isEmpty(colorDescriptionEditText.getText()) ? null : colorDescriptionEditText.getText().toString());
             colorEspecimen.setColorRGB(picker.getColor());
             String plantOrganText = TextUtils.isEmpty(plantOrgan.getText()) ? "especimen" : plantOrgan.getText().toString();
+            colorEspecimen.setOrganoDeLaPlanta(plantOrganText);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("colorEspecimen", colorEspecimen);
-            resultIntent.putExtra("plantOrgan", plantOrganText);
+            ColorEspecimenDTO colorEspecimenOld = getIntent().getParcelableExtra("color");
+            if (colorEspecimenOld != null) {
+                resultIntent.putExtra("colorEspecimenOld", colorEspecimenOld);
+            }
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
             return true;

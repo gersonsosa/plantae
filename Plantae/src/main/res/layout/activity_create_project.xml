@@ -43,40 +43,49 @@
                 android:inputType="text"
                 android:maxLines="3"/>
             <EditText
-                android:id="@+id/convention_number"
+                android:id="@+id/agreement_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/financial_agency"
-                android:hint="@string/prompt_convention_number"
-                android:inputType="numberDecimal"
+                android:hint="@string/prompt_agreement_number"
+                android:inputType="text"
                 android:maxLines="3"/>
 
             <EditText
-                android:id="@+id/executix_agency"
+                android:id="@+id/institution_where_project_is_based"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/convention_number"
-                android:hint="@string/prompt_executix_agency"
+                android:layout_below="@+id/agreement_number"
+                android:hint="@string/prompt_institution_where_project_is_based"
                 android:inputType="text"
                 android:minLines="3"
                 android:lines="3"/>
 
             <EditText
-                android:id="@+id/collecting_permission"
+                android:id="@+id/collecting_permit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/executix_agency"
-                android:hint="@string/prompt_collecting_permission"
+                android:layout_below="@+id/institution_where_project_is_based"
+                android:hint="@string/prompt_collecting_permit"
                 android:inputType="text"
                 android:minLines="3"
                 android:lines="3"/>
 
             <EditText
-                android:id="@+id/permission_number"
+                android:id="@+id/permit_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/collecting_permission"
-                android:hint="@string/prompt_permission_number"
+                android:layout_below="@+id/collecting_permit"
+                android:hint="@string/prompt_permit_number"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/permit_issuer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/permit_number"
+                android:hint="@string/prompt_permit_issuer"
                 android:inputType="text"
                 android:minLines="3"
                 android:lines="3"/>

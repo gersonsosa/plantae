@@ -34,14 +34,14 @@ public class EspecimenDTO implements Parcelable {
     private String descripcionEspecimen;
     private Habito habito;
     private Habitat habitat;
-    //private Localidad localidad;
+    //Localidad;
     private Long localidadId;
     private String localidadNombre;
-    private double latitud;
-    private double longitud;
+    private Double latitud;
+    private Double longitud;
     private String datum;
-    private double altitudMinima;
-    private double altitudMaxima;
+    private Double altitudMinima;
+    private Double altitudMaxima;
     private String localidadDescripcion;
     private String marcaDispositivo;
     private RegionDTO region;
@@ -87,8 +87,8 @@ public class EspecimenDTO implements Parcelable {
     private Integer numeroDeRaquilas;
     private Long hojaId;
     private String coberturaDelPeciolo;
-    private Long colorDeLasHojasID;
-    private ColorEspecimenDTO colorDeLasHojas;
+    private Long colorDeLaVainaID;
+    private ColorEspecimenDTO colorDeLaVaina;
     private Long colorDelPecioloID;
     private ColorEspecimenDTO colorDelPeciolo;
     private String dispocicionDeLasPinnas;
@@ -99,16 +99,20 @@ public class EspecimenDTO implements Parcelable {
     private String naturalezaDelLimbo;
     private String numeroDePinnas;
     private String numeroHojas;
-    private String tamañoDeLasHojas;
+    private String tamañoDeLaVaina;
     private String tamañoDelPeciolo;
     private String hojaDescripcion;
     private Long frutoId;
-    private Long colorDelEndocarpioID;
-    private ColorEspecimenDTO colorDelEndocarpio;
-    private Long colorDelExocarpioID;
-    private ColorEspecimenDTO colorDelExocarpio;
     private String consistenciaDelPericarpio;
     private String frutoDescripcion;
+    private ColorEspecimenDTO colorDelMesocarpio;
+    private Long colorDelExocarpioID;
+    private ColorEspecimenDTO colorDelExocarpio;
+    private Long colorDelMesocarpioID;
+    private ColorEspecimenDTO colorDelMesocarpioInmaduro;
+    private Long colorDelExocarpioInmaduroID;
+    private ColorEspecimenDTO colorDelExocarpioInmaduro;
+    private Long colorDelMesocarpioInmaduroID;
     private Long talloId;
     private String alturaDelTallo;
     private Long colorDelTalloID;
@@ -130,9 +134,11 @@ public class EspecimenDTO implements Parcelable {
     private String raizDescripcion;
     private Boolean raizArmada;
     private Long alturaDelCono;
+    private Long colorDelConoID;
+    private ColorEspecimenDTO colorDelCono;
     private List<EspecimenColectorSecundario> colectoresSecundarios;
     private List<MuestraAsociada> muestrasAsociadas;
-    private HashMap<String, ColorEspecimenDTO> colores;
+    private List<ColorEspecimenDTO> colores;
     private List<Fotografia> fotografias;
     //identidad taxonomica;
     private Date fechaIdentificacion;
@@ -172,8 +178,6 @@ public class EspecimenDTO implements Parcelable {
         this.estacionDelAño = especimen.getEstacionDelAño();
         this.viajeID = especimen.getViajeID();
         this.colectorPrincipalID = especimen.getColectorPrincipalID();
-        List<ColorEspecimen> coloresEspecimen = new ArrayList<>(especimen.getColores());
-        this.colores = new HashMap<>(especimen.getColores().size());
         this.florId = especimen.getFlorID();
         if (florId != null) {
             this.florDescripcion = especimen.getFlor().getDescripcion();
@@ -182,78 +186,72 @@ public class EspecimenDTO implements Parcelable {
                 this.colorDeLaCorola = new ColorEspecimenDTO(especimen.getFlor().getColorDeLaCorola().getId(),
                         especimen.getFlor().getColorDeLaCorola().getNombre(),
                         especimen.getFlor().getColorDeLaCorola().getDescripcion(),
+                        especimen.getFlor().getColorDeLaCorola().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDeLaCorola().getColorRGB(),
                         especimen.getFlor().getColorDeLaCorola().getColorMunsellID(),
                         especimen.getFlor().getColorDeLaCorola().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDeLaCorola().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDeLaCorola().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDeLaCorola());
-                this.colores.put("Flower Corolla", colorDeLaCorola);
             }
             this.colorDelCalizID = especimen.getFlor().getColorDelCalizID();
             if (especimen.getFlor().getColorDelCaliz() != null) {
                 this.colorDelCaliz = new ColorEspecimenDTO(especimen.getFlor().getColorDelCaliz().getId(),
                         especimen.getFlor().getColorDelCaliz().getNombre(),
                         especimen.getFlor().getColorDelCaliz().getDescripcion(),
+                        especimen.getFlor().getColorDelCaliz().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDelCaliz().getColorRGB(),
                         especimen.getFlor().getColorDelCaliz().getColorMunsellID(),
                         especimen.getFlor().getColorDelCaliz().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDelCaliz().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDelCaliz().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDelCaliz());
-                this.colores.put("Flower Calyx", colorDelCaliz);
             }
             this.colorDelGineceoID = especimen.getFlor().getColorDelGineceoID();
             if (especimen.getFlor().getColorDelGineceo() != null) {
                 this.colorDelGineceo = new ColorEspecimenDTO(especimen.getFlor().getColorDelGineceo().getId(),
                         especimen.getFlor().getColorDelGineceo().getNombre(),
                         especimen.getFlor().getColorDelGineceo().getDescripcion(),
+                        especimen.getFlor().getColorDelGineceo().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDelGineceo().getColorRGB(),
                         especimen.getFlor().getColorDelGineceo().getColorMunsellID(),
                         especimen.getFlor().getColorDelGineceo().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDelGineceo().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDelGineceo().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDelGineceo());
-                this.colores.put("Flower Gineceo", colorDelGineceo);
             }
             this.colorDeLosEstambresID = especimen.getFlor().getColorDeLosEstambresID();
             if (especimen.getFlor().getColorDeLosEstambres() != null) {
                 this.colorDeLosEstambres = new ColorEspecimenDTO(especimen.getFlor().getColorDeLosEstambres().getId(),
                         especimen.getFlor().getColorDeLosEstambres().getNombre(),
                         especimen.getFlor().getColorDeLosEstambres().getDescripcion(),
+                        especimen.getFlor().getColorDeLosEstambres().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDeLosEstambres().getColorRGB(),
                         especimen.getFlor().getColorDeLosEstambres().getColorMunsellID(),
                         especimen.getFlor().getColorDeLosEstambres().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDeLosEstambres().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDeLosEstambres().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDeLosEstambres());
-                this.colores.put("Flower Stamens", colorDeLosEstambres);
             }
             this.colorDeLosEstigmasID = especimen.getFlor().getColorDeLosEstigmasID();
             if (especimen.getFlor().getColorDeLosEstigmas() != null) {
                 this.colorDeLosEstigmas = new ColorEspecimenDTO(especimen.getFlor().getColorDeLosEstigmas().getId(),
                         especimen.getFlor().getColorDeLosEstigmas().getNombre(),
                         especimen.getFlor().getColorDeLosEstigmas().getDescripcion(),
+                        especimen.getFlor().getColorDeLosEstigmas().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDeLosEstigmas().getColorRGB(),
                         especimen.getFlor().getColorDeLosEstigmas().getColorMunsellID(),
                         especimen.getFlor().getColorDeLosEstigmas().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDeLosEstigmas().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDeLosEstigmas().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDeLosEstigmas());
-                this.colores.put("Flower Stigmata", colorDeLosEstigmas);
             }
             this.colorDeLosPistiliodiosID = especimen.getFlor().getColorDeLosPistiliodiosID();
             if (especimen.getFlor().getColorDeLosPistiliodios() != null) {
                 this.colorDeLosPistiliodios = new ColorEspecimenDTO(especimen.getFlor().getColorDeLosPistiliodios().getId(),
                         especimen.getFlor().getColorDeLosPistiliodios().getNombre(),
                         especimen.getFlor().getColorDeLosPistiliodios().getDescripcion(),
+                        especimen.getFlor().getColorDeLosPistiliodios().getOrganoDeLaPlanta(),
                         especimen.getFlor().getColorDeLosPistiliodios().getColorRGB(),
                         especimen.getFlor().getColorDeLosPistiliodios().getColorMunsellID(),
                         especimen.getFlor().getColorDeLosPistiliodios().getColorMunsell().getHue(),
                         especimen.getFlor().getColorDeLosPistiliodios().getColorMunsell().getValue(),
                         especimen.getFlor().getColorDeLosPistiliodios().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFlor().getColorDeLosPistiliodios());
-                this.colores.put("Flower Pistiliodios", colorDeLosPistiliodios);
             }
         }
         this.inflorescenciaId = especimen.getInflorescenciaID();
@@ -263,26 +261,24 @@ public class EspecimenDTO implements Parcelable {
                 this.colorDeLaInflorescenciaEnFlor = new ColorEspecimenDTO(especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getId(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getNombre(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getDescripcion(),
+                        especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getOrganoDeLaPlanta(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getColorRGB(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getColorMunsellID(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getColorMunsell().getHue(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getColorMunsell().getValue(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getInflorescencia().getColorDeLaInflorescenciaEnFlor());
-                this.colores.put("Inflorescence Flower", colorDeLaInflorescenciaEnFlor);
             }
             this.colorDeLaInflorescenciaEnFrutoID = especimen.getInflorescencia().getColorDeLaInflorescenciaEnFrutoID();
             if (especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto() != null) {
                 this.colorDeLaInflorescenciaEnFruto = new ColorEspecimenDTO(especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getId(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getNombre(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getDescripcion(),
+                        especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getOrganoDeLaPlanta(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getColorRGB(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getColorMunsellID(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getColorMunsell().getHue(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getColorMunsell().getValue(),
                         especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getInflorescencia().getColorDeLaInflorescenciaEnFruto());
-                this.colores.put("Inflorescence Fruit", colorDeLaInflorescenciaEnFruto);
             }
             this.naturalezaDeLasBracteasPedunculares = especimen.getInflorescencia().getNaturalezaDeLasBracteasPedunculares();
             this.naturalezaDelProfilo = especimen.getInflorescencia().getNaturalezaDelProfilo();
@@ -303,31 +299,29 @@ public class EspecimenDTO implements Parcelable {
         this.hojaId = especimen.getHojaID();
         if (hojaId != null) {
             this.coberturaDelPeciolo = especimen.getHoja().getCoberturaDelPeciolo();
-            this.colorDeLasHojasID = especimen.getHoja().getColorDeLasHojasID();
-            if (especimen.getHoja().getColorDeLasHojas() != null) {
-                this.colorDeLasHojas = new ColorEspecimenDTO(especimen.getHoja().getColorDeLasHojas().getId(),
-                        especimen.getHoja().getColorDeLasHojas().getNombre(),
-                        especimen.getHoja().getColorDeLasHojas().getDescripcion(),
-                        especimen.getHoja().getColorDeLasHojas().getColorRGB(),
-                        especimen.getHoja().getColorDeLasHojas().getColorMunsellID(),
-                        especimen.getHoja().getColorDeLasHojas().getColorMunsell().getHue(),
-                        especimen.getHoja().getColorDeLasHojas().getColorMunsell().getValue(),
-                        especimen.getHoja().getColorDeLasHojas().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getHoja().getColorDeLasHojas());
-                this.colores.put("Leaves", colorDeLasHojas);
+            this.colorDeLaVainaID = especimen.getHoja().getColorDeLaVainaID();
+            if (especimen.getHoja().getColorDeLaVaina() != null) {
+                this.colorDeLaVaina = new ColorEspecimenDTO(especimen.getHoja().getColorDeLaVaina().getId(),
+                        especimen.getHoja().getColorDeLaVaina().getNombre(),
+                        especimen.getHoja().getColorDeLaVaina().getDescripcion(),
+                        especimen.getHoja().getColorDeLaVaina().getOrganoDeLaPlanta(),
+                        especimen.getHoja().getColorDeLaVaina().getColorRGB(),
+                        especimen.getHoja().getColorDeLaVaina().getColorMunsellID(),
+                        especimen.getHoja().getColorDeLaVaina().getColorMunsell().getHue(),
+                        especimen.getHoja().getColorDeLaVaina().getColorMunsell().getValue(),
+                        especimen.getHoja().getColorDeLaVaina().getColorMunsell().getChroma());
             }
             this.colorDelPecioloID = especimen.getHoja().getColorDelPecioloID();
             if (especimen.getHoja().getColorDelPeciolo() != null) {
                 this.colorDelPeciolo = new ColorEspecimenDTO(especimen.getHoja().getColorDelPeciolo().getId(),
                         especimen.getHoja().getColorDelPeciolo().getNombre(),
                         especimen.getHoja().getColorDelPeciolo().getDescripcion(),
+                        especimen.getHoja().getColorDelPeciolo().getOrganoDeLaPlanta(),
                         especimen.getHoja().getColorDelPeciolo().getColorRGB(),
                         especimen.getHoja().getColorDelPeciolo().getColorMunsellID(),
                         especimen.getHoja().getColorDelPeciolo().getColorMunsell().getHue(),
                         especimen.getHoja().getColorDelPeciolo().getColorMunsell().getValue(),
                         especimen.getHoja().getColorDelPeciolo().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getHoja().getColorDelPeciolo());
-                this.colores.put("Leaves Petiole", colorDelPeciolo);
             }
             this.dispocicionDeLasPinnas = especimen.getHoja().getDispocicionDeLasPinnas();
             this.disposicionDeLasHojas = especimen.getHoja().getDisposicionDeLasHojas();
@@ -337,37 +331,59 @@ public class EspecimenDTO implements Parcelable {
             this.naturalezaDelLimbo = especimen.getHoja().getNaturalezaDelLimbo();
             this.numeroDePinnas = especimen.getHoja().getNumeroDePinnas();
             this.numeroHojas = especimen.getHoja().getNumeroHojas();
-            this.tamañoDeLasHojas = especimen.getHoja().getTamañoDeLasHojas();
+            this.tamañoDeLaVaina = especimen.getHoja().getTamañoDeLaVaina();
             this.tamañoDelPeciolo = especimen.getHoja().getTamañoDelPeciolo();
             this.hojaDescripcion = especimen.getHoja().getDescripcion();
         }
         this.frutoId = especimen.getFrutoID();
         if (frutoId != null) {
-            this.colorDelEndocarpioID = especimen.getFruto().getColorDelEndocarpioID();
-            if (especimen.getFruto().getColorDelEndocarpio() != null) {
-                this.colorDelEndocarpio = new ColorEspecimenDTO(especimen.getFruto().getColorDelEndocarpio().getId(),
-                        especimen.getFruto().getColorDelEndocarpio().getNombre(),
-                        especimen.getFruto().getColorDelEndocarpio().getDescripcion(),
-                        especimen.getFruto().getColorDelEndocarpio().getColorRGB(),
-                        especimen.getFruto().getColorDelEndocarpio().getColorMunsellID(),
-                        especimen.getFruto().getColorDelEndocarpio().getColorMunsell().getHue(),
-                        especimen.getFruto().getColorDelEndocarpio().getColorMunsell().getValue(),
-                        especimen.getFruto().getColorDelEndocarpio().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFruto().getColorDelEndocarpio());
-                this.colores.put("Fruit Endocarp", colorDelEndocarpio);
-            }
             this.colorDelExocarpioID = especimen.getFruto().getColorDelExocarpioID();
             if (especimen.getFruto().getColorDelExocarpio() != null) {
                 this.colorDelExocarpio = new ColorEspecimenDTO(especimen.getFruto().getColorDelExocarpio().getId(),
                         especimen.getFruto().getColorDelExocarpio().getNombre(),
                         especimen.getFruto().getColorDelExocarpio().getDescripcion(),
+                        especimen.getFruto().getColorDelExocarpio().getOrganoDeLaPlanta(),
                         especimen.getFruto().getColorDelExocarpio().getColorRGB(),
                         especimen.getFruto().getColorDelExocarpio().getColorMunsellID(),
                         especimen.getFruto().getColorDelExocarpio().getColorMunsell().getHue(),
                         especimen.getFruto().getColorDelExocarpio().getColorMunsell().getValue(),
                         especimen.getFruto().getColorDelExocarpio().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getFruto().getColorDelExocarpio());
-                this.colores.put("Fruit Excarp", colorDelExocarpio);
+            }
+            this.colorDelMesocarpioID = especimen.getFruto().getColorDelMesocarpioID();
+            if (especimen.getFruto().getColorDelMesocarpio() != null) {
+                this.colorDelMesocarpio = new ColorEspecimenDTO(especimen.getFruto().getColorDelMesocarpio().getId(),
+                        especimen.getFruto().getColorDelMesocarpio().getNombre(),
+                        especimen.getFruto().getColorDelMesocarpio().getDescripcion(),
+                        especimen.getFruto().getColorDelMesocarpio().getOrganoDeLaPlanta(),
+                        especimen.getFruto().getColorDelMesocarpio().getColorRGB(),
+                        especimen.getFruto().getColorDelMesocarpio().getColorMunsellID(),
+                        especimen.getFruto().getColorDelMesocarpio().getColorMunsell().getHue(),
+                        especimen.getFruto().getColorDelMesocarpio().getColorMunsell().getValue(),
+                        especimen.getFruto().getColorDelMesocarpio().getColorMunsell().getChroma());
+            }
+            this.colorDelExocarpioInmaduroID = especimen.getFruto().getColorDelExocarpioInmaduroID();
+            if (especimen.getFruto().getColorDelExocarpioInmaduro() != null) {
+                this.colorDelExocarpioInmaduro = new ColorEspecimenDTO(especimen.getFruto().getColorDelExocarpioInmaduro().getId(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getNombre(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getDescripcion(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getOrganoDeLaPlanta(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getColorRGB(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getColorMunsellID(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getColorMunsell().getHue(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getColorMunsell().getValue(),
+                        especimen.getFruto().getColorDelExocarpioInmaduro().getColorMunsell().getChroma());
+            }
+            this.colorDelMesocarpioInmaduroID = especimen.getFruto().getColorDelMesocarpioInmaduroID();
+            if (especimen.getFruto().getColorDelMesocarpioInmaduro() != null) {
+                this.colorDelMesocarpioInmaduro = new ColorEspecimenDTO(especimen.getFruto().getColorDelMesocarpioInmaduro().getId(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getNombre(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getDescripcion(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getOrganoDeLaPlanta(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getColorRGB(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getColorMunsellID(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getColorMunsell().getHue(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getColorMunsell().getValue(),
+                        especimen.getFruto().getColorDelMesocarpioInmaduro().getColorMunsell().getChroma());
             }
             this.consistenciaDelPericarpio = especimen.getFruto().getConsistenciaDelPericarpio();
             this.frutoDescripcion = especimen.getFruto().getDescripcion();
@@ -380,13 +396,12 @@ public class EspecimenDTO implements Parcelable {
                 this.colorDelTallo = new ColorEspecimenDTO(especimen.getTallo().getColorDelTallo().getId(),
                         especimen.getTallo().getColorDelTallo().getNombre(),
                         especimen.getTallo().getColorDelTallo().getDescripcion(),
+                        especimen.getTallo().getColorDelTallo().getOrganoDeLaPlanta(),
                         especimen.getTallo().getColorDelTallo().getColorRGB(),
                         especimen.getTallo().getColorDelTallo().getColorMunsellID(),
                         especimen.getTallo().getColorDelTallo().getColorMunsell().getHue(),
                         especimen.getTallo().getColorDelTallo().getColorMunsell().getValue(),
                         especimen.getTallo().getColorDelTallo().getColorMunsell().getChroma());
-                coloresEspecimen.remove(especimen.getTallo().getColorDelTallo());
-                this.colores.put("Stem", colorDelTallo);
             }
             this.diametroDelTallo = especimen.getTallo().getDiametroDelTallo();
             this.disposicionDeLasEspinas = especimen.getTallo().getDisposicionDeLasEspinas();
@@ -407,20 +422,34 @@ public class EspecimenDTO implements Parcelable {
             this.raizDescripcion = especimen.getRaiz().getDescripcion();
             this.raizArmada = especimen.getRaiz().getRaizArmada();
             this.alturaDelCono = especimen.getRaiz().getAlturaDelCono();
+            this.colorDelConoID = especimen.getRaiz().getColorDelConoID();
+            if (especimen.getRaiz().getColorDelCono() != null) {
+                this.colorDelCono = new ColorEspecimenDTO(especimen.getRaiz().getColorDelCono().getId(),
+                        especimen.getRaiz().getColorDelCono().getNombre(),
+                        especimen.getRaiz().getColorDelCono().getDescripcion(),
+                        especimen.getRaiz().getColorDelCono().getOrganoDeLaPlanta(),
+                        especimen.getRaiz().getColorDelCono().getColorRGB(),
+                        especimen.getRaiz().getColorDelCono().getColorMunsellID(),
+                        especimen.getRaiz().getColorDelCono().getColorMunsell().getHue(),
+                        especimen.getRaiz().getColorDelCono().getColorMunsell().getValue(),
+                        especimen.getRaiz().getColorDelCono().getColorMunsell().getChroma());
+            }
         }
-        for (ColorEspecimen colorEspecimen:coloresEspecimen){
-            this.colores.put("color"+colorEspecimen.getId().toString(), new ColorEspecimenDTO(colorEspecimen.getId(),
+        this.colores = new ArrayList<>();
+        for (ColorEspecimen colorEspecimen:especimen.getColores()){
+            this.colores.add(new ColorEspecimenDTO(colorEspecimen.getId(),
                     colorEspecimen.getNombre(),
                     colorEspecimen.getDescripcion(),
+                    colorEspecimen.getOrganoDeLaPlanta(),
                     colorEspecimen.getColorRGB(),
                     colorEspecimen.getColorMunsellID(),
                     colorEspecimen.getColorMunsell().getHue(),
                     colorEspecimen.getColorMunsell().getValue(),
                     colorEspecimen.getColorMunsell().getChroma()));
         }
-        this.colectoresSecundarios = especimen.getColectoresSecundarios();
-        this.muestrasAsociadas = especimen.getMuestrasAsociadas();
-        this.fotografias = especimen.getFotografias();
+        this.colectoresSecundarios = especimen.getColectoresSecundarios() != null ? especimen.getColectoresSecundarios() : new ArrayList<EspecimenColectorSecundario>();
+        this.muestrasAsociadas = especimen.getMuestrasAsociadas() != null ? especimen.getMuestrasAsociadas() : new ArrayList<MuestraAsociada>();
+        this.fotografias = especimen.getFotografias() != null ? especimen.getFotografias() : new ArrayList<Fotografia>();
         if (especimen.getDeterminacionActual() != null) {
             this.fechaIdentificacion = especimen.getDeterminacionActual().getFechaIdentificacion();
             this.tipo = especimen.getDeterminacionActual().getTipo();
@@ -440,10 +469,10 @@ public class EspecimenDTO implements Parcelable {
     }
 
     public EspecimenDTO() {
-        colectoresSecundarios = new ArrayList<EspecimenColectorSecundario>();
-        muestrasAsociadas = new ArrayList<MuestraAsociada>();
-        colores = new HashMap<>();
-        fotografias = new ArrayList<Fotografia>();
+        colectoresSecundarios = new ArrayList<>();
+        muestrasAsociadas = new ArrayList<>();
+        colores = new ArrayList<>();
+        fotografias = new ArrayList<>();
     }
 
     public Long getId() {
@@ -534,19 +563,19 @@ public class EspecimenDTO implements Parcelable {
         this.localidadNombre = localidadNombre;
     }
 
-    public double getLatitud() {
+    public Double getLatitud() {
         return latitud;
     }
 
-    public void setLatitud(double latitud) {
+    public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
 
-    public double getLongitud() {
+    public Double getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
+    public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
 
@@ -558,19 +587,19 @@ public class EspecimenDTO implements Parcelable {
         this.datum = datum;
     }
 
-    public double getAltitudMinima() {
+    public Double getAltitudMinima() {
         return altitudMinima;
     }
 
-    public void setAltitudMinima(double altitudMinima) {
+    public void setAltitudMinima(Double altitudMinima) {
         this.altitudMinima = altitudMinima;
     }
 
-    public double getAltitudMaxima() {
+    public Double getAltitudMaxima() {
         return altitudMaxima;
     }
 
-    public void setAltitudMaxima(double altitudMaxima) {
+    public void setAltitudMaxima(Double altitudMaxima) {
         this.altitudMaxima = altitudMaxima;
     }
 
@@ -934,20 +963,20 @@ public class EspecimenDTO implements Parcelable {
         this.coberturaDelPeciolo = coberturaDelPeciolo;
     }
 
-    public Long getColorDeLasHojasID() {
-        return colorDeLasHojasID;
+    public Long getColorDeLaVainaID() {
+        return colorDeLaVainaID;
     }
 
-    public void setColorDeLasHojasID(Long colorDeLasHojasID) {
-        this.colorDeLasHojasID = colorDeLasHojasID;
+    public void setColorDeLaVainaID(Long colorDeLaVainaID) {
+        this.colorDeLaVainaID = colorDeLaVainaID;
     }
 
-    public ColorEspecimenDTO getColorDeLasHojas() {
-        return colorDeLasHojas;
+    public ColorEspecimenDTO getColorDeLaVaina() {
+        return colorDeLaVaina;
     }
 
-    public void setColorDeLasHojas(ColorEspecimenDTO colorDeLasHojas) {
-        this.colorDeLasHojas = colorDeLasHojas;
+    public void setColorDeLaVaina(ColorEspecimenDTO colorDeLaVaina) {
+        this.colorDeLaVaina = colorDeLaVaina;
     }
 
     public Long getColorDelPecioloID() {
@@ -1030,12 +1059,12 @@ public class EspecimenDTO implements Parcelable {
         this.numeroHojas = numeroHojas;
     }
 
-    public String getTamañoDeLasHojas() {
-        return tamañoDeLasHojas;
+    public String getTamañoDeLaVaina() {
+        return tamañoDeLaVaina;
     }
 
-    public void setTamañoDeLasHojas(String tamañoDeLasHojas) {
-        this.tamañoDeLasHojas = tamañoDeLasHojas;
+    public void setTamañoDeLaVaina(String tamañoDeLaVaina) {
+        this.tamañoDeLaVaina = tamañoDeLaVaina;
     }
 
     public String getTamañoDelPeciolo() {
@@ -1062,22 +1091,6 @@ public class EspecimenDTO implements Parcelable {
         this.frutoId = frutoId;
     }
 
-    public Long getColorDelEndocarpioID() {
-        return colorDelEndocarpioID;
-    }
-
-    public void setColorDelEndocarpioID(Long colorDelEndocarpioID) {
-        this.colorDelEndocarpioID = colorDelEndocarpioID;
-    }
-
-    public ColorEspecimenDTO getColorDelEndocarpio() {
-        return colorDelEndocarpio;
-    }
-
-    public void setColorDelEndocarpio(ColorEspecimenDTO colorDelEndocarpio) {
-        this.colorDelEndocarpio = colorDelEndocarpio;
-    }
-
     public Long getColorDelExocarpioID() {
         return colorDelExocarpioID;
     }
@@ -1092,6 +1105,54 @@ public class EspecimenDTO implements Parcelable {
 
     public void setColorDelExocarpio(ColorEspecimenDTO colorDelExocarpio) {
         this.colorDelExocarpio = colorDelExocarpio;
+    }
+
+    public Long getColorDelMesocarpioID() {
+        return colorDelMesocarpioID;
+    }
+
+    public void setColorDelMesocarpioID(Long colorDelMesocarpioID) {
+        this.colorDelMesocarpioID = colorDelMesocarpioID;
+    }
+
+    public ColorEspecimenDTO getColorDelMesocarpio() {
+        return colorDelMesocarpio;
+    }
+
+    public void setColorDelMesocarpio(ColorEspecimenDTO colorDelMesocarpio) {
+        this.colorDelMesocarpio = colorDelMesocarpio;
+    }
+
+    public Long getColorDelExocarpioInmaduroID() {
+        return colorDelExocarpioInmaduroID;
+    }
+
+    public void setColorDelExocarpioInmaduroID(Long colorDelExocarpioInmaduroID) {
+        this.colorDelExocarpioInmaduroID = colorDelExocarpioInmaduroID;
+    }
+
+    public ColorEspecimenDTO getColorDelExocarpioInmaduro() {
+        return colorDelExocarpioInmaduro;
+    }
+
+    public void setColorDelExocarpioInmaduro(ColorEspecimenDTO colorDelExocarpioInmaduro) {
+        this.colorDelExocarpioInmaduro = colorDelExocarpioInmaduro;
+    }
+
+    public Long getColorDelMesocarpioInmaduroID() {
+        return colorDelMesocarpioInmaduroID;
+    }
+
+    public void setColorDelMesocarpioInmaduroID(Long colorDelMesocarpioInmaduroID) {
+        this.colorDelMesocarpioInmaduroID = colorDelMesocarpioInmaduroID;
+    }
+
+    public ColorEspecimenDTO getColorDelMesocarpioInmaduro() {
+        return colorDelMesocarpioInmaduro;
+    }
+
+    public void setColorDelMesocarpioInmaduro(ColorEspecimenDTO colorDelMesocarpioInmaduro) {
+        this.colorDelMesocarpioInmaduro = colorDelMesocarpioInmaduro;
     }
 
     public String getConsistenciaDelPericarpio() {
@@ -1278,6 +1339,22 @@ public class EspecimenDTO implements Parcelable {
         this.alturaDelCono = alturaDelCono;
     }
 
+    public Long getColorDelConoID() {
+        return colorDelConoID;
+    }
+
+    public void setColorDelConoID(Long colorDelConoID) {
+        this.colorDelConoID = colorDelConoID;
+    }
+
+    public ColorEspecimenDTO getColorDelCono() {
+        return colorDelCono;
+    }
+
+    public void setColorDelCono(ColorEspecimenDTO colorDelCono) {
+        this.colorDelCono = colorDelCono;
+    }
+
     public List<EspecimenColectorSecundario> getColectoresSecundarios() {
         return colectoresSecundarios;
     }
@@ -1294,11 +1371,11 @@ public class EspecimenDTO implements Parcelable {
         this.muestrasAsociadas = muestrasAsociadas;
     }
 
-    public HashMap<String, ColorEspecimenDTO> getColores() {
+    public List<ColorEspecimenDTO> getColores() {
         return colores;
     }
 
-    public void setColores(HashMap<String, ColorEspecimenDTO> colores) {
+    public void setColores(List<ColorEspecimenDTO> colores) {
         this.colores = colores;
     }
 
@@ -1426,8 +1503,8 @@ public class EspecimenDTO implements Parcelable {
         dest.writeValue(this.numeroDeRaquilas);
         dest.writeValue(this.hojaId);
         dest.writeString(this.coberturaDelPeciolo);
-        dest.writeValue(this.colorDeLasHojasID);
-        dest.writeParcelable(this.colorDeLasHojas, 0);
+        dest.writeValue(this.colorDeLaVainaID);
+        dest.writeParcelable(this.colorDeLaVaina, 0);
         dest.writeValue(this.colorDelPecioloID);
         dest.writeParcelable(this.colorDelPeciolo, 0);
         dest.writeString(this.dispocicionDeLasPinnas);
@@ -1438,14 +1515,18 @@ public class EspecimenDTO implements Parcelable {
         dest.writeString(this.naturalezaDelLimbo);
         dest.writeString(this.numeroDePinnas);
         dest.writeString(this.numeroHojas);
-        dest.writeString(this.tamañoDeLasHojas);
+        dest.writeString(this.tamañoDeLaVaina);
         dest.writeString(this.tamañoDelPeciolo);
         dest.writeString(this.hojaDescripcion);
         dest.writeValue(this.frutoId);
-        dest.writeValue(this.colorDelEndocarpioID);
-        dest.writeParcelable(this.colorDelEndocarpio, 0);
         dest.writeValue(this.colorDelExocarpioID);
         dest.writeParcelable(this.colorDelExocarpio, 0);
+        dest.writeValue(this.colorDelMesocarpioID);
+        dest.writeParcelable(this.colorDelMesocarpio, 0);
+        dest.writeValue(this.colorDelExocarpioInmaduroID);
+        dest.writeParcelable(this.colorDelExocarpioInmaduro, 0);
+        dest.writeValue(this.colorDelMesocarpioInmaduroID);
+        dest.writeParcelable(this.colorDelMesocarpioInmaduro, 0);
         dest.writeString(this.consistenciaDelPericarpio);
         dest.writeString(this.frutoDescripcion);
         dest.writeValue(this.talloId);
@@ -1469,13 +1550,10 @@ public class EspecimenDTO implements Parcelable {
         dest.writeString(this.raizDescripcion);
         dest.writeValue(this.raizArmada);
         dest.writeValue(this.alturaDelCono);
+
         dest.writeTypedList(colectoresSecundarios);
         dest.writeTypedList(muestrasAsociadas);
-        Bundle colorsBundle = new Bundle(this.colores.size());
-        for (Map.Entry<String, ColorEspecimenDTO> entry:this.colores.entrySet()) {
-            colorsBundle.putParcelable(entry.getKey(), entry.getValue());
-        }
-        dest.writeBundle(colorsBundle);
+        dest.writeTypedList(colores);
         dest.writeTypedList(fotografias);
         dest.writeLong(fechaIdentificacion != null ? fechaIdentificacion.getTime() : -1);
         dest.writeString(this.tipo);
@@ -1486,6 +1564,7 @@ public class EspecimenDTO implements Parcelable {
     }
 
     private EspecimenDTO(Parcel in) {
+        this();
         this.id = (Long) in.readValue(Long.class.getClassLoader());
         this.numeroDeColeccion = in.readString();
         this.alturaDeLaPlanta = (Long) in.readValue(Long.class.getClassLoader());
@@ -1549,8 +1628,8 @@ public class EspecimenDTO implements Parcelable {
         this.numeroDeRaquilas = (Integer) in.readValue(Integer.class.getClassLoader());
         this.hojaId = (Long) in.readValue(Long.class.getClassLoader());
         this.coberturaDelPeciolo = in.readString();
-        this.colorDeLasHojasID = (Long) in.readValue(Long.class.getClassLoader());
-        this.colorDeLasHojas = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
+        this.colorDeLaVainaID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDeLaVaina = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
         this.colorDelPecioloID = (Long) in.readValue(Long.class.getClassLoader());
         this.colorDelPeciolo = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
         this.dispocicionDeLasPinnas = in.readString();
@@ -1561,14 +1640,18 @@ public class EspecimenDTO implements Parcelable {
         this.naturalezaDelLimbo = in.readString();
         this.numeroDePinnas = in.readString();
         this.numeroHojas = in.readString();
-        this.tamañoDeLasHojas = in.readString();
+        this.tamañoDeLaVaina = in.readString();
         this.tamañoDelPeciolo = in.readString();
         this.hojaDescripcion = in.readString();
         this.frutoId = (Long) in.readValue(Long.class.getClassLoader());
-        this.colorDelEndocarpioID = (Long) in.readValue(Long.class.getClassLoader());
-        this.colorDelEndocarpio = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
         this.colorDelExocarpioID = (Long) in.readValue(Long.class.getClassLoader());
         this.colorDelExocarpio = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
+        this.colorDelMesocarpioID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelMesocarpio = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
+        this.colorDelExocarpioInmaduroID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelExocarpioInmaduro = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
+        this.colorDelMesocarpioInmaduroID = (Long) in.readValue(Long.class.getClassLoader());
+        this.colorDelMesocarpioInmaduro = in.readParcelable(ColorEspecimenDTO.class.getClassLoader());
         this.consistenciaDelPericarpio = in.readString();
         this.frutoDescripcion = in.readString();
         this.talloId = (Long) in.readValue(Long.class.getClassLoader());
@@ -1594,11 +1677,7 @@ public class EspecimenDTO implements Parcelable {
         this.alturaDelCono = (Long) in.readValue(Long.class.getClassLoader());
         in.readTypedList(colectoresSecundarios, EspecimenColectorSecundario.CREATOR);
         in.readTypedList(muestrasAsociadas, MuestraAsociada.CREATOR);
-        Bundle colorsBundle = in.readBundle();
-        this.colores = new HashMap<>(colorsBundle.size());
-        for (String key:colorsBundle.keySet()) {
-            this.colores.put(key, (ColorEspecimenDTO) colorsBundle.getParcelable(key));
-        }
+        in.readTypedList(colores, ColorEspecimenDTO.CREATOR);
         in.readTypedList(fotografias, Fotografia.CREATOR);
         long tmpFechaIdentificacion = in.readLong();
         this.fechaIdentificacion = tmpFechaIdentificacion == -1 ? null : new Date(tmpFechaIdentificacion);

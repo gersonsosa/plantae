@@ -16,7 +16,6 @@ public class Tallo {
 
     private Long id;
     private String alturaDelTallo;
-    private ColorEspecimen colorDelTallo;
     private String diametroDelTallo;
     private String disposicionDeLasEspinas;
     private String formaDelTallo;
@@ -34,6 +33,7 @@ public class Tallo {
     /** Used for active entity operations. */
     private transient TalloDao myDao;
 
+    private ColorEspecimen colorDelTallo;
     private Long colorDelTallo__resolvedKey;
 
 
@@ -65,52 +65,52 @@ public class Tallo {
     }
 
     public String getAlturaDelTallo() {
-		return alturaDelTallo;
-	}
+        return alturaDelTallo;
+    }
 
     public void setAlturaDelTallo(String alturaDelTallo) {
         this.alturaDelTallo = alturaDelTallo;
-	}
+    }
 
     public String getDiametroDelTallo() {
-		return diametroDelTallo;
-	}
+        return diametroDelTallo;
+    }
 
     public void setDiametroDelTallo(String diametroDelTallo) {
         this.diametroDelTallo = diametroDelTallo;
-	}
+    }
 
     public String getDisposicionDeLasEspinas() {
-		return disposicionDeLasEspinas;
-	}
+        return disposicionDeLasEspinas;
+    }
 
     public void setDisposicionDeLasEspinas(String disposicionDeLasEspinas) {
         this.disposicionDeLasEspinas = disposicionDeLasEspinas;
-	}
+    }
 
     public String getFormaDelTallo() {
-		return formaDelTallo;
-	}
+        return formaDelTallo;
+    }
 
     public void setFormaDelTallo(String formaDelTallo) {
         this.formaDelTallo = formaDelTallo;
-	}
+    }
 
     public String getLongitudEntrenudos() {
-		return longitudEntrenudos;
-	}
+        return longitudEntrenudos;
+    }
 
     public void setLongitudEntrenudos(String longitudEntrenudos) {
         this.longitudEntrenudos = longitudEntrenudos;
-	}
+    }
 
     public String getNaturalezaDelTallo() {
-		return naturalezaDelTallo;
-	}
+        return naturalezaDelTallo;
+    }
 
     public void setNaturalezaDelTallo(String naturalezaDelTallo) {
         this.naturalezaDelTallo = naturalezaDelTallo;
-	}
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -171,7 +171,7 @@ public class Tallo {
 
     /**
      *
-     * @param colorDelTallo
+     * @param colorDelTallo El {@link edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen} del tallo
      */
     public void setColorDelTallo(ColorEspecimen colorDelTallo) {
         synchronized (this) {
@@ -181,4 +181,41 @@ public class Tallo {
         }
     }
 
+    public String aString() {
+        String string = "";
+        if (alturaDelTallo != null) {
+            string = string + (string.equals("") ? "Altura del tallo: ":", Altura del tallo: ") + alturaDelTallo;
+        }
+        if (diametroDelTallo != null) {
+            string = string + (string.equals("") ? "Diametro del tallo: ":", Diametro del tallo: ") + diametroDelTallo;
+        }
+        if (disposicionDeLasEspinas != null) {
+            string = string + (string.equals("") ? "Disposicion de las espinas: ":", Disposicion de las espinas: ") + disposicionDeLasEspinas;
+        }
+        if (formaDelTallo != null) {
+            string = string + (string.equals("") ? "Forma del tallo: ":", Forma del tallo: ") + formaDelTallo;
+        }
+        if (longitudEntrenudos != null) {
+            string = string + (string.equals("") ? "Longitud entrenudos: ":", Longitud entrenudos: ") + longitudEntrenudos;
+        }
+        if (naturalezaDelTallo != null) {
+            string = string + (string.equals("") ? "Naturaleza del tallo: ":", Naturaleza del tallo: ") + naturalezaDelTallo;
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? "Descripcion: ":", Descripcion: ") + descripcion;
+        }
+        if (desnudoCubierto != null) {
+            string = string + (string.equals("") ? "Desnudo cubierto: ":", Desnudo cubierto: ") + desnudoCubierto;
+        }
+        if (entrenudosConspicuos != null) {
+            string = string + (string.equals("") ? "Entrenudos conspicuos: ":", Entrenudos conspicuos: ") + entrenudosConspicuos;
+        }
+        if (espinas != null) {
+            string = string + (string.equals("") ? "Espinas: ":", Espinas: ") + espinas;
+        }
+        if (getColorDelTallo() != null) {
+            string = string + (string.equals("") ? "Color del tallo: ":", Color del tallo: ") + colorDelTallo;
+        }
+        return string;
+    }
 }

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/inflorescence_information_title"
-                android:textSize="45sp" />
+                android:textSize="34sp" />
 
             <Spinner
                 android:id="@+id/inflorescence_position"
@@ -50,11 +50,11 @@
                 android:singleLine="true"/>
 
             <EditText
-                android:id="@+id/petiole_size"
+                android:id="@+id/prophyll_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/prophyll_nature"
-                android:hint="@string/prompt_petiole_size"
+                android:hint="@string/prompt_prophyll_size"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:singleLine="true"/>
@@ -72,8 +72,9 @@
             <TextView
                 android:id="@+id/peduncular_bracts_title"
                 android:layout_width="180dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
-                android:text="@string/inflorescence_information_title"
+                android:text="@string/prompt_bracts_title"
                 android:textSize="18sp" />
 
             <EditText
@@ -88,7 +89,7 @@
 
             <EditText
                 android:id="@+id/bracts_position"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bracts_number"
                 android:hint="@string/prompt_bracts_position"
@@ -138,7 +139,7 @@
 
             <EditText
                 android:id="@+id/rachis_size"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/peduncle_size"
                 android:hint="@string/prompt_rachis_size"
@@ -179,6 +180,7 @@
             <TextView
                 android:id="@+id/inflorescence_color_title"
                 android:layout_width="180dp"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:text="@string/inflorescence_color_title"
                 android:textSize="18sp" />
@@ -191,16 +193,20 @@
                 android:layout_below="@+id/inflorescence_color_title">
                 <EditText
                     android:id="@+id/in_flower_color_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_in_flower_color"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"/>
-                <SurfaceView
+                <ImageView
                     android:id="@+id/in_flower_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:src="@color/plantae_black"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/pick_color" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/in_fruit"
@@ -210,16 +216,20 @@
                 android:layout_below="@+id/in_flower">
                 <EditText
                     android:id="@+id/in_fruit_color_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_in_fruit_color"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"/>
-                <SurfaceView
+                <ImageView
                     android:id="@+id/in_fruit_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:src="@color/plantae_black"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/pick_color" />
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

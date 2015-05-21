@@ -45,8 +45,8 @@ public class ProjectListFragment extends ListFragment implements View.OnClickLis
     }
 
     public interface OnProjectSelectedListener {
-        public void onProjectSelected(Proyecto proyecto);
-        public void onActionModeFinished();
+        void onProjectSelected(Proyecto proyecto);
+        void onActionModeFinished();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProjectListFragment extends ListFragment implements View.OnClickLis
         List<Proyecto> proyectos = proyectoDao.queryBuilder().where(ProyectoDao.Properties.ColectorPrincipalID.eq(colectorPrincipalID)).list();
         List<ListItem> listItems = new ArrayList<ListItem>(proyectos.size());
         for (Proyecto proyecto:proyectos) {
-            listItems.add(new ListItem(proyecto.getId(), proyecto.getNombre(), proyecto.getAgenciaEjecutora(), R.drawable.ic_action_location_map, Integer.toString(proyecto.getViajes().size()),false));
+            listItems.add(new ListItem(proyecto.getId(), proyecto.getNombre(), proyecto.getAgenciaEjecutora(), R.drawable.adventure_primary, Integer.toString(proyecto.getViajes().size()),false));
         }
         itemsSelected = new Long[proyectos.size()];
         setListAdapter(new ListItemImageAdapter(getActivity().getApplicationContext(), listItems, this));
@@ -101,10 +101,10 @@ public class ProjectListFragment extends ListFragment implements View.OnClickLis
         ListItem listItem = ((ListItem)getListAdapter().getItem(position));
         if (itemsSelected[position] != null && itemsSelected[position].equals(listItem.getId())){
             itemsSelected[position] = null;
-            imageView.setImageResource(R.drawable.ic_action_location_map);
+            imageView.setImageResource(R.drawable.adventure_primary);
         }else{
             itemsSelected[position]= listItem.getId();
-            imageView.setImageResource(R.drawable.ic_action_navigation_accept);
+            imageView.setImageResource(R.drawable.checkmark_primary);
             if (itemsSelectedCount() == 1) {
                 projectSelectedListener.onProjectSelected(proyectoDao.load(listItem.getId()));
             }

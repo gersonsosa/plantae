@@ -1,9 +1,12 @@
 package edu.udistrital.plantae.ui;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Gerson Sosa on 4/23/14.
  */
-public class SpecimenListItem {
+public class SpecimenListItem implements Parcelable {
     private Long id;
     private String specimenTitle;
     private String scientificName;
@@ -112,4 +115,44 @@ public class SpecimenListItem {
     public void setChecked(boolean isChecked) {
         this.isChecked = isChecked;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.specimenTitle);
+        dest.writeString(this.scientificName);
+        dest.writeString(this.specimenLocality);
+        dest.writeString(this.specimenDescription);
+        dest.writeInt(this.specimenImage);
+        dest.writeString(this.imagePath);
+        dest.writeByte(isLocated ? (byte) 1 : (byte) 0);
+        dest.writeByte(isChecked ? (byte) 1 : (byte) 0);
+    }
+
+    private SpecimenListItem(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.specimenTitle = in.readString();
+        this.scientificName = in.readString();
+        this.specimenLocality = in.readString();
+        this.specimenDescription = in.readString();
+        this.specimenImage = in.readInt();
+        this.imagePath = in.readString();
+        this.isLocated = in.readByte() != 0;
+        this.isChecked = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<SpecimenListItem> CREATOR = new Parcelable.Creator<SpecimenListItem>() {
+        public SpecimenListItem createFromParcel(Parcel source) {
+            return new SpecimenListItem(source);
+        }
+
+        public SpecimenListItem[] newArray(int size) {
+            return new SpecimenListItem[size];
+        }
+    };
 }

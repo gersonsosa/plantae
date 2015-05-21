@@ -40,7 +40,7 @@ public class SpecimenListItemAdapter extends BaseAdapter {
         this.objects = objects;
         this.onClickListener = onClickListener;
         this.resources = resources;
-        bitmapPlaceHolder = BitmapFactory.decodeResource(resources, R.drawable.ic_action_location_map);
+        bitmapPlaceHolder = BitmapFactory.decodeResource(resources, R.drawable.plantae);
     }
 
     @Override
@@ -99,7 +99,9 @@ public class SpecimenListItemAdapter extends BaseAdapter {
         viewHolder.specimenLocality.setText(specimenListItem.getSpecimenLocality());
         viewHolder.specimenDescription.setText(specimenListItem.getSpecimenDescription());
         viewHolder.itemLocatedView.setSelected(specimenListItem.isLocated());
-        viewHolder.specimenImageView.setOnClickListener(onClickListener);
+        if (onClickListener != null) {
+            viewHolder.specimenImageView.setOnClickListener(onClickListener);
+        }
 
         return convertView;
     }

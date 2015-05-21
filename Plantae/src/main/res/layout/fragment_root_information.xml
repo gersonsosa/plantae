@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/root_information_title"
-            android:textSize="45sp" />
+            android:textSize="34sp" />
 
         <EditText
             android:id="@+id/cone_height"
@@ -51,12 +51,36 @@
             android:maxLines="1"
             android:singleLine="true"/>
 
+        <LinearLayout
+            android:id="@+id/cone_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/roots_diameter"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/cone_color_text"
+                android:layout_width="0dip"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_cone_color"
+                android:textSize="18sp"/>
+            <ImageView
+                android:id="@+id/cone_color_image"
+                android:layout_width="0dip"
+                android:layout_weight="0.2"
+                android:src="@color/plantae_black"
+                android:contentDescription="@string/pick_color"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
         <CheckBox
             android:id="@+id/armed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/armed_text"
-            android:layout_below="@+id/roots_diameter"/>
+            android:layout_below="@+id/cone_color"/>
 
         <EditText
             android:id="@+id/spines_shape"

@@ -17,6 +17,8 @@ import android.widget.*;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import edu.udistrital.plantae.logicadominio.datosespecimen.MuestraAsociada;
+import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
@@ -24,6 +26,7 @@ import edu.udistrital.plantae.persistencia.FenologiaDao;
 import edu.udistrital.plantae.persistencia.HabitoDao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,7 +34,6 @@ import java.util.List;
  */
 public class PlantAttributesFragment extends Fragment {
 
-    private EspecimenDTO especimenDTO;
     private final Rect mTmpRect = new Rect();
     private int halfHeight;
     private TimeInterpolator ANIMATION_INTERPOLATOR = new DecelerateInterpolator();
@@ -40,6 +42,16 @@ public class PlantAttributesFragment extends Fragment {
     private ViewHolder viewHolder;
     private ColorsFragment colorsFragment;
     private AssociatedSamplesFragment associatedSamplesFragment;
+    private OnPlantAttributesChangedListener onPlantAttributesChangedListener;
+
+    public interface OnPlantAttributesChangedListener {
+        public void onHabitChanged(String habit);
+        public void onAlturaDeLaPlantaChanged(int alturaDeLaPlanta);
+        public void onDapChanged(int dap);
+        public void onAbundanciaChanged(String abundancia);
+        public void onFenologiaChanged(String fenologia);
+        public void onDescripcionEspecimenChanged(String descripcionEspecimen);
+    }
 
     public interface OnEditModeStarted {
         public void onAssociaedSamplesEditModeStarted();
@@ -52,8 +64,9 @@ public class PlantAttributesFragment extends Fragment {
         super.onAttach(activity);
         try {
             onEditModeStarted = (OnEditModeStarted) activity;
+            onPlantAttributesChangedListener = (OnPlantAttributesChangedListener) activity;
         }catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement CollectingInformationFragment.OnEditModeStarted");
+            throw new ClassCastException(activity.toString() + "must implement PlantAttributesFragment.OnEditModeStarted and PlantAttributesFragment.OnPlantAttributesChangedListener");
         }
     }
 
@@ -81,14 +94,36 @@ public class PlantAttributesFragment extends Fragment {
             }
         });
 
-        especimenDTO = getArguments().getParcelable("especimen");
+        Bundle fragmentsBundle = getArguments();
+
+        Long usuarioId = fragmentsBundle.getLong("usuarioId", 0l);
+
+        Long alturaDeLaPlanta = fragmentsBundle.getLong("alturaDeLaPlanta", 0l);
+        Long dap = fragmentsBundle.getLong("dap", 0l);
+        String abundancia = fragmentsBundle.getString("abundancia");
+        String fenologia = fragmentsBundle.getString("fenologia");
+        String descripcionEspecimen = fragmentsBundle.getString("descripcionEspecimen");
+        String habito = fragmentsBundle.getString("habito");
+
+        viewHolder.habit.setText(habito);
+        viewHolder.fenology.setText(fenologia);
+        if (alturaDeLaPlanta > 0l) {
+            viewHolder.heightSeekBar.setProgress(alturaDeLaPlanta.intValue());
+            viewHolder.height.setText(alturaDeLaPlanta.toString());
+        }
+        if (dap > 0l) {
+            viewHolder.DAPSeekBar.setProgress(dap.intValue());
+            viewHolder.DAP.setText(dap.toString());
+        }
+        viewHolder.abundance.setText(abundancia);
+        viewHolder.plantDescription.setText(descripcionEspecimen);
+
         final DaoSession daoSession = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession();
-        List<Habito> habitos = daoSession.getHabitoDao()._queryUsuario_Habitos(especimenDTO.getUsuarioId());
+        List<Habito> habitos = daoSession.getHabitoDao()._queryUsuario_Habitos(usuarioId);
         ArrayAdapter<Habito> habitoArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_dropdown_item_1line,habitos);
         viewHolder.habit.setAdapter(habitoArrayAdapter);
-        EditText abundance = (EditText) viewHolder.fragmentView.findViewById(R.id.abundance);
 
-        List<Fenologia> fenologias = daoSession.getFenologiaDao()._queryUsuario_Fenologias(especimenDTO.getUsuarioId());
+        List<Fenologia> fenologias = daoSession.getFenologiaDao()._queryUsuario_Fenologias(usuarioId);
         ArrayAdapter<Fenologia> fenologiaArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_dropdown_item_1line, fenologias);
         viewHolder.fenology.setAdapter(fenologiaArrayAdapter);
 
@@ -97,14 +132,7 @@ public class PlantAttributesFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String value = ((AutoCompleteTextView)v).getText().toString();
-                    if (!TextUtils.isEmpty(value)) {
-                        Habito habito = daoSession.getHabitoDao().queryBuilder().where(HabitoDao.Properties.Habito.eq(value)).unique();
-                        if (habito == null) {
-                            especimenDTO.setHabito(new Habito(value));
-                        } else {
-                            especimenDTO.setHabito(habito);
-                        }
-                    }
+                    onPlantAttributesChangedListener.onHabitChanged(value);
                 }
             }
         });
@@ -113,10 +141,15 @@ public class PlantAttributesFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String value = viewHolder.height.getText().toString();
-                    int intValue = Integer.parseInt(value);
-                    if (!TextUtils.isEmpty(value) && intValue < 120) {
+                    int intValue = 0;
+                    try {
+                        intValue = Integer.parseInt(value);
+                    } catch (NumberFormatException e) {
+                        viewHolder.DAP.setError(getActivity().getString(R.string.error_number_format));
+                    }
+                    if (intValue < 120) {
                         viewHolder.heightSeekBar.setProgress(intValue);
-                        especimenDTO.setDap(Long.parseLong(value));
+                        onPlantAttributesChangedListener.onAlturaDeLaPlantaChanged(intValue);
                     }
                 }
             }
@@ -126,10 +159,15 @@ public class PlantAttributesFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String value = viewHolder.DAP.getText().toString();
-                    int intValue = Integer.parseInt(value);
-                    if (!TextUtils.isEmpty(value) && intValue < 250) {
+                    int intValue = 0;
+                    try {
+                        intValue = Integer.parseInt(value);
+                    } catch (NumberFormatException e) {
+                        viewHolder.DAP.setError(getActivity().getString(R.string.error_number_format));
+                    }
+                    if (intValue < 250) {
                         viewHolder.DAPSeekBar.setProgress(intValue);
-                        especimenDTO.setDap(Long.parseLong(value));
+                        onPlantAttributesChangedListener.onDapChanged(intValue);
                     }
                 }
             }
@@ -138,6 +176,7 @@ public class PlantAttributesFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 viewHolder.height.setText(String.valueOf(progress));
+                onPlantAttributesChangedListener.onAlturaDeLaPlantaChanged(progress);
             }
 
             @Override
@@ -154,6 +193,7 @@ public class PlantAttributesFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 viewHolder.DAP.setText(String.valueOf(progress));
+                onPlantAttributesChangedListener.onDapChanged(progress);
             }
 
             @Override
@@ -166,11 +206,11 @@ public class PlantAttributesFragment extends Fragment {
 
             }
         });
-        abundance.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        viewHolder.abundance.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    especimenDTO.setAbundancia(((EditText) v).getText().toString());
+                    onPlantAttributesChangedListener.onAbundanciaChanged(((EditText) v).getText().toString());
                 }
             }
         });
@@ -179,14 +219,7 @@ public class PlantAttributesFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String value = ((AutoCompleteTextView)v).getText().toString();
-                    if (!TextUtils.isEmpty(value)) {
-                        Fenologia fenologia = daoSession.getFenologiaDao().queryBuilder().where(FenologiaDao.Properties.Fenologia.eq(value)).unique();
-                        if (fenologia == null) {
-                            especimenDTO.setFenologia(new Fenologia(value));
-                        } else {
-                            especimenDTO.setFenologia(fenologia);
-                        }
-                    }
+                    onPlantAttributesChangedListener.onFenologiaChanged(value);
                 }
             }
         });
@@ -194,15 +227,34 @@ public class PlantAttributesFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    especimenDTO.setDescripcionEspecimen(((EditText) v).getText().toString());
+                    onPlantAttributesChangedListener.onDescripcionEspecimenChanged(((EditText) v).getText().toString());
                 }
             }
         });
 
+        List<ColorEspecimenDTO> colores = fragmentsBundle.getParcelableArrayList("colores");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        if (colores.size() == 0) {
+            viewHolder.colorsList.setText(getString(R.string.no_colors));
+        }else if (colores.size() > 0) {
+            Iterator<ColorEspecimenDTO> iterator = colores.iterator();
+            for (int i = 0; i < colores.size(); i++) {
+                ColorEspecimenDTO colorEspecimenDTO = iterator.next();
+                if (i > 0) {
+                    if (i == colores.size() - 1) {
+                        stringBuilder.append(" ").append(getString(R.string.and)).append(" ");
+                    }else {
+                        stringBuilder.append(getString(R.string.comma)).append(" ");
+                    }
+                }
+                stringBuilder.append(colorEspecimenDTO.getDescripcion()).append(" ").append(colorEspecimenDTO.getNombre());
+            }
+            viewHolder.colorsList.setText(stringBuilder.toString());
+        }
+
         colorsFragment = new ColorsFragment();
-        Bundle colorFragmentBundle = new Bundle(1);
-        colorFragmentBundle.putParcelable("especimen", especimenDTO);
-        colorsFragment.setArguments(colorFragmentBundle);
+        colorsFragment.setArguments(fragmentsBundle);
         viewHolder.colors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,9 +272,7 @@ public class PlantAttributesFragment extends Fragment {
         });
 
         associatedSamplesFragment = new AssociatedSamplesFragment();
-        Bundle associatedSamplesFragmentBundle = new Bundle(1);
-        associatedSamplesFragmentBundle.putParcelableArrayList("muestrasAsociadas", (ArrayList<? extends Parcelable>) especimenDTO.getMuestrasAsociadas());
-        associatedSamplesFragment.setArguments(associatedSamplesFragmentBundle);
+        associatedSamplesFragment.setArguments(fragmentsBundle);
         viewHolder.associatedSamples.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -324,6 +374,7 @@ public class PlantAttributesFragment extends Fragment {
         viewHolder.normalModePlantAttrib = (ScrollView) viewHolder.fragmentView.findViewById(R.id.normal_mode_plant_attrib);
         viewHolder.formContainerPlantAttrib = (RelativeLayout) viewHolder.fragmentView.findViewById(R.id.form_container_plant_attrib);
         viewHolder.plantAttributes = (RelativeLayout) viewHolder.fragmentView.findViewById(R.id.plant_attributes);
+        viewHolder.abundance = (EditText) viewHolder.fragmentView.findViewById(R.id.abundance);
         viewHolder.colors = (RelativeLayout) viewHolder.fragmentView.findViewById(R.id.specimen_colors);
         viewHolder.associatedSamples = (RelativeLayout) viewHolder.fragmentView.findViewById(R.id.associated_samples);
         viewHolder.habit = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.habit);
@@ -357,7 +408,7 @@ public class PlantAttributesFragment extends Fragment {
         SeekBar heightSeekBar;
         SeekBar DAPSeekBar;
         AutoCompleteTextView fenology;
-        EditText plantDescription;
+        EditText abundance, plantDescription;
         TextView colorsList, associatedSampleList;
     }
 

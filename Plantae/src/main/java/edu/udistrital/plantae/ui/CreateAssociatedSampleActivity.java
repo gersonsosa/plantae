@@ -25,7 +25,7 @@ public class CreateAssociatedSampleActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_associated_sample);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_back);
+        toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
 
         retrieveViews();

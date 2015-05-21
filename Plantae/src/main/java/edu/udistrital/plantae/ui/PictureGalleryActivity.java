@@ -43,7 +43,7 @@ public class PictureGalleryActivity extends ActionBarActivity implements View.On
         setContentView(R.layout.activity_picture_gallery);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_back);
+        toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
 
         numeroColeccion = getIntent().getStringExtra("numeroColeccion");

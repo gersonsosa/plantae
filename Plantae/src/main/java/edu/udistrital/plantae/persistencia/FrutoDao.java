@@ -29,8 +29,10 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ConsistenciaDelPericarpio = new Property(1, String.class, "consistenciaDelPericarpio", false, "CONSISTENCIA_DEL_PERICARPIO");
         public final static Property Descripcion = new Property(2, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property ColorDelEndocarpioID = new Property(3, Long.class, "colorDelEndocarpioID", false, "COLOR_DEL_ENDOCARPIO_ID");
-        public final static Property ColorDelExocarpioID = new Property(4, Long.class, "colorDelExocarpioID", false, "COLOR_DEL_EXOCARPIO_ID");
+        public final static Property ColorDelExocarpioID = new Property(3, Long.class, "colorDelExocarpioID", false, "COLOR_DEL_EXOCARPIO_ID");
+        public final static Property ColorDelMesocarpioID = new Property(4, Long.class, "colorDelMesocarpioID", false, "COLOR_DEL_MESOCARPIO_ID");
+        public final static Property ColorDelExocarpioInmaduroID = new Property(5, Long.class, "colorDelExocarpioInmaduroID", false, "COLOR_DEL_EXOCARPIO_INMADURO_ID");
+        public final static Property ColorDelMesocarpioInmaduroID = new Property(6, Long.class, "colorDelMesocarpioInmaduroID", false, "COLOR_DEL_MESOCARPIO_INMADURO_ID");
     };
 
     private DaoSession daoSession;
@@ -52,13 +54,19 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'CONSISTENCIA_DEL_PERICARPIO' TEXT," + // 1: consistenciaDelPericarpio
                 "'DESCRIPCION' TEXT," + // 2: descripcion
-                "'COLOR_DEL_ENDOCARPIO_ID' INTEGER," + // 3: colorDelEndocarpioID
-                "'COLOR_DEL_EXOCARPIO_ID' INTEGER);"); // 4: colorDelExocarpioID
+                "'COLOR_DEL_EXOCARPIO_ID' INTEGER," + // 3: colorDelExocarpioID
+                "'COLOR_DEL_MESOCARPIO_ID' INTEGER," + // 4: colorDelMesocarpioID
+                "'COLOR_DEL_EXOCARPIO_INMADURO_ID' INTEGER," + // 5: colorDelExocarpioInmaduroID
+                "'COLOR_DEL_MESOCARPIO_INMADURO_ID' INTEGER);"); // 6: colorDelMesocarpioInmaduroID
         // Add Indexes
-        db.execSQL("CREATE INDEX " + constraint + "IDX_FRUTO_COLOR_DEL_ENDOCARPIO_ID ON FRUTO" +
-                " (COLOR_DEL_ENDOCARPIO_ID);");
         db.execSQL("CREATE INDEX " + constraint + "IDX_FRUTO_COLOR_DEL_EXOCARPIO_ID ON FRUTO" +
                 " (COLOR_DEL_EXOCARPIO_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_FRUTO_COLOR_DEL_MESOCARPIO_ID ON FRUTO" +
+                " (COLOR_DEL_MESOCARPIO_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_FRUTO_COLOR_DEL_EXOCARPIO_INMADURO_ID ON FRUTO" +
+                " (COLOR_DEL_EXOCARPIO_INMADURO_ID);");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_FRUTO_COLOR_DEL_MESOCARPIO_INMADURO_ID ON FRUTO" +
+                " (COLOR_DEL_MESOCARPIO_INMADURO_ID);");
     }
 
     /** Drops the underlying database table. */
@@ -86,15 +94,25 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
         if (descripcion != null) {
             stmt.bindString(3, descripcion);
         }
- 
-        Long colorDelEndocarpioID = entity.getColorDelEndocarpioID();
-        if (colorDelEndocarpioID != null) {
-            stmt.bindLong(4, colorDelEndocarpioID);
-        }
- 
+
         Long colorDelExocarpioID = entity.getColorDelExocarpioID();
         if (colorDelExocarpioID != null) {
-            stmt.bindLong(5, colorDelExocarpioID);
+            stmt.bindLong(4, colorDelExocarpioID);
+        }
+
+        Long colorDelMesocarpioID = entity.getColorDelMesocarpioID();
+        if (colorDelMesocarpioID != null) {
+            stmt.bindLong(5, colorDelMesocarpioID);
+        }
+
+        Long colorDelExocarpioInmaduroID = entity.getColorDelExocarpioInmaduroID();
+        if (colorDelExocarpioInmaduroID != null) {
+            stmt.bindLong(6, colorDelExocarpioInmaduroID);
+        }
+
+        Long colorDelMesocarpioInmaduroID = entity.getColorDelMesocarpioInmaduroID();
+        if (colorDelMesocarpioInmaduroID != null) {
+            stmt.bindLong(7, colorDelMesocarpioInmaduroID);
         }
     }
 
@@ -124,8 +142,10 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setConsistenciaDelPericarpio(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescripcion(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setColorDelEndocarpioID(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setColorDelExocarpioID(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setColorDelExocarpioID(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setColorDelMesocarpioID(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setColorDelExocarpioInmaduroID(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setColorDelMesocarpioInmaduroID(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
      }
     
     /** @inheritdoc */
@@ -161,9 +181,15 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
             SqlUtils.appendColumns(builder, "T0", daoSession.getColorEspecimenDao().getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T1", daoSession.getColorEspecimenDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T2", daoSession.getColorEspecimenDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T3", daoSession.getColorEspecimenDao().getAllColumns());
             builder.append(" FROM FRUTO T");
-            builder.append(" LEFT JOIN COLOR_ESPECIMEN T0 ON T.'COLOR_DEL_ENDOCARPIO_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN COLOR_ESPECIMEN T0 ON T.'COLOR_DEL_MESOCARPIO_ID'=T0.'_id'");
             builder.append(" LEFT JOIN COLOR_ESPECIMEN T1 ON T.'COLOR_DEL_EXOCARPIO_ID'=T1.'_id'");
+            builder.append(" LEFT JOIN COLOR_ESPECIMEN T2 ON T.'COLOR_DEL_MESOCARPIO_INMADURO_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN COLOR_ESPECIMEN T3 ON T.'COLOR_DEL_EXOCARPIO_INMADURO_ID'=T3.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -174,12 +200,20 @@ public class FrutoDao extends AbstractDao<Fruto, Long> {
         Fruto entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
 
-        ColorEspecimen colorDelEndocarpio = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
-        entity.setColorDelEndocarpio(colorDelEndocarpio);
+        ColorEspecimen colorDelMesocarpio = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
+        entity.setColorDelMesocarpio(colorDelMesocarpio);
         offset += daoSession.getColorEspecimenDao().getAllColumns().length;
 
         ColorEspecimen colorDelExocarpio = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
         entity.setColorDelExocarpio(colorDelExocarpio);
+        offset += daoSession.getColorEspecimenDao().getAllColumns().length;
+
+        ColorEspecimen colorDelMesocarpioInmaduro = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
+        entity.setColorDelMesocarpioInmaduro(colorDelMesocarpioInmaduro);
+        offset += daoSession.getColorEspecimenDao().getAllColumns().length;
+
+        ColorEspecimen colorDelExocarpioInmaduro = loadCurrentOther(daoSession.getColorEspecimenDao(), cursor, offset);
+        entity.setColorDelExocarpioInmaduro(colorDelExocarpioInmaduro);
 
         return entity;    
     }

@@ -4,23 +4,23 @@
 
     <item android:id="@+id/action_add"
           android:title="@string/action_add"
-          android:icon="@drawable/ic_action_add"
+          android:icon="@drawable/plus"
           app:showAsAction="ifRoom" />
 
     <item android:id="@+id/search"
         android:title="@string/action_search"
-        android:icon="@drawable/ic_action_action_search"
+        android:icon="@drawable/search"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_add_detailed"
           android:title="@string/action_add_detailed"
           android:visible="false"
-          android:icon="@drawable/ic_action_content_new_event"
+          android:icon="@drawable/western"
           app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_rebuild_journey"
           android:title="@string/action_rebuild_journey"
-          android:icon="@drawable/ic_action_location_map"
+          android:icon="@drawable/line_spliting"
           app:showAsAction="ifRoom" />
 
     <item

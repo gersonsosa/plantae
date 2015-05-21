@@ -26,15 +26,17 @@ public class ListItemCheckAdapter extends ArrayAdapter<ListItem> {
     private View.OnClickListener onClickListener;
     private List<ListItem> objects;
 
-    public ListItemCheckAdapter(Context context, int resource, List<ListItem> objects) {
+    public ListItemCheckAdapter(Context context, int resource, View.OnClickListener onClickListener, List<ListItem> objects) {
         super(context, resource, objects);
         this.context = context;
+        this.onClickListener = onClickListener;
         this.objects = objects;
     }
 
-    public ListItemCheckAdapter(Context context, int resource, ListItem[] objects) {
+    public ListItemCheckAdapter(Context context, int resource, View.OnClickListener onClickListener, ListItem[] objects) {
         super(context, resource, objects);
         this.context = context;
+        this.onClickListener = onClickListener;
         this.objects = new ArrayList<>();
         Collections.addAll(this.objects, objects);
     }
@@ -63,6 +65,7 @@ public class ListItemCheckAdapter extends ArrayAdapter<ListItem> {
         viewHolder.itemDescriptionView.setText(listItem.getDescriptionText());
         viewHolder.subitemCountView.setText(listItem.getSubitemCount());
         viewHolder.itemLocatedView.setSelected(listItem.isLocated());
+        viewHolder.checkBoxView.setOnClickListener(onClickListener);
 
         return convertView;
     }

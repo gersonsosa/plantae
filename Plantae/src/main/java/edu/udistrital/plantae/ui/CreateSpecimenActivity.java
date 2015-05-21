@@ -12,10 +12,16 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -24,14 +30,24 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.*;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
 import edu.udistrital.plantae.logicadominio.recoleccion.ViajeColectorSecundario;
+import edu.udistrital.plantae.logicadominio.taxonomia.EpitetoEspecifico;
+import edu.udistrital.plantae.logicadominio.taxonomia.Genero;
+import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
+import edu.udistrital.plantae.logicadominio.ubicacion.Departamento;
+import edu.udistrital.plantae.logicadominio.ubicacion.Municipio;
+import edu.udistrital.plantae.logicadominio.ubicacion.Region;
 import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
+import edu.udistrital.plantae.objetotransferenciadatos.RegionDTO;
+import edu.udistrital.plantae.objetotransferenciadatos.TaxonDTO;
 import edu.udistrital.plantae.persistencia.*;
 import edu.udistrital.plantae.ui.view.SlidingTabLayout;
 import edu.udistrital.plantae.ui.view.ViewPagerPlantae;
@@ -42,7 +58,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 /**
  * Created by Gerson Sosa on 5/15/14.
@@ -50,31 +66,45 @@ import java.util.Map;
 public class CreateSpecimenActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener,
         SecondaryCollectorsListFragment.OnSecondaryCollectorSelectedListener,
+        CollectingInformationFragment.OnCollectingInformationUpdated,
         CollectingInformationFragment.OnEditModeStarted,
         LocalityInformationFragment.OnLocationUpdateRequest,
+        LocalityInformationFragment.OnLocalityChangeListener,
+        TaxonInformationFragment.OnTaxonInformationUpdated,
+        HabitatInformationFragment.OnHabitatChangedListener,
+        PlantAttributesFragment.OnPlantAttributesChangedListener,
         PlantAttributesFragment.OnEditModeStarted,
         AssociatedSamplesFragment.OnAssociatedSampleListener,
-        ColorsFragment.OnColorChangedListener {
+        ColorsFragment.OnColorChangedListener,
+        FlowerInformationFragment.OnFlowersInformationChangedListener,
+        FruitInformationFragment.OnFruitInformationChangedListener,
+        InflorescenceInformationFragment.OnInflorescenceInformationChangedListener,
+        RootInformationFragment.OnRootInformationChangedListener,
+        LeavesInformationFragment.OnLeavesInformationChangedListener,
+        StemInformationFragment.OnStemInformationChangedListener{
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     public static final int IMAGE_GALLERY_ACTIVITY_REQUEST_CODE = 101;
     private EspecimenDTO especimenDTO;
     private DaoSession daoSession;
-    private int specimenType;
     private GoogleApiClient googleApiClient;
     private SpecimenPagesAdapter pagesAdapter;
-    private LocationRequest locationRequest;
     private String picturePath;
     private List<ColectorSecundario> colectoresSecundarios;
     private CollectingInformationFragment collectingInformationFragment;
     private SecondaryCollectorsListFragment secondaryCollectorsListFragment;
-    private SlidingTabLayout slidingTabLayout;
-    private ViewPagerPlantae viewPager;
+    private LocalityInformationFragment localityInformationFragment;
+    private TaxonInformationFragment taxonInformationFragment;
     private PlantAttributesFragment plantAttributesFragment;
-    private FlowersInformationFragment flowersInformationFragment;
+    private FlowerInformationFragment flowersInformationFragment;
     private FruitInformationFragment fruitInformationFragment;
     private InflorescenceInformationFragment inflorescenceInformationFragment;
+    private LeavesInformationFragment leavesInformationFragment;
+    private StemInformationFragment stemInformationFragment;
+    private RootInformationFragment rootInformationFragment;
+    private SlidingTabLayout slidingTabLayout;
+    private ViewPagerPlantae viewPager;
     private Viaje viaje;
     private boolean editMode;
 
@@ -88,25 +118,39 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
 
         // Setup the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_back);
+        toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
 
         daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();
 
         // Get the specimen type and travel id from Intent
-        specimenType = getIntent().getIntExtra("specimenType", 0);
-        final Long viajeId = getIntent().getLongExtra("viaje", 0l);
-        viaje = daoSession.getViajeDao().load(viajeId);
+        int specimenType;
 
         // Check if the specimen is new or in editing mode
-        final Long especimen = getIntent().getLongExtra("especimen", 0l);
-        if (especimen != 0l) {
+        final Long especimenId = getIntent().getLongExtra("especimen", 0l);
+        if (especimenId != 0l) {
             editMode = true;
-            especimenDTO = new EspecimenDTO(daoSession.getEspecimenDao().loadDeep(especimen));
+            setTitle(R.string.edit_specimen_title);
+            Especimen especimen = daoSession.getEspecimenDao().loadDeep(especimenId);
+            viaje = especimen.getViaje();
+            if (especimen.getTipo().equals("ES")) {
+                specimenType = SpecimenPagesAdapter.SPECIMEN_SINGLE;
+            } else {
+                specimenType = SpecimenPagesAdapter.SPECIMEN_DETAILED;
+            }
+            especimenDTO = new EspecimenDTO(especimen);
+            loadSecondaryCollectorsFromSpecimen(especimenDTO.getColectoresSecundarios());
+        }else if (getIntent().getParcelableExtra("clone") != null) {
+            especimenDTO = getIntent().getParcelableExtra("clone");
+            specimenType = especimenDTO.getTipoCaptura();
+            viaje = daoSession.getViajeDao().load(especimenDTO.getViajeID());
+            especimenDTO.setNumeroDeColeccion(viaje.getColectorPrincipal().generarNumeroDeColeccion());
             loadSecondaryCollectorsFromSpecimen(especimenDTO.getColectoresSecundarios());
         }else{
-            ColectorPrincipal colectorPrincipal = daoSession
-                    .getViajeDao().load(viajeId).getColectorPrincipal();
+            final Long viajeId = getIntent().getLongExtra("viaje", 0l);
+            viaje = daoSession.getViajeDao().load(viajeId);
+            specimenType = getIntent().getIntExtra("specimenType", 0);
+            ColectorPrincipal colectorPrincipal = viaje.getColectorPrincipal();
             especimenDTO = new EspecimenDTO();
             especimenDTO.setViajeID(viajeId);
             especimenDTO.setColectorPrincipalID(colectorPrincipal.getId());
@@ -117,11 +161,24 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
             loadSecondaryCollectorsFromTravel(viajeColectorSecundarios);
         }
 
-        pagesAdapter = new SpecimenPagesAdapter(getSupportFragmentManager(), specimenType, this, especimenDTO, secondaryCollectorsNames());
+        especimenDTO.setTipoCaptura(specimenType);
+
+        Bundle fragmentsBundle = createFragmentsBundle();
+
+        pagesAdapter = new SpecimenPagesAdapter(getSupportFragmentManager(), specimenType, this, fragmentsBundle);
 
         collectingInformationFragment = (CollectingInformationFragment) pagesAdapter.getItem(0);
+        localityInformationFragment = (LocalityInformationFragment) pagesAdapter.getItem(1);
+        taxonInformationFragment = (TaxonInformationFragment) pagesAdapter.getItem(2);
         plantAttributesFragment = (PlantAttributesFragment) pagesAdapter.getItem(4);
-        flowersInformationFragment = (FlowersInformationFragment) pagesAdapter.getItem(5);
+        flowersInformationFragment = (FlowerInformationFragment) pagesAdapter.getItem(5);
+        if (specimenType == SpecimenPagesAdapter.SPECIMEN_DETAILED){
+            fruitInformationFragment = (FruitInformationFragment) pagesAdapter.getItem(6);
+            inflorescenceInformationFragment = (InflorescenceInformationFragment) pagesAdapter.getItem(7);
+            rootInformationFragment = (RootInformationFragment) pagesAdapter.getItem(8);
+            leavesInformationFragment = (LeavesInformationFragment) pagesAdapter.getItem(9);
+            stemInformationFragment = (StemInformationFragment) pagesAdapter.getItem(10);
+        }
 
         viewPager = (ViewPagerPlantae) findViewById(R.id.specimen_view_pager);
         viewPager.setAdapter(pagesAdapter);
@@ -147,6 +204,391 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
             plantAttributesFragment.updateAssociatedSamplesText(textAssociatedSamples());
             plantAttributesFragment.updateColorsText(textColors());
         }
+    }
+
+    private Bundle createFragmentsBundle() {
+        Bundle fragmentsBundle = new Bundle();
+        if (especimenDTO.getId() != null) {
+            fragmentsBundle.putLong("id", especimenDTO.getId());
+        }
+        if (especimenDTO.getNumeroDeColeccion() != null) {
+            fragmentsBundle.putString("numeroDeColeccion", especimenDTO.getNumeroDeColeccion());
+        }
+        if (especimenDTO.getAlturaDeLaPlanta() != null) {
+            fragmentsBundle.putLong("alturaDeLaPlanta", especimenDTO.getAlturaDeLaPlanta());
+        }
+        if (especimenDTO.getDap() != null) {
+            fragmentsBundle.putLong("dap", especimenDTO.getDap());
+        }
+        if (especimenDTO.getAbundancia() != null) {
+            fragmentsBundle.putString("abundancia", especimenDTO.getAbundancia());
+        }
+        if (especimenDTO.getFenologia() != null) {
+            fragmentsBundle.putString("fenologia", especimenDTO.getFenologia().getFenologia());
+        }
+        if (especimenDTO.getDescripcionEspecimen() != null) {
+            fragmentsBundle.putString("descripcionEspecimen", especimenDTO.getDescripcionEspecimen());
+        }
+        if (especimenDTO.getHabito() != null) {
+            fragmentsBundle.putString("habito", especimenDTO.getHabito().getHabito());
+        }
+        if (especimenDTO.getHabitat() != null) {
+            if (especimenDTO.getHabitat().getEspeciesAsociadas() != null) {
+                fragmentsBundle.putString("especiesAsociadas", especimenDTO.getHabitat().getEspeciesAsociadas());
+            }
+            if (especimenDTO.getHabitat().getSueloSustrato() != null) {
+                fragmentsBundle.putString("sueloSustrato", especimenDTO.getHabitat().getSueloSustrato());
+            }
+            if (especimenDTO.getHabitat().getVegetacion() != null) {
+                fragmentsBundle.putString("vegetacion", especimenDTO.getHabitat().getVegetacion());
+            }
+        }
+        if (especimenDTO.getLocalidadId() != null) {
+            fragmentsBundle.putLong("localidadId", especimenDTO.getLocalidadId());
+        }
+        if (especimenDTO.getLocalidadNombre() != null) {
+            fragmentsBundle.putString("localidadNombre", especimenDTO.getLocalidadNombre());
+        }
+        if (especimenDTO.getLatitud() != null) {
+            fragmentsBundle.putDouble("latitud", especimenDTO.getLatitud());
+        }
+        if (especimenDTO.getLongitud() != null) {
+            fragmentsBundle.putDouble("longitud", especimenDTO.getLongitud());
+        }
+        if (especimenDTO.getDatum() != null) {
+            fragmentsBundle.putString("datum", especimenDTO.getDatum());
+        }
+        if (especimenDTO.getAltitudMinima() != null) {
+            fragmentsBundle.putDouble("altitudMinima", especimenDTO.getAltitudMinima());
+        }
+        if (especimenDTO.getAltitudMaxima() != null) {
+            fragmentsBundle.putDouble("altitudMaxima", especimenDTO.getAltitudMaxima());
+        }
+        if (especimenDTO.getLocalidadDescripcion() != null) {
+            fragmentsBundle.putString("localidadDescripcion", especimenDTO.getLocalidadDescripcion());
+        }
+        if (especimenDTO.getMarcaDispositivo() != null) {
+            fragmentsBundle.putString("marcaDispositivo", especimenDTO.getMarcaDispositivo());
+        }
+        if (especimenDTO.getRegion() != null) {
+            if (especimenDTO.getRegion().getMunicipio() != null) {
+                fragmentsBundle.putString("municipio", especimenDTO.getRegion().getMunicipio());
+            }
+            if (especimenDTO.getRegion().getDepartamento() != null) {
+                fragmentsBundle.putString("departamento", especimenDTO.getRegion().getDepartamento());
+            }
+            if (especimenDTO.getRegion().getPais() != null) {
+                fragmentsBundle.putString("pais", especimenDTO.getRegion().getPais());
+            }
+        }
+        if (especimenDTO.getFechaInicial() != null) {
+            fragmentsBundle.putLong("fechaInicial", especimenDTO.getFechaInicial() != null ? especimenDTO.getFechaInicial().getTime() : -1);
+        }
+        if (especimenDTO.getFechaFinal() != null) {
+            fragmentsBundle.putLong("fechaFinal", especimenDTO.getFechaFinal() != null ? especimenDTO.getFechaFinal().getTime() : -1);
+        }
+        if (especimenDTO.getMetodoColeccion() != null) {
+            fragmentsBundle.putString("metodoColeccion", especimenDTO.getMetodoColeccion());
+        }
+        if (especimenDTO.getEstacionDelAño() != null) {
+            fragmentsBundle.putString("estacionDelAño", especimenDTO.getEstacionDelAño());
+        }
+        if (especimenDTO.getViajeID() != null) {
+            fragmentsBundle.putLong("viajeID", especimenDTO.getViajeID());
+        }
+        if (especimenDTO.getColectorPrincipalID() != null) {
+            fragmentsBundle.putLong("colectorPrincipalID", especimenDTO.getColectorPrincipalID());
+        }
+        if (especimenDTO.getFlorId() != null) {
+            fragmentsBundle.putLong("florId", especimenDTO.getFlorId());
+        }
+        if (especimenDTO.getFlorDescripcion() != null) {
+            fragmentsBundle.putString("florDescripcion", especimenDTO.getFlorDescripcion());
+        }
+        if (especimenDTO.getColorDeLaCorolaID() != null) {
+            fragmentsBundle.putLong("colorDeLaCorolaID", especimenDTO.getColorDeLaCorolaID());
+        }
+        if (especimenDTO.getColorDeLaCorola() != null) {
+            fragmentsBundle.putParcelable("colorDeLaCorola", especimenDTO.getColorDeLaCorola());
+        }
+        if (especimenDTO.getColorDelCalizID() != null) {
+            fragmentsBundle.putLong("colorDelCalizID", especimenDTO.getColorDelCalizID());
+        }
+        if (especimenDTO.getColorDelCaliz() != null) {
+            fragmentsBundle.putParcelable("colorDelCaliz", especimenDTO.getColorDelCaliz());
+        }
+        if (especimenDTO.getColorDelGineceoID() != null) {
+            fragmentsBundle.putLong("colorDelGineceoID", especimenDTO.getColorDelGineceoID());
+        }
+        if (especimenDTO.getColorDelGineceo() != null) {
+            fragmentsBundle.putParcelable("colorDelGineceo", especimenDTO.getColorDelGineceo());
+        }
+        if (especimenDTO.getColorDeLosEstambresID() != null) {
+            fragmentsBundle.putLong("colorDeLosEstambresID", especimenDTO.getColorDeLosEstambresID());
+        }
+        if (especimenDTO.getColorDeLosEstambres() != null) {
+            fragmentsBundle.putParcelable("colorDeLosEstambres", especimenDTO.getColorDeLosEstambres());
+        }
+        if (especimenDTO.getColorDeLosEstigmasID() != null) {
+            fragmentsBundle.putLong("colorDeLosEstigmasID", especimenDTO.getColorDeLosEstigmasID());
+        }
+        if (especimenDTO.getColorDeLosEstigmas() != null) {
+            fragmentsBundle.putParcelable("colorDeLosEstigmas", especimenDTO.getColorDeLosEstigmas());
+        }
+        if (especimenDTO.getColorDeLosPistiliodiosID() != null) {
+            fragmentsBundle.putLong("colorDeLosPistiliodiosID", especimenDTO.getColorDeLosPistiliodiosID());
+        }
+        if (especimenDTO.getColorDeLosPistiliodios() != null) {
+            fragmentsBundle.putParcelable("colorDeLosPistiliodios", especimenDTO.getColorDeLosPistiliodios());
+        }
+        if (especimenDTO.getInflorescenciaId() != null) {
+            fragmentsBundle.putLong("inflorescenciaId", especimenDTO.getInflorescenciaId());
+        }
+        if (especimenDTO.getColorDeLaInflorescenciaEnFlorID() != null) {
+            fragmentsBundle.putLong("colorDeLaInflorescenciaEnFlorID", especimenDTO.getColorDeLaInflorescenciaEnFlorID());
+        }
+        if (especimenDTO.getColorDeLaInflorescenciaEnFlor() != null) {
+            fragmentsBundle.putParcelable("colorDeLaInflorescenciaEnFlor", especimenDTO.getColorDeLaInflorescenciaEnFlor());
+        }
+        if (especimenDTO.getColorDeLaInflorescenciaEnFrutoID() != null) {
+            fragmentsBundle.putLong("colorDeLaInflorescenciaEnFrutoID", especimenDTO.getColorDeLaInflorescenciaEnFrutoID());
+        }
+        if (especimenDTO.getColorDeLaInflorescenciaEnFruto() != null) {
+            fragmentsBundle.putParcelable("colorDeLaInflorescenciaEnFruto", especimenDTO.getColorDeLaInflorescenciaEnFruto());
+        }
+        if (especimenDTO.getNaturalezaDeLasBracteasPedunculares() != null) {
+            fragmentsBundle.putString("naturalezaDeLasBracteasPedunculares", especimenDTO.getNaturalezaDeLasBracteasPedunculares());
+        }
+        if (especimenDTO.getNaturalezaDelProfilo() != null) {
+            fragmentsBundle.putString("naturalezaDelProfilo", especimenDTO.getNaturalezaDelProfilo());
+        }
+        if (especimenDTO.getPosicionDeLasBracteasPedunculares() != null) {
+            fragmentsBundle.putString("posicionDeLasBracteasPedunculares", especimenDTO.getPosicionDeLasBracteasPedunculares());
+        }
+        if (especimenDTO.getPosicionDeLasInflorescencias() != null) {
+            fragmentsBundle.putString("posicionDeLasInflorescencias", especimenDTO.getPosicionDeLasInflorescencias());
+        }
+        if (especimenDTO.getRaquilas() != null) {
+            fragmentsBundle.putString("raquilas", especimenDTO.getRaquilas());
+        }
+        if (especimenDTO.getRaquis() != null) {
+            fragmentsBundle.putString("raquis", especimenDTO.getRaquis());
+        }
+        if (especimenDTO.getTamañoDeLasBracteasPedunculares() != null) {
+            fragmentsBundle.putString("tamañoDeLasBracteasPedunculares", especimenDTO.getTamañoDeLasBracteasPedunculares());
+        }
+        if (especimenDTO.getTamañoDelPedunculo() != null) {
+            fragmentsBundle.putString("tamañoDelPedunculo", especimenDTO.getTamañoDelPedunculo());
+        }
+        if (especimenDTO.getTamañoDelProfilo() != null) {
+            fragmentsBundle.putString("tamañoDelProfilo", especimenDTO.getTamañoDelProfilo());
+        }
+        if (especimenDTO.getTamañoDelRaquis() != null) {
+            fragmentsBundle.putString("tamañoDelRaquis", especimenDTO.getTamañoDelRaquis());
+        }
+        if (especimenDTO.getTamañoDeRaquilas() != null) {
+            fragmentsBundle.putString("tamañoDeRaquilas", especimenDTO.getTamañoDeRaquilas());
+        }
+        if (especimenDTO.getInflorescenciaDescripcion() != null) {
+            fragmentsBundle.putString("inflorescenciaDescripcion", especimenDTO.getInflorescenciaDescripcion());
+        }
+        if (especimenDTO.getInflorescenciaSolitaria() != null) {
+            fragmentsBundle.putBoolean("inflorescenciaSolitaria", especimenDTO.getInflorescenciaSolitaria());
+        }
+        if (especimenDTO.getNumeroDeLasBracteasPedunculares() != null) {
+            fragmentsBundle.putInt("numeroDeLasBracteasPedunculares", especimenDTO.getNumeroDeLasBracteasPedunculares());
+        }
+        if (especimenDTO.getNumeroDeRaquilas() != null) {
+            fragmentsBundle.putInt("numeroDeRaquilas", especimenDTO.getNumeroDeRaquilas());
+        }
+        if (especimenDTO.getHojaId() != null) {
+            fragmentsBundle.putLong("hojaId", especimenDTO.getHojaId());
+        }
+        if (especimenDTO.getCoberturaDelPeciolo() != null) {
+            fragmentsBundle.putString("coberturaDelPeciolo", especimenDTO.getCoberturaDelPeciolo());
+        }
+        if (especimenDTO.getColorDeLaVainaID() != null) {
+            fragmentsBundle.putLong("colorDeLaVainaID", especimenDTO.getColorDeLaVainaID());
+        }
+        if (especimenDTO.getColorDeLaVaina() != null) {
+            fragmentsBundle.putParcelable("colorDeLaVaina", especimenDTO.getColorDeLaVaina());
+        }
+        if (especimenDTO.getColorDelPecioloID() != null) {
+            fragmentsBundle.putLong("colorDelPecioloID", especimenDTO.getColorDelPecioloID());
+        }
+        if (especimenDTO.getColorDelPeciolo() != null) {
+            fragmentsBundle.putParcelable("colorDelPeciolo", especimenDTO.getColorDelPeciolo());
+        }
+        if (especimenDTO.getDispocicionDeLasPinnas() != null) {
+            fragmentsBundle.putString("dispocicionDeLasPinnas", especimenDTO.getDispocicionDeLasPinnas());
+        }
+        if (especimenDTO.getDisposicionDeLasHojas() != null) {
+            fragmentsBundle.putString("disposicionDeLasHojas", especimenDTO.getDisposicionDeLasHojas());
+        }
+        if (especimenDTO.getFormaDelPeciolo() != null) {
+            fragmentsBundle.putString("formaDelPeciolo", especimenDTO.getFormaDelPeciolo());
+        }
+        if (especimenDTO.getLonguitudDelRaquis() != null) {
+            fragmentsBundle.putString("longuitudDelRaquis", especimenDTO.getLonguitudDelRaquis());
+        }
+        if (especimenDTO.getNaturalezaDeLaVaina() != null) {
+            fragmentsBundle.putString("naturalezaDeLaVaina", especimenDTO.getNaturalezaDeLaVaina());
+        }
+        if (especimenDTO.getNaturalezaDelLimbo() != null) {
+            fragmentsBundle.putString("naturalezaDelLimbo", especimenDTO.getNaturalezaDelLimbo());
+        }
+        if (especimenDTO.getNumeroDePinnas() != null) {
+            fragmentsBundle.putString("numeroDePinnas", especimenDTO.getNumeroDePinnas());
+        }
+        if (especimenDTO.getNumeroHojas() != null) {
+            fragmentsBundle.putString("numeroHojas", especimenDTO.getNumeroHojas());
+        }
+        if (especimenDTO.getTamañoDeLaVaina() != null) {
+            fragmentsBundle.putString("tamañoDeLaVaina", especimenDTO.getTamañoDeLaVaina());
+        }
+        if (especimenDTO.getTamañoDelPeciolo() != null) {
+            fragmentsBundle.putString("tamañoDelPeciolo", especimenDTO.getTamañoDelPeciolo());
+        }
+        if (especimenDTO.getHojaDescripcion() != null) {
+            fragmentsBundle.putString("hojaDescripcion", especimenDTO.getHojaDescripcion());
+        }
+        if (especimenDTO.getFrutoId() != null) {
+            fragmentsBundle.putLong("frutoId", especimenDTO.getFrutoId());
+        }
+        if (especimenDTO.getColorDelExocarpioID() != null) {
+            fragmentsBundle.putLong("colorDelExocarpioID", especimenDTO.getColorDelExocarpioID());
+        }
+        if (especimenDTO.getColorDelExocarpio() != null) {
+            fragmentsBundle.putParcelable("colorDelExocarpio", especimenDTO.getColorDelExocarpio());
+        }
+        if (especimenDTO.getColorDelMesocarpioID() != null) {
+            fragmentsBundle.putLong("colorDelMesocarpioID", especimenDTO.getColorDelMesocarpioID());
+        }
+        if (especimenDTO.getColorDelMesocarpio() != null) {
+            fragmentsBundle.putParcelable("colorDelMesocarpio", especimenDTO.getColorDelMesocarpio());
+        }
+        if (especimenDTO.getColorDelExocarpioInmaduroID() != null) {
+            fragmentsBundle.putLong("colorDelExocarpioInmaduroID", especimenDTO.getColorDelExocarpioInmaduroID());
+        }
+        if (especimenDTO.getColorDelExocarpioInmaduro() != null) {
+            fragmentsBundle.putParcelable("colorDelExocarpioInmaduro", especimenDTO.getColorDelExocarpioInmaduro());
+        }
+        if (especimenDTO.getColorDelMesocarpioInmaduroID() != null) {
+            fragmentsBundle.putLong("colorDelMesocarpioInmaduroID", especimenDTO.getColorDelMesocarpioInmaduroID());
+        }
+        if (especimenDTO.getColorDelMesocarpioInmaduro() != null) {
+            fragmentsBundle.putParcelable("colorDelMesocarpioInmaduro", especimenDTO.getColorDelMesocarpioInmaduro());
+        }
+        if (especimenDTO.getConsistenciaDelPericarpio() != null) {
+            fragmentsBundle.putString("consistenciaDelPericarpio", especimenDTO.getConsistenciaDelPericarpio());
+        }
+        if (especimenDTO.getFrutoDescripcion() != null) {
+            fragmentsBundle.putString("frutoDescripcion", especimenDTO.getFrutoDescripcion());
+        }
+        if (especimenDTO.getTalloId() != null) {
+            fragmentsBundle.putLong("talloId", especimenDTO.getTalloId());
+        }
+        if (especimenDTO.getAlturaDelTallo() != null) {
+            fragmentsBundle.putString("alturaDelTallo", especimenDTO.getAlturaDelTallo());
+        }
+        if (especimenDTO.getColorDelTalloID() != null) {
+            fragmentsBundle.putLong("colorDelTalloID", especimenDTO.getColorDelTalloID());
+        }
+        if (especimenDTO.getColorDelTallo() != null) {
+            fragmentsBundle.putParcelable("colorDelTallo", especimenDTO.getColorDelTallo());
+        }
+        if (especimenDTO.getDiametroDelTallo() != null) {
+            fragmentsBundle.putString("diametroDelTallo", especimenDTO.getDiametroDelTallo());
+        }
+        if (especimenDTO.getDisposicionDeLasEspinas() != null) {
+            fragmentsBundle.putString("disposicionDeLasEspinas", especimenDTO.getDisposicionDeLasEspinas());
+        }
+        if (especimenDTO.getFormaDelTallo() != null) {
+            fragmentsBundle.putString("formaDelTallo", especimenDTO.getFormaDelTallo());
+        }
+        if (especimenDTO.getLongitudEntrenudos() != null) {
+            fragmentsBundle.putString("longitudEntrenudos", especimenDTO.getLongitudEntrenudos());
+        }
+        if (especimenDTO.getNaturalezaDelTallo() != null) {
+            fragmentsBundle.putString("naturalezaDelTallo", especimenDTO.getNaturalezaDelTallo());
+        }
+        if (especimenDTO.getTalloDescripcion() != null) {
+            fragmentsBundle.putString("talloDescripcion", especimenDTO.getTalloDescripcion());
+        }
+        if (especimenDTO.getDesnudoCubierto() != null) {
+            fragmentsBundle.putBoolean("desnudoCubierto", especimenDTO.getDesnudoCubierto());
+        }
+        if (especimenDTO.getEntrenudosConspicuos() != null) {
+            fragmentsBundle.putBoolean("entrenudosConspicuos", especimenDTO.getEntrenudosConspicuos());
+        }
+        if (especimenDTO.getEspinas() != null) {
+            fragmentsBundle.putBoolean("espinas", especimenDTO.getEspinas());
+        }
+        if (especimenDTO.getRaizId() != null) {
+            fragmentsBundle.putLong("raizId", especimenDTO.getRaizId());
+        }
+        if (especimenDTO.getDiametroDeLasRaices() != null) {
+            fragmentsBundle.putString("diametroDeLasRaices", especimenDTO.getDiametroDeLasRaices());
+        }
+        if (especimenDTO.getDiametroEnLaBase() != null) {
+            fragmentsBundle.putString("diametroEnLaBase", especimenDTO.getDiametroEnLaBase());
+        }
+        if (especimenDTO.getFormaDeLasEspinas() != null) {
+            fragmentsBundle.putString("formaDeLasEspinas", especimenDTO.getFormaDeLasEspinas());
+        }
+        if (especimenDTO.getTamañoDeLasEspinas() != null) {
+            fragmentsBundle.putString("tamañoDeLasEspinas", especimenDTO.getTamañoDeLasEspinas());
+        }
+        if (especimenDTO.getRaizDescripcion() != null) {
+            fragmentsBundle.putString("raizDescripcion", especimenDTO.getRaizDescripcion());
+        }
+        if (especimenDTO.getRaizArmada() != null) {
+            fragmentsBundle.putBoolean("raizArmada", especimenDTO.getRaizArmada());
+        }
+        if (especimenDTO.getAlturaDelCono() != null) {
+            fragmentsBundle.putLong("alturaDelCono", especimenDTO.getAlturaDelCono());
+        }
+        if (especimenDTO.getColorDelCono() != null) {
+            fragmentsBundle.putParcelable("colorDelCono", especimenDTO.getColorDelCono());
+        }
+        if (colectoresSecundarios != null) {
+            fragmentsBundle.putParcelableArrayList("colectoresSecundarios", (ArrayList<? extends Parcelable>) colectoresSecundarios);
+        }
+        if (secondaryCollectorsNames() != null) {
+            fragmentsBundle.putString("secondaryCollectorsNames", secondaryCollectorsNames());
+        }
+        if (especimenDTO.getMuestrasAsociadas() != null) {
+            fragmentsBundle.putParcelableArrayList("muestrasAsociadas", (ArrayList<? extends Parcelable>) especimenDTO.getMuestrasAsociadas());
+        }
+        if (especimenDTO.getColores() != null) {
+            fragmentsBundle.putParcelableArrayList("colores", (ArrayList<? extends Parcelable>) especimenDTO.getColores());
+        }
+        if (especimenDTO.getFechaIdentificacion() != null) {
+            fragmentsBundle.putLong("fechaIdentificacion", especimenDTO.getFechaIdentificacion() != null ? especimenDTO.getFechaIdentificacion().getTime() : -1);
+        }
+        if (especimenDTO.getTipo() != null) {
+            fragmentsBundle.putString("tipo", especimenDTO.getTipo());
+        }
+        if (especimenDTO.getTaxon() != null) {
+            if (especimenDTO.getTaxon().getEspecie() != null) {
+                fragmentsBundle.putString("especie", especimenDTO.getTaxon().getEspecie());
+            }
+            if (especimenDTO.getTaxon().getGenero() != null) {
+                fragmentsBundle.putString("genero", especimenDTO.getTaxon().getGenero());
+            }
+            if (especimenDTO.getTaxon().getFamilia() != null) {
+                fragmentsBundle.putString("familia", especimenDTO.getTaxon().getFamilia());
+            }
+            if (especimenDTO.getTaxon().getUsos() != null) {
+                fragmentsBundle.putParcelableArrayList("usos", (ArrayList<? extends Parcelable>) especimenDTO.getTaxon().getUsos());
+            }
+            if (especimenDTO.getTaxon().getNombresComunes() != null) {
+                fragmentsBundle.putParcelableArrayList("nombresComunes", (ArrayList<? extends Parcelable>) especimenDTO.getTaxon().getNombresComunes());
+            }
+        }
+        fragmentsBundle.putLong("usuarioId", especimenDTO.getUsuarioId());
+        fragmentsBundle.putInt("tipoCaptura", especimenDTO.getTipoCaptura());
+        return fragmentsBundle;
     }
 
     private void loadSecondaryCollectorsFromTravel(List<ViajeColectorSecundario> viajeColectorSecundarios) {
@@ -229,7 +671,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
     @Override
     public void onConnected(Bundle dataBundle) {
         // Display the connection status
-        locationRequest = LocationRequest.create();
+        LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(1000);
@@ -344,8 +786,11 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
+                // Show toast with action to create new
                 saveSpecimen();
-                setResult(RESULT_OK);
+                Intent result = new Intent();
+                result.putExtra("newSpecimenId", especimenDTO.getId());
+                setResult(RESULT_OK, result);
                 finish();
                 return true;
             case R.id.action_photo:
@@ -366,6 +811,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
                 pictureGalleryIntent.putParcelableArrayListExtra("fotografias", (ArrayList<? extends Parcelable>) especimenDTO.getFotografias());
                 pictureGalleryIntent.putExtra("numeroColeccion", especimenDTO.getNumeroDeColeccion());
                 startActivityForResult(pictureGalleryIntent, IMAGE_GALLERY_ACTIVITY_REQUEST_CODE);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -403,7 +849,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
                 break;
             case IMAGE_GALLERY_ACTIVITY_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    List<Fotografia> fotografias = new ArrayList<Fotografia>();
+                    List<Fotografia> fotografias = new ArrayList<>();
                     for (Parcelable parcelable : data.getParcelableArrayListExtra("fotografias")) {
                         fotografias.add((Fotografia) parcelable);
                     }
@@ -419,14 +865,53 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
             case ColorsFragment.COLOR_CREATION_REQUEST:
                 plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
                 break;
+            case ColorsFragment.COLOR_EDIT_REQUEST:
+                plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case FlowerInformationFragment.FLOWER_COLOR_EDIT_REQUEST:
+                flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case FlowerInformationFragment.FLOWER_COLOR_CREATION_REQUEST:
+                flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case FruitInformationFragment.FRUIT_COLOR_CREATION_REQUEST:
+                fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case FruitInformationFragment.FRUIT_COLOR_EDIT_REQUEST:
+                fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case InflorescenceInformationFragment.INFLORESCENCE_COLOR_CREATION_REQUEST:
+                inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case InflorescenceInformationFragment.INFLORESCENCE_COLOR_EDIT_REQUEST:
+                inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case LeavesInformationFragment.LEAVES_COLOR_CREATION_REQUEST:
+                leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case LeavesInformationFragment.LEAVES_COLOR_EDIT_REQUEST:
+                leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case RootInformationFragment.ROOT_COLOR_CREATION_REQUEST:
+                rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case RootInformationFragment.ROOT_COLOR_EDIT_REQUEST:
+                rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case StemInformationFragment.STEM_COLOR_CREATION_REQUEST:
+                stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
+            case StemInformationFragment.STEM_COLOR_EDIT_REQUEST:
+                stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void addPicture() {
-        final List<Fotografia> especimenDTOFotografias = especimenDTO.getFotografias();
+        List<Fotografia> especimenDTOFotografias = especimenDTO.getFotografias();
         if (especimenDTOFotografias == null) {
-            especimenDTO.setFotografias(new ArrayList<Fotografia>(1));
+            especimenDTOFotografias = new ArrayList<>(1);
         }
         Fotografia fotografia = new Fotografia();
         fotografia.setContexto(especimenDTO.getNumeroDeColeccion());
@@ -447,7 +932,11 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
     private void saveSpecimen(){
         // Persist the specimen
         especimenDTO.setColectoresSecundarios(convertColectoresSecundariosEspecimen());
-        viaje.agregarEspecimen(especimenDTO);
+        if (especimenDTO.getId() == null) {
+            viaje.agregarEspecimen(especimenDTO);
+        } else {
+            viaje.actualizarEspecimen(especimenDTO);
+        }
     }
 
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -486,7 +975,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
         }
 
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
@@ -586,45 +1075,14 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
         }
     }
 
-    public void onColorAdded(ColorEspecimenDTO colorEspecimen, String plantOrgan){
-        plantAttributesFragment.updateColorsText(textColors());
-        if (plantOrgan.equals("Flower Corolla")) {
-            flowersInformationFragment.setCorollaColor(colorEspecimen);
-        }else if (plantOrgan.equals("Flower Calyx")) {
-            flowersInformationFragment.setCalyxColor(colorEspecimen);
-        }else if (plantOrgan.equals("Flower Gineceo")) {
-            flowersInformationFragment.setGineceoColor(colorEspecimen);
-        }else if (plantOrgan.equals("Flower Stamens")) {
-            flowersInformationFragment.setStamensColor(colorEspecimen);
-        }else if (plantOrgan.equals("Flower Stigmata")) {
-            flowersInformationFragment.setStigmataColor(colorEspecimen);
-        }else if (plantOrgan.equals("Flower Pistiliodios")) {
-            flowersInformationFragment.setPistiliodioColor(colorEspecimen);
-        }else if (plantOrgan.equals("Fruit Endocarp")) {
-
-        }else if (plantOrgan.equals("Fruit Excarp")) {
-
-        }else if (plantOrgan.equals("Inflorescence Flower")) {
-
-        }else if (plantOrgan.equals("Inflorescence Fruit")) {
-
-        }else if (plantOrgan.equals("Leaves")) {
-
-        }else if (plantOrgan.equals("Leaves Petiole")) {
-
-        }else if (plantOrgan.equals("Stem")) {
-
-        }
-    }
-
     private String textColors() {
         StringBuilder stringBuilder = new StringBuilder();
         if (especimenDTO.getColores().size() == 0) {
             return getString(R.string.no_colors);
         }else if (especimenDTO.getColores().size() > 0) {
-            Iterator<Map.Entry<String, ColorEspecimenDTO>> iterator = especimenDTO.getColores().entrySet().iterator();
+            Iterator<ColorEspecimenDTO> iterator = especimenDTO.getColores().iterator();
             for (int i = 0; i < especimenDTO.getColores().size(); i++) {
-                Map.Entry<String, ColorEspecimenDTO> entry = iterator.next();
+                ColorEspecimenDTO colorEspecimenDTO = iterator.next();
                 if (i > 0) {
                     if (i == especimenDTO.getColores().size() - 1) {
                         stringBuilder.append(" ").append(getString(R.string.and)).append(" ");
@@ -632,14 +1090,98 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
                         stringBuilder.append(getString(R.string.comma)).append(" ");
                     }
                 }
-                stringBuilder.append(entry.getValue().getDescripcion()).append(" ").append(entry.getValue().getNombre());
+                stringBuilder.append(colorEspecimenDTO.getDescripcion()).append(" ").append(colorEspecimenDTO.getNombre());
             }
         }
         return stringBuilder.toString();
     }
 
-    public void onColorRemoved(ColorEspecimenDTO colorEspecimen, String plantOrgan){
-        especimenDTO.getColores().remove(plantOrgan);
+    @Override
+    public void onColorAdded(ColorEspecimenDTO colorEspecimen) {
+        plantAttributesFragment.updateColorsText(textColors());
+        updatePlantOrgans(colorEspecimen);
+        especimenDTO.getColores().add(colorEspecimen);
+    }
+
+    private void updatePlantOrgans(ColorEspecimenDTO colorEspecimen) {
+        switch (colorEspecimen.getOrganoDeLaPlanta()) {
+            case "Flower Corolla":
+                flowersInformationFragment.setCorollaColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLaCorola(colorEspecimen);
+                break;
+            case "Flower Calyx":
+                flowersInformationFragment.setCalyxColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelCaliz(colorEspecimen);
+                break;
+            case "Flower Gineceo":
+                flowersInformationFragment.setGineceoColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelGineceo(colorEspecimen);
+                break;
+            case "Flower Stamens":
+                flowersInformationFragment.setStamensColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLosEstambres(colorEspecimen);
+                break;
+            case "Flower Stigmata":
+                flowersInformationFragment.setStigmataColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLosPistiliodios(colorEspecimen);
+                break;
+            case "Flower Pistiliodios":
+                flowersInformationFragment.setPistiliodioColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLosEstigmas(colorEspecimen);
+                break;
+            case "Fruit Mesocarp":
+                fruitInformationFragment.setMesocarpColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelMesocarpio(colorEspecimen);
+                break;
+            case "Fruit Excarp":
+                fruitInformationFragment.setExocarpColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelExocarpio(colorEspecimen);
+                break;
+            case "Fruit Inmature Excarp":
+                fruitInformationFragment.setExocarpImmatureColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelExocarpioInmaduro(colorEspecimen);
+                break;
+            case "Fruit Inmature Mesocarp":
+                fruitInformationFragment.setMesocarpImmatureColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelMesocarpioInmaduro(colorEspecimen);
+                break;
+            case "Inflorescence Flower":
+                inflorescenceInformationFragment.setInFlowerColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLaInflorescenciaEnFlor(colorEspecimen);
+                break;
+            case "Inflorescence Fruit":
+                inflorescenceInformationFragment.setInFruitColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLaInflorescenciaEnFruto(colorEspecimen);
+                break;
+            case "Leaves Sheath":
+                leavesInformationFragment.setSheathColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDeLaVaina(colorEspecimen);
+                break;
+            case "Leaves Petiole":
+                leavesInformationFragment.setPetioleColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelPeciolo(colorEspecimen);
+                break;
+            case "Root Cone":
+                rootInformationFragment.setConeColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelCono(colorEspecimen);
+                break;
+            case "Stem":
+                stemInformationFragment.setStemColor(colorEspecimen.getColorRGB());
+                especimenDTO.setColorDelTallo(colorEspecimen);
+                break;
+        }
+    }
+
+    @Override
+    public void onColorEdited(ColorEspecimenDTO colorEspecimen) {
+        especimenDTO.getColores().add(colorEspecimen);
+        plantAttributesFragment.updateColorsText(textColors());
+        updatePlantOrgans(colorEspecimen);
+    }
+
+    @Override
+    public void onColorRemoved(ColorEspecimenDTO colorEspecimen) {
+        especimenDTO.getColores().remove(colorEspecimen);
         plantAttributesFragment.updateColorsText(textColors());
     }
 
@@ -652,5 +1194,708 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
     @Override
     public void onLocationUpdateRequested() {
         googleApiClient.connect();
+    }
+
+    @Override
+    public void onLocalityNameChanged(String localityName) {
+        especimenDTO.setLocalidadNombre(localityName);
+    }
+
+    @Override
+    public void onCountyChanged(String county) {
+        RegionDTO regionDTO = especimenDTO.getRegion() != null ? especimenDTO.getRegion() : new RegionDTO();
+        Query<Region> regionQuery = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Municipio.eq(county)).limit(1).build();
+        Region municipio;
+        municipio = regionQuery.unique();
+        if (municipio != null) {
+            regionDTO = new RegionDTO(municipio);
+            // Propagate changes to fragment
+            localityInformationFragment.updateRegion(regionDTO.getPais(), regionDTO.getDepartamento(), false);
+        }else{
+            regionDTO.setMunicipio(county);
+            regionDTO.setId(null);
+        }
+        especimenDTO.setRegion(regionDTO);
+    }
+
+    @Override
+    public void onStateChanged(String state) {
+        boolean clearCounty = false;
+        RegionDTO regionDTO = new RegionDTO();
+        if (especimenDTO.getRegion() != null) {
+            regionDTO = especimenDTO.getRegion();
+        }
+        Query<Region> regionQuery = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("departamento")).where(RegionDao.Properties.Departamento.eq(state)).limit(1).build();
+        Region departamento;
+        departamento = regionQuery.unique();
+        if (departamento != null) {
+            // Propagate changes to fragment
+            Long oldId = regionDTO.getId();
+            String municipio = regionDTO.getMunicipio();
+            regionDTO = new RegionDTO(departamento);
+            if (oldId != null && oldId != 0l) {
+                // Verify county was choosed and belongs to state otherwise clear
+                Region region = daoSession.getRegionDao().load(oldId);
+                if (region.getClass().equals(Municipio.class)) {
+                    if (region.getRegionPadre().getNombre().equals(departamento.getNombre())){
+                        regionDTO.setId(oldId);
+                        regionDTO.setMunicipio(municipio);
+                    }else{
+                        // Clear the county doesn't belong to state
+                        clearCounty = true;
+                    }
+                }
+            }else{
+                regionDTO.setId(null);
+                regionDTO.setMunicipio(municipio);
+            }
+            localityInformationFragment.updateRegion(regionDTO.getPais(), regionDTO.getDepartamento(), clearCounty);
+        }else{
+            regionDTO.setId(null);
+            regionDTO.setDepartamento(state);
+        }
+        especimenDTO.setRegion(regionDTO);
+    }
+
+    @Override
+    public void onCountryChanged(String country) {
+        boolean clearCounty = false;
+        RegionDTO regionDTO = new RegionDTO();
+        if (especimenDTO.getRegion() != null) {
+            regionDTO = especimenDTO.getRegion();
+        }
+        Region pais = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("pais")).where(RegionDao.Properties.Pais.eq(country)).limit(1).unique();
+        if (pais != null) {
+            Long oldId = regionDTO.getId();
+            String municipio = regionDTO.getMunicipio();
+            String departamento = regionDTO.getDepartamento();
+            regionDTO = new RegionDTO(pais);
+            if (oldId != null && oldId != 0l) {
+                // Verify county was choosed and belongs to state otherwise clear
+                Region region = daoSession.getRegionDao().load(oldId);
+                if (region.getClass().equals(Departamento.class)){
+                    if (region.getRegionPadre().getId().equals(pais.getId())){
+                        regionDTO.setId(oldId);
+                        regionDTO.setDepartamento(departamento);
+                    }else{
+                        // Clear the county doesn't belong to state
+                        clearCounty = true;
+                    }
+                }else if (region.getClass().equals(Municipio.class)) {
+                    if (region.getRegionPadre().getRegionPadre().getNombre().equals(pais.getNombre())) {
+                        regionDTO.setId(oldId);
+                        regionDTO.setDepartamento(departamento);
+                        regionDTO.setMunicipio(municipio);
+                    }
+                }
+            }else {
+                regionDTO.setDepartamento(departamento);
+                regionDTO.setMunicipio(municipio);
+                regionDTO.setId(null);
+            }
+            // Propagate changes to fragment
+            localityInformationFragment.updateRegion(regionDTO.getPais(), regionDTO.getDepartamento(), clearCounty);
+        }else{
+            regionDTO.setPais(country);
+        }
+        especimenDTO.setRegion(regionDTO);
+    }
+
+    @Override
+    public void onMinAltitudeChanged(double minAltidude) {
+        especimenDTO.setAltitudMinima(minAltidude);
+    }
+
+    @Override
+    public void onMaxAltitudeChanged(double maxAltitude) {
+        especimenDTO.setAltitudMaxima(maxAltitude);
+    }
+
+    @Override
+    public void onLatitudeChanged(double lat) {
+        especimenDTO.setLatitud(lat);
+    }
+
+    @Override
+    public void onLongitudeChanged(double lon) {
+        especimenDTO.setLongitud(lon);
+    }
+
+    @Override
+    public void onDatumChanged(String datum) {
+        especimenDTO.setDatum(datum);
+    }
+
+    @Override
+    public void onDeviceBrandChanged(String deviceBrand) {
+        especimenDTO.setMarcaDispositivo(deviceBrand);
+    }
+
+    @Override
+    public void onLocalityDescriptionChanged(String localityDescription) {
+        especimenDTO.setLocalidadDescripcion(localityDescription);
+    }
+
+    @Override
+    public void onCollectorNumberUpdated(String collectorNumber) {
+        especimenDTO.setNumeroDeColeccion(collectorNumber);
+    }
+
+    @Override
+    public void onCollectionMethodUpdated(String collectionMethod) {
+        especimenDTO.setMetodoColeccion(collectionMethod);
+    }
+
+    @Override
+    public void onStationUpdated(String station) {
+        especimenDTO.setEstacionDelAño(station);
+    }
+
+    @Override
+    public void onFamilyUpdated(String family) {
+        TaxonDTO taxonDTO = especimenDTO.getTaxon() != null ? especimenDTO.getTaxon() : new TaxonDTO();
+        if (!TextUtils.isEmpty(family)) {
+            boolean clearSpecies = false;
+            Long oldId = taxonDTO.getId();
+            String genus = taxonDTO.getGenero();
+            String species = taxonDTO.getEspecie();
+            Taxon familia = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(family)).where(TaxonDao.Properties.Rango.eq("familia")).limit(1).unique();
+            if (familia != null) {
+                taxonDTO = new TaxonDTO(familia);
+                if (oldId != null && !oldId.equals(0l)) {
+                    Taxon taxon = daoSession.getTaxonDao().load(oldId);
+                    if (taxon.getClass().equals(Genero.class) && taxon.getTaxonPadre().getNombre().equals(familia.getNombre())) {
+                        taxonDTO.setGenero(genus);
+                        taxonDTO.setId(oldId);
+                    }else{
+                        clearSpecies = true;
+                    }
+                    if (taxon.getClass().equals(EpitetoEspecifico.class) && taxon.getTaxonPadre().getTaxonPadre().getNombre().equals(familia.getNombre())) {
+                        taxonDTO.setGenero(genus);
+                        taxonDTO.setEspecie(species);
+                        taxonDTO.setId(oldId);
+                    }else{
+                        clearSpecies = true;
+                    }
+                }else{
+                    taxonDTO.setGenero(genus);
+                    taxonDTO.setEspecie(species);
+                    taxonDTO.setId(null);
+                }
+            }else{
+                taxonDTO.setFamilia(family);
+                taxonDTO.setId(null);
+            }
+            taxonInformationFragment.updateTaxon(taxonDTO.getFamilia(), taxonDTO.getGenero(), clearSpecies);
+            especimenDTO.setTaxon(taxonDTO);
+        }else{
+            taxonDTO.setId(null);
+            taxonDTO.setFamilia(null);
+        }
+    }
+
+    @Override
+    public void onGenusUpdated(String genus) {
+        TaxonDTO taxonDTO = especimenDTO.getTaxon() != null ? especimenDTO.getTaxon() : new TaxonDTO();
+        if (!TextUtils.isEmpty(genus)) {
+            boolean clearSpecies = false;
+            Long oldId = taxonDTO.getId();
+            String species = taxonDTO.getEspecie();
+            Taxon genero = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(genus)).where(TaxonDao.Properties.Rango.eq("genero")).limit(1).unique();
+            if (genero != null) {
+                taxonDTO = new TaxonDTO(genero);
+                if (oldId != null && !oldId.equals(0l)) {
+                    Taxon taxon = daoSession.getTaxonDao().load(oldId);
+                    if (taxon.getClass().equals(EpitetoEspecifico.class) && taxon.getTaxonPadre().getNombre().equals(genero.getNombre())) {
+                        taxonDTO.setEspecie(species);
+                        taxonDTO.setId(oldId);
+                    }else{
+                        clearSpecies = true;
+                    }
+                }else if (!TextUtils.isEmpty(species)) {
+                    taxonDTO.setEspecie(species);
+                    taxonDTO.setId(oldId);
+                }
+                taxonInformationFragment.updateTaxon(genero.getTaxonPadre().getNombre(), genus, clearSpecies);
+                especimenDTO.setTaxon(taxonDTO);
+            }else {
+                taxonDTO.setGenero(genus);
+                taxonDTO.setId(null);
+            }
+        }
+    }
+
+    @Override
+    public void onSpeciesUpdated(String species) {
+        TaxonDTO taxonDTO = especimenDTO.getTaxon() != null ? especimenDTO.getTaxon() : new TaxonDTO();
+        if (!TextUtils.isEmpty(species)) {
+            Taxon especie = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Especie.eq(species)).where(TaxonDao.Properties.Rango.eq("epitetoespecifico")).limit(1).unique();
+            if (especie != null) {
+                taxonDTO = new TaxonDTO(especie);
+                taxonInformationFragment.updateTaxon(taxonDTO.getFamilia(), taxonDTO.getGenero(), false);
+            }else {
+                taxonDTO.setEspecie(species);
+                taxonDTO.setId(null);
+            }
+            especimenDTO.setTaxon(taxonDTO);
+        }
+    }
+
+    @Override
+    public void onVegetationChanged(String vegetation){
+        Habitat habitat = especimenDTO.getHabitat() == null ? new Habitat() : especimenDTO.getHabitat();
+        habitat.setVegetacion(vegetation);
+        especimenDTO.setHabitat(habitat);
+    }
+
+    @Override
+    public void onSoilSubstratumChanged(String soilSubstratum){
+        Habitat habitat = especimenDTO.getHabitat() == null ? new Habitat() : especimenDTO.getHabitat();
+        habitat.setSueloSustrato(soilSubstratum);
+        especimenDTO.setHabitat(habitat);
+    }
+
+    @Override
+    public void onAssociatedSpeciesChanged(String associatedSpecies){
+        Habitat habitat = especimenDTO.getHabitat() == null ? new Habitat() : especimenDTO.getHabitat();
+        habitat.setEspeciesAsociadas(associatedSpecies);
+        especimenDTO.setHabitat(habitat);
+    }
+
+    @Override
+    public void onHabitChanged(String habit) {
+        Habito habito = daoSession.getHabitoDao().queryBuilder().where(HabitoDao.Properties.Habito.eq(habit)).unique();
+        if (habito == null) {
+            especimenDTO.setHabito(new Habito(habit));
+        } else {
+            especimenDTO.setHabito(habito);
+        }
+    }
+
+    @Override
+    public void onAlturaDeLaPlantaChanged(int alturaDeLaPlanta) {
+        especimenDTO.setAlturaDeLaPlanta((long) alturaDeLaPlanta);
+    }
+
+    @Override
+    public void onDapChanged(int dap) {
+        especimenDTO.setDap((long) dap);
+    }
+
+    @Override
+    public void onAbundanciaChanged(String abundancia) {
+        especimenDTO.setAbundancia(abundancia);
+    }
+
+    @Override
+    public void onFenologiaChanged(String fenology) {
+        if (!TextUtils.isEmpty(fenology)) {
+            Fenologia fenologia = daoSession.getFenologiaDao().queryBuilder().where(FenologiaDao.Properties.Fenologia.eq(fenology)).unique();
+            if (fenologia == null) {
+                especimenDTO.setFenologia(new Fenologia(fenology));
+            } else {
+                especimenDTO.setFenologia(fenologia);
+            }
+        }
+    }
+
+    @Override
+    public void onDescripcionEspecimenChanged(String descripcionEspecimen) {
+        especimenDTO.setDescripcionEspecimen(descripcionEspecimen);
+    }
+
+    @Override
+    public void onCalyxColorChanged(ColorEspecimenDTO calyxColor) {
+        if (calyxColor != null) {
+            especimenDTO.setColorDelCaliz(calyxColor);
+            especimenDTO.getColores().add(calyxColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onCorollaColorChanged(ColorEspecimenDTO corollaColor) {
+        if (corollaColor != null) {
+            especimenDTO.setColorDeLaCorola(corollaColor);
+            especimenDTO.getColores().add(corollaColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onStamensColorChanged(ColorEspecimenDTO stamensColor) {
+        if (stamensColor != null) {
+            especimenDTO.setColorDeLosEstambres(stamensColor);
+            especimenDTO.getColores().add(stamensColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onPistiliodioColorChanged(ColorEspecimenDTO pistiliodioColor) {
+        if (pistiliodioColor != null) {
+            especimenDTO.setColorDeLosPistiliodios(pistiliodioColor);
+            especimenDTO.getColores().add(pistiliodioColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onGineceoColorChanged(ColorEspecimenDTO gineceoColor) {
+        if (gineceoColor != null) {
+            especimenDTO.setColorDelGineceo(gineceoColor);
+            especimenDTO.getColores().add(gineceoColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onStigmataColorChanged(ColorEspecimenDTO stigmataColor) {
+        if (stigmataColor != null) {
+            especimenDTO.setColorDeLosEstigmas(stigmataColor);
+            especimenDTO.getColores().add(stigmataColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onFlowersDescriptionChanged(String flowersDescription) {
+        especimenDTO.setFlorDescripcion(flowersDescription);
+    }
+
+    @Override
+    public void onPericarpConsistencyChanged(String pericarp) {
+        especimenDTO.setConsistenciaDelPericarpio(pericarp);
+    }
+
+    @Override
+    public void onExocarpColorChanged(ColorEspecimenDTO exocarpColor) {
+        if (exocarpColor != null) {
+            especimenDTO.setColorDelExocarpio(exocarpColor);
+            especimenDTO.getColores().add(exocarpColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onMesocarpColorChanged(ColorEspecimenDTO mesocarpColor) {
+        if (mesocarpColor != null) {
+            especimenDTO.setColorDelMesocarpio(mesocarpColor);
+            especimenDTO.getColores().add(mesocarpColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onExocarpImmatureColorChanged(ColorEspecimenDTO exocarpImmatureColor) {
+        if (exocarpImmatureColor != null) {
+            especimenDTO.setColorDelExocarpioInmaduro(exocarpImmatureColor);
+            especimenDTO.getColores().add(exocarpImmatureColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onMesocarpImmatureColorChanged(ColorEspecimenDTO mesocarpImmatureColor) {
+        if (mesocarpImmatureColor != null) {
+            especimenDTO.setColorDelMesocarpioInmaduro(mesocarpImmatureColor);
+            especimenDTO.getColores().add(mesocarpImmatureColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onFruitDescriptionChanged(String fruitDescription) {
+        especimenDTO.setFrutoDescripcion(fruitDescription);
+    }
+
+    @Override
+    public void onInflorescencePositionChanged(String inflorescencePosition) {
+        especimenDTO.setPosicionDeLasInflorescencias(inflorescencePosition);
+    }
+
+    @Override
+    public void onInflorescenceAloneChanged(boolean inflorescenceAlone) {
+        especimenDTO.setInflorescenciaSolitaria(inflorescenceAlone);
+    }
+
+    @Override
+    public void onProphyllNatureChanged(String prophyllNature) {
+        especimenDTO.setNaturalezaDelProfilo(prophyllNature);
+    }
+
+    @Override
+    public void onProphyllSizeChanged(String prophyllSize) {
+        especimenDTO.setTamañoDelProfilo(prophyllSize);
+    }
+
+    @Override
+    public void onBractsNumberChanged(String bractsNumber) {
+        if (bractsNumber != null) {
+            try {
+                Integer castedParameter = Integer.parseInt(bractsNumber);
+                especimenDTO.setNumeroDeLasBracteasPedunculares(castedParameter);
+            } catch (NumberFormatException e) {
+                Log.e("Plantae", "Couldn't cast bractsNumber expression "+ bractsNumber);
+            }
+        }
+    }
+
+    @Override
+    public void onBractsPositionChanged(String bractsPosition) {
+        especimenDTO.setPosicionDeLasBracteasPedunculares(bractsPosition);
+    }
+
+    @Override
+    public void onBractsSizeChanged(String bractsSize) {
+        especimenDTO.setTamañoDeLasBracteasPedunculares(bractsSize);
+    }
+
+    @Override
+    public void onBractsNatureChanged(String bractsNature) {
+        especimenDTO.setNaturalezaDeLasBracteasPedunculares(bractsNature);
+    }
+
+    @Override
+    public void onPeduncleSizeChanged(String peduncleSize) {
+        especimenDTO.setTamañoDelPedunculo(peduncleSize);
+    }
+
+    @Override
+    public void onRachisSizeChanged(String rachisSize) {
+        especimenDTO.setTamañoDelRaquis(rachisSize);
+    }
+
+    @Override
+    public void onRachillaeNumberChanged(String rachillaeNumber) {
+        if (rachillaeNumber != null) {
+            try {
+                Integer castedParameter = Integer.parseInt(rachillaeNumber);
+                especimenDTO.setNumeroDeRaquilas(castedParameter);
+            } catch (NumberFormatException e) {
+                Log.e("Plantae", "Couldn't cast rachillaeNumber expression "+ rachillaeNumber);
+            }
+        }
+    }
+
+    @Override
+    public void onRachillaeSizeChanged(String rachillaeSize) {
+        especimenDTO.setTamañoDeRaquilas(rachillaeSize);
+    }
+
+    @Override
+    public void onInflorescenceDescriptionChanged(String inflorescenceDescription) {
+        especimenDTO.setInflorescenciaDescripcion(inflorescenceDescription);
+    }
+
+    @Override
+    public void onInFlowerColorChanged(ColorEspecimenDTO inFlowerColor) {
+        if (inFlowerColor != null) {
+            especimenDTO.setColorDeLaInflorescenciaEnFlor(inFlowerColor);
+            especimenDTO.getColores().add(inFlowerColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onInFruitColorChanged(ColorEspecimenDTO inFruitColor) {
+        if (inFruitColor != null) {
+            especimenDTO.setColorDeLaInflorescenciaEnFruto(inFruitColor);
+            especimenDTO.getColores().add(inFruitColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onRachisLengthChanged(String rachisLength) {
+        especimenDTO.setLonguitudDelRaquis(rachisLength);
+    }
+
+    @Override
+    public void onPinnaeArrangementChanged(String pinnaeArrangement) {
+        especimenDTO.setDispocicionDeLasPinnas(pinnaeArrangement);
+    }
+
+    @Override
+    public void onLeafArrangementChanged(String leafArrangement) {
+        especimenDTO.setDisposicionDeLasEspinas(leafArrangement);
+    }
+
+    @Override
+    public void onPetioleSizeChanged(String petioleSize) {
+        especimenDTO.setTamañoDelPeciolo(petioleSize);
+    }
+
+    @Override
+    public void onPetioleFormChanged(String petioleForm) {
+        especimenDTO.setFormaDelPeciolo(petioleForm);
+    }
+
+    @Override
+    public void onSheathNatureChanged(String sheathNature) {
+        especimenDTO.setNaturalezaDeLaVaina(sheathNature);
+    }
+
+    @Override
+    public void onPetioleCoverageChanged(String petioleCoverage) {
+        especimenDTO.setCoberturaDelPeciolo(petioleCoverage);
+    }
+
+    @Override
+    public void onLimboNatureChanged(String limboNature) {
+        especimenDTO.setNaturalezaDelLimbo(limboNature);
+    }
+
+    @Override
+    public void onPinnaeNumberChanged(String pinnaeNumber) {
+        especimenDTO.setNumeroDePinnas(pinnaeNumber);
+    }
+
+    @Override
+    public void onLeavesDescriptionChanged(String leavesDespcription) {
+        especimenDTO.setHojaDescripcion(leavesDespcription);
+    }
+
+    @Override
+    public void onLeavesNumberChanged(String leavesNumber) {
+        especimenDTO.setNumeroHojas(leavesNumber);
+    }
+
+    @Override
+    public void onSheathSizeChanged(String sheathSize) {
+        especimenDTO.setTamañoDeLaVaina(sheathSize);
+    }
+
+    @Override
+    public void onPetioleColorChanged(ColorEspecimenDTO petioleColor) {
+        if (petioleColor != null) {
+            especimenDTO.setColorDelPeciolo(petioleColor);
+            especimenDTO.getColores().add(petioleColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onSheathColorChanged(ColorEspecimenDTO sheathColor) {
+        if (sheathColor != null) {
+            especimenDTO.setColorDeLaVaina(sheathColor);
+            especimenDTO.getColores().add(sheathColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onInBaseDiameterChanged(String inBaseDiameter) {
+        especimenDTO.setDiametroEnLaBase(inBaseDiameter);
+    }
+
+    @Override
+    public void onRootsDiameterChanged(String rootsDiameter) {
+        especimenDTO.setDiametroDeLasRaices(rootsDiameter);
+    }
+
+    @Override
+    public void onSpinesShapeChanged(String spinesShape) {
+        especimenDTO.setFormaDeLasEspinas(spinesShape);
+    }
+
+    @Override
+    public void onSpinesSizeChanged(String spinesSize) {
+        especimenDTO.setTamañoDeLasEspinas(spinesSize);
+    }
+
+    @Override
+    public void onArmedChanged(boolean armed) {
+        especimenDTO.setRaizArmada(armed);
+    }
+
+    @Override
+    public void onConeHeightChanged(String coneHeight) {
+        if (coneHeight != null) {
+            try {
+                Long castedParameter = Long.parseLong(coneHeight);
+                especimenDTO.setAlturaDelCono(castedParameter);
+            } catch (NumberFormatException e) {
+                Log.e("Plantae", "Couldn't cast coneHeight expression "+ coneHeight);
+            }
+        }
+    }
+
+    @Override
+    public void onConeColorChanged(ColorEspecimenDTO coneColor) {
+        if (coneColor != null) {
+            especimenDTO.setColorDelCono(coneColor);
+            especimenDTO.getColores().add(coneColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onRootsDescriptionChanged(String rootsDescription) {
+        especimenDTO.setRaizDescripcion(rootsDescription);
+    }
+
+    @Override
+    public void onStemHeightChanged(String stemHeight) {
+        especimenDTO.setAlturaDelTallo(stemHeight);
+    }
+
+    @Override
+    public void onStemNatureChanged(String stemNature) {
+        especimenDTO.setNaturalezaDelTallo(stemNature);
+    }
+
+    @Override
+    public void onStemDiameterChanged(String stemDiameter) {
+        especimenDTO.setDiametroDelTallo(stemDiameter);
+    }
+
+    @Override
+    public void onStemFormChanged(String stemForm) {
+        especimenDTO.setFormaDelTallo(stemForm);
+    }
+
+    @Override
+    public void onInternodesLengthChanged(String internodesLength) {
+        especimenDTO.setLongitudEntrenudos(internodesLength);
+    }
+
+    @Override
+    public void onConspicuousInternodesChanged(boolean conspicuousInternodes) {
+        especimenDTO.setEntrenudosConspicuos(conspicuousInternodes);
+    }
+
+    @Override
+    public void onStemNakedChanged(boolean stemNaked) {
+        especimenDTO.setDesnudoCubierto(stemNaked);
+    }
+
+    @Override
+    public void onStemCoveredChanged(boolean stemCovered) {
+        especimenDTO.setDesnudoCubierto(stemCovered);
+    }
+
+    @Override
+    public void onThornsChanged(boolean thorns) {
+        especimenDTO.setEspinas(thorns);
+    }
+
+    @Override
+    public void onThornArrangementChanged(String thornArrangement) {
+        especimenDTO.setDisposicionDeLasEspinas(thornArrangement);
+    }
+
+    @Override
+    public void onStemColorChanged(ColorEspecimenDTO stemColor) {
+        if (stemColor != null) {
+            especimenDTO.setColorDelTallo(stemColor);
+            especimenDTO.getColores().add(stemColor);
+            plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
+    @Override
+    public void onStemDescriptionChanged(String stemDescription) {
+        especimenDTO.setTalloDescripcion(stemDescription);
     }
 }

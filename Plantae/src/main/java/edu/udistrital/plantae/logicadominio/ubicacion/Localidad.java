@@ -185,12 +185,43 @@ public class Localidad {
         }
     }
 
+    public String aString() {
+        String string = "";
+        if (nombre != null) {
+            string = string + nombre;
+        }
+        if (region != null) {
+            string = string + (string.equals("") ? "":", ") + region;
+        }
+        if (latitud != null) {
+            string = string + (string.equals("") ? "latitud:":", latitud:") + latitud;
+        }
+        if (longitud != null) {
+            string = string + (string.equals("") ? "longitud:":", longitud:") + longitud;
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? "":", ") + descripcion;
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return nombre +
-                (getRegion() != null ? ", " + region : "") +
-                ", latitud: " + latitud +
-                ", longitud: " + longitud +
-                (descripcion != null ? ", " + descripcion : "");
+        return "Localidad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", datum='" + datum + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", marcaDispositivo='" + marcaDispositivo + '\'' +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", altitudMinima=" + altitudMinima +
+                ", altitudMaxima=" + altitudMaxima +
+                ", regionID=" + regionID +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", region=" + region +
+                ", region__resolvedKey=" + region__resolvedKey +
+                '}';
     }
 }

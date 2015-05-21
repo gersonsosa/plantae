@@ -9,16 +9,18 @@ import edu.udistrital.plantae.logicadominio.taxonomia.IdentidadTaxonomica;
 import edu.udistrital.plantae.logicadominio.ubicacion.Localidad;
 import edu.udistrital.plantae.persistencia.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Sosa G., Mateus A.
  * @version 1.0
  * @created 26-Jun-2013 12:09:14 AM
  */
-public class Especimen {
+public class Especimen implements Cloneable {
 
     private Long id;
     private String numeroDeColeccion;
@@ -131,7 +133,31 @@ public class Especimen {
 	}
 
     public Object clone(){
-        return null;
+        try {
+            // clone shallow locality habitat and colectors
+            Especimen clone = (Especimen) super.clone();
+            clone.setId(null);
+            clone.setNumeroDeColeccion(null);
+            clone.setAbundancia(null);
+            clone.setDescripcionEspecimen(null);
+            clone.setAlturaDeLaPlanta(null);
+            clone.setDap(null);
+            clone.setMetodoColeccion(null);
+            clone.setHabitoID(null);
+            clone.setFenologiaID(null);
+            clone.setRaizID(null);
+            clone.setTalloID(null);
+            clone.setInflorescenciaID(null);
+            clone.setFrutoID(null);
+            clone.setFlorID(null);
+            clone.setHojaID(null);
+            clone.setLocalidad(getLocalidad());
+            clone.setHabitat(getHabitat());
+            clone.setColectoresSecundarios(getColectoresSecundarios());
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     public Long getId() {
@@ -821,15 +847,113 @@ public class Especimen {
 
 	}
 
+    public String aString() {
+        String string = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        if (fechaInicial != null) {
+            string = string + "Collecting date: " + simpleDateFormat.format(fechaInicial);
+        }
+        if (alturaDeLaPlanta != null) {
+            string = string + (string.equals("") ? "Altura de la planta: ":", Altura de la planta: ") + alturaDeLaPlanta;
+        }
+        if (dap != null) {
+            string = string + (string.equals("") ? "DAP: ":", DAP: ") + dap;
+        }
+        if (habito != null) {
+            string = string + (string.equals("") ? "Hábito: ":", Hábito: ") + habito;
+        }
+        if (habitat != null) {
+            string = string + (string.equals("") ? "Hábitat: ":", Hábitat: ") + habitat;
+        }
+        if (fenologia != null) {
+            string = string + (string.equals("") ? "Fenología: ":", Fenología: ") + fenologia;
+        }
+        if (getFlor() != null) {
+            string = string + (string.equals("") ? "Flor: ":", Flor: ") + flor.aString();
+        }
+        if (getFruto() != null) {
+            string = string + (string.equals("") ? "Fruto: ":", Fruto: ") + fruto.aString();
+        }
+        if (getInflorescencia() != null) {
+            string = string + (string.equals("") ? "Inflorescencia: ":", Inflorescencia: ") + inflorescencia.aString();
+        }
+        if (getTallo() != null) {
+            string = string + (string.equals("") ? "Tallo: ":", Tallo: ") + tallo.aString();
+        }
+        if (getHoja() != null) {
+            string = string + (string.equals("") ? "Hoja: ":", Hoja: ") + hoja.aString();
+        }
+        if (getRaiz() != null) {
+            string = string + (string.equals("") ? "Raiz: ":", Raiz: ") + raiz.aString();
+        }
+        if (getColores() != null) {
+            for (ColorEspecimen colorEspecimen:colores) {
+                if (colorEspecimen.getOrganoDeLaPlanta() == null) {
+                    string = string + (string.equals("") ? "":", ") + colorEspecimen.aString();
+                }
+            }
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return "Collecting date=" + fechaInicial +
-                (alturaDeLaPlanta != null ? ", plant height: " + alturaDeLaPlanta : "") +
-                (dap != null ? ", dap: " + dap : "") +
-                (habito != null ? ", habit: " + habito : "") +
-                (habitat != null ? ", habitat: " + habitat : "") +
-                (fenologia != null ? ", fenology: " + fenologia: "") +
-                (flor != null ? ", " + flor : "") +
-                (colores != null ? ", colors: " + colores : "");
+        return "Especimen{" +
+                "id=" + id +
+                ", numeroDeColeccion='" + numeroDeColeccion + '\'' +
+                ", abundancia='" + abundancia + '\'' +
+                ", descripcionEspecimen='" + descripcionEspecimen + '\'' +
+                ", alturaDeLaPlanta=" + alturaDeLaPlanta +
+                ", dap=" + dap +
+                ", fechaInicial=" + fechaInicial +
+                ", fechaFinal=" + fechaFinal +
+                ", metodoColeccion='" + metodoColeccion + '\'' +
+                ", estacionDelAño='" + estacionDelAño + '\'' +
+                ", habitoID=" + habitoID +
+                ", habitatID=" + habitatID +
+                ", fenologiaID=" + fenologiaID +
+                ", localidadID=" + localidadID +
+                ", viajeID=" + viajeID +
+                ", colectorPrincipalID=" + colectorPrincipalID +
+                ", raizID=" + raizID +
+                ", talloID=" + talloID +
+                ", inflorescenciaID=" + inflorescenciaID +
+                ", frutoID=" + frutoID +
+                ", florID=" + florID +
+                ", hojaID=" + hojaID +
+                ", tipo='" + tipo + '\'' +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", etiqueta=" + etiqueta +
+                ", habito=" + habito +
+                ", habito__resolvedKey=" + habito__resolvedKey +
+                ", habitat=" + habitat +
+                ", habitat__resolvedKey=" + habitat__resolvedKey +
+                ", fenologia=" + fenologia +
+                ", fenologia__resolvedKey=" + fenologia__resolvedKey +
+                ", localidad=" + localidad +
+                ", localidad__resolvedKey=" + localidad__resolvedKey +
+                ", inflorescencia=" + inflorescencia +
+                ", inflorescencia__resolvedKey=" + inflorescencia__resolvedKey +
+                ", colectorPrincipal=" + colectorPrincipal +
+                ", colectorPrincipal__resolvedKey=" + colectorPrincipal__resolvedKey +
+                ", viaje=" + viaje +
+                ", viaje__resolvedKey=" + viaje__resolvedKey +
+                ", hoja=" + hoja +
+                ", hoja__resolvedKey=" + hoja__resolvedKey +
+                ", fruto=" + fruto +
+                ", fruto__resolvedKey=" + fruto__resolvedKey +
+                ", tallo=" + tallo +
+                ", tallo__resolvedKey=" + tallo__resolvedKey +
+                ", raiz=" + raiz +
+                ", raiz__resolvedKey=" + raiz__resolvedKey +
+                ", flor=" + flor +
+                ", flor__resolvedKey=" + flor__resolvedKey +
+                ", colectoresSecundarios=" + colectoresSecundarios +
+                ", muestrasAsociadas=" + muestrasAsociadas +
+                ", colores=" + colores +
+                ", fotografias=" + fotografias +
+                ", determinaciones=" + determinaciones +
+                '}';
     }
 }

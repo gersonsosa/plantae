@@ -14,9 +14,10 @@ import edu.udistrital.plantae.persistencia.*;
  */
 public class ColorEspecimen {
 
-	private Long id;
-	private String nombre;
-	private String descripcion;
+    private Long id;
+    private String nombre;
+    private String descripcion;
+    private String organoDeLaPlanta;
     private Integer colorRGB;
     private Long colorMunsellID;
     private Long usuarioID;
@@ -49,7 +50,7 @@ public class ColorEspecimen {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getColorEspecimenDao() : null;
-	}
+    }
 
     public Long getId() {
         return id;
@@ -64,8 +65,8 @@ public class ColorEspecimen {
     }
 
     public String getNombre() {
-		return nombre;
-	}
+        return nombre;
+    }
 
     /**
      *
@@ -73,11 +74,11 @@ public class ColorEspecimen {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
-	}
+    }
 
     public String getDescripcion() {
-		return descripcion;
-	}
+        return descripcion;
+    }
 
     /**
      *
@@ -85,7 +86,15 @@ public class ColorEspecimen {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-	}
+    }
+
+    public String getOrganoDeLaPlanta() {
+        return organoDeLaPlanta;
+    }
+
+    public void setOrganoDeLaPlanta(String organoDeLaPlanta) {
+        this.organoDeLaPlanta = organoDeLaPlanta;
+    }
 
     public Integer getColorRGB() {
         return colorRGB;
@@ -138,7 +147,7 @@ public class ColorEspecimen {
             }
         }
         return colorMunsell;
-	}
+    }
 
     public void setColorMunsell(ColorMunsell colorMunsell) {
         synchronized (this) {
@@ -184,7 +193,7 @@ public class ColorEspecimen {
             Usuario usuarioNew = targetDao.load(__key);
             synchronized (this) {
                 usuario = usuarioNew;
-                usuario__resolvedKey = __key;
+            	usuario__resolvedKey = __key;
             }
         }
         return usuario;
@@ -213,8 +222,36 @@ public class ColorEspecimen {
         return colorName;
     }
 
+    public String aString() {
+        String string = "";
+        if (nombre != null) {
+            string = string + (string.equals("") ? "":", ") + nombre;
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? "":", ") + descripcion;
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return nombre + " " + descripcion;
+        return "ColorEspecimen{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", organoDeLaPlanta='" + organoDeLaPlanta + '\'' +
+                ", colorRGB=" + colorRGB +
+                ", colorMunsellID=" + colorMunsellID +
+                ", usuarioID=" + usuarioID +
+                ", especimenID=" + especimenID +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", colorMunsell=" + colorMunsell +
+                ", colorMunsell__resolvedKey=" + colorMunsell__resolvedKey +
+                ", especimen=" + especimen +
+                ", especimen__resolvedKey=" + especimen__resolvedKey +
+                ", usuario=" + usuario +
+                ", usuario__resolvedKey=" + usuario__resolvedKey +
+                '}';
     }
 }

@@ -97,8 +97,17 @@ public class Habitat implements Parcelable {
 
     @Override
     public String toString() {
-        return especiesAsociadas +
-                ", " + sueloSustrato +
-                ", " + vegetacion;
+        String string = "";
+        if (especiesAsociadas != null) {
+            string = string + especiesAsociadas;
+        }
+        if (sueloSustrato != null) {
+            string = string + ", " + sueloSustrato;
+        }
+        if (vegetacion != null) {
+            string = string + ", " + vegetacion;
+        }
+
+        return string;
     }
 }

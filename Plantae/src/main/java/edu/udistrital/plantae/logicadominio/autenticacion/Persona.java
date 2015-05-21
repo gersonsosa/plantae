@@ -132,7 +132,7 @@ public class Persona implements Parcelable {
 
 	/**
 	 * 
-	 * @param usuario
+	 * @param usuario El usuario
 	 */
     public void setUsuario(Usuario usuario) {
         synchronized (this) {
@@ -140,6 +140,37 @@ public class Persona implements Parcelable {
             usuarioID = usuario == null ? null : usuario.getId();
             usuario__resolvedKey = usuarioID;
 	    }
+    }
+
+    public String aString() {
+        String string = "";
+        if (nombres != null) {
+            string = string + "nombres: " + nombres;
+        }
+        if (apellidos != null) {
+            string = string + (string.equals("")?"apellidos: ":", apellidos: ") + apellidos;
+        }
+        if (institucion != null) {
+            string = string + (string.equals("")?"institucion: ":", institucion: ") + institucion;
+        }
+        return string;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "id=" + id +
+                ", nombres='" + nombres + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", institucion='" + institucion + '\'' +
+                ", usuarioID=" + usuarioID +
+                ", usuario=" + usuario +
+                ", usuario__resolvedKey=" + usuario__resolvedKey +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                '}';
     }
 
     @Override

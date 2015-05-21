@@ -23,7 +23,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_indicate_left"
+                android:src="@drawable/left"
                 android:contentDescription="@string/open_nav_drawer" />
             <TextView
                 android:layout_width="wrap_content"

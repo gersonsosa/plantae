@@ -200,8 +200,25 @@ public abstract class Taxon {
         this.usos = usos;
     }
 
+    public String aString() {
+        return nombreCientifico != null ? nombreCientifico : nombre;
+    }
+
     @Override
     public String toString() {
-        return nombreCientifico != null ? nombreCientifico : nombre;
+        return "Taxon{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", usos=" + usos +
+                ", nombresComunes=" + nombresComunes +
+                ", taxonPadre=" + taxonPadre +
+                ", autor='" + autor + '\'' +
+                ", nombreCientifico='" + nombreCientifico + '\'' +
+                ", usuarioId=" + usuarioId +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", usuario=" + usuario +
+                ", usuario__resolvedKey=" + usuario__resolvedKey +
+                '}';
     }
 }

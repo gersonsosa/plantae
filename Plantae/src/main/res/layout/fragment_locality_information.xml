@@ -39,14 +39,16 @@
                 android:id="@+id/update_locality_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_device_access_location_found"
+                android:background="@color/plantae_fallback"
+                android:src="@drawable/map_marker_primary"
                 android:contentDescription="@string/update_location"/>
 
             <ImageButton
                 android:id="@+id/edit_locality_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_content_edit"
+                android:background="@color/plantae_fallback"
+                android:src="@drawable/pencil_primary"
                 android:contentDescription="@string/edit_location"/>
             </LinearLayout>
 
@@ -146,11 +148,29 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/locality_datum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_locality_datum"
+            android:layout_below="@+id/coordinates"
+            android:inputType="text"
+            android:minLines="3"/>
+
+        <EditText
+            android:id="@+id/locality_device_brand"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_locality_device_brand"
+            android:layout_below="@+id/locality_datum"
+            android:inputType="text"
+            android:minLines="3"/>
+
+        <EditText
             android:id="@+id/locality_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/prompt_locality_description"
-            android:layout_below="@+id/coordinates"
+            android:layout_below="@+id/locality_device_brand"
             android:inputType="text"
             android:minLines="3"/>
 

@@ -33,10 +33,11 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Nombre = new Property(1, String.class, "nombre", false, "NOMBRE");
         public final static Property Descripcion = new Property(2, String.class, "descripcion", false, "DESCRIPCION");
-        public final static Property ColorRGB = new Property(3, Integer.class, "colorRGB", false, "COLOR_RGB");
-        public final static Property ColorMunsellID = new Property(4, Long.class, "colorMunsellID", false, "COLOR_MUNSELL_ID");
-        public final static Property UsuarioID = new Property(5, Long.class, "usuarioID", false, "USUARIO_ID");
-        public final static Property EspecimenID = new Property(6, Long.class, "especimenID", false, "ESPECIMEN_ID");
+        public final static Property OrganoDeLaPlanta = new Property(3, String.class, "organoDeLaPlanta", false, "ORGANO_DE_LA_PLANTA");
+        public final static Property ColorRGB = new Property(4, Integer.class, "colorRGB", false, "COLOR_RGB");
+        public final static Property ColorMunsellID = new Property(5, Long.class, "colorMunsellID", false, "COLOR_MUNSELL_ID");
+        public final static Property UsuarioID = new Property(6, Long.class, "usuarioID", false, "USUARIO_ID");
+        public final static Property EspecimenID = new Property(7, Long.class, "especimenID", false, "ESPECIMEN_ID");
     };
 
     private DaoSession daoSession;
@@ -60,10 +61,11 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NOMBRE' TEXT," + // 1: nombre
                 "'DESCRIPCION' TEXT," + // 2: descripcion
-                "'COLOR_RGB' INTEGER," + // 3: colorRGB
-                "'COLOR_MUNSELL_ID' INTEGER," + // 4: colorMunsellID
-                "'USUARIO_ID' INTEGER," + // 5: usuarioID
-                "'ESPECIMEN_ID' INTEGER);"); // 6: especimenID
+                "'ORGANO_DE_LA_PLANTA' TEXT," + // 3: organoDeLaPlanta
+                "'COLOR_RGB' INTEGER," + // 4: colorRGB
+                "'COLOR_MUNSELL_ID' INTEGER," + // 5: colorMunsellID
+                "'USUARIO_ID' INTEGER," + // 6: usuarioID
+                "'ESPECIMEN_ID' INTEGER);"); // 7: especimenID
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_COLOR_ESPECIMEN_NOMBRE ON COLOR_ESPECIMEN" +
                 " (NOMBRE);");
@@ -101,24 +103,29 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
             stmt.bindString(3, descripcion);
         }
  
+        String organoDeLaPlanta = entity.getOrganoDeLaPlanta();
+        if (organoDeLaPlanta != null) {
+            stmt.bindString(4, organoDeLaPlanta);
+        }
+
         Integer colorRGB = entity.getColorRGB();
         if (colorRGB != null) {
-            stmt.bindLong(4, colorRGB);
+            stmt.bindLong(5, colorRGB);
         }
 
         Long colorMunsellID = entity.getColorMunsellID();
         if (colorMunsellID != null) {
-            stmt.bindLong(5, colorMunsellID);
+            stmt.bindLong(6, colorMunsellID);
         }
  
         Long usuarioID = entity.getUsuarioID();
         if (usuarioID != null) {
-            stmt.bindLong(6, usuarioID);
+            stmt.bindLong(7, usuarioID);
         }
 
         Long especimenID = entity.getEspecimenID();
         if (especimenID != null) {
-            stmt.bindLong(7, especimenID);
+            stmt.bindLong(8, especimenID);
         }
     }
 
@@ -148,10 +155,11 @@ public class ColorEspecimenDao extends AbstractDao<ColorEspecimen, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setNombre(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescripcion(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setColorRGB(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
-        entity.setColorMunsellID(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setUsuarioID(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
-        entity.setEspecimenID(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setOrganoDeLaPlanta(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setColorRGB(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setColorMunsellID(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setUsuarioID(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setEspecimenID(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
      }
     
     /** @inheritdoc */

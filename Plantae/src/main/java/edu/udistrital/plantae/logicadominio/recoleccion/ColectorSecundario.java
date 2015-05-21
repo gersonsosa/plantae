@@ -1,5 +1,7 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
 
+import android.os.Parcel;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
@@ -13,7 +15,7 @@ import java.util.List;
  * @version 1.0
  * @updated 08-Oct-2013 3:41:26 PM
  */
-public class ColectorSecundario extends Persona {
+public class ColectorSecundario extends Persona implements android.os.Parcelable {
 
     private Long id;
     private long personaID;
@@ -139,4 +141,33 @@ public class ColectorSecundario extends Persona {
         especimenes = new ArrayList<EspecimenColectorSecundario>();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeLong(this.personaID);
+        dest.writeParcelable(this.persona, 0);
+        dest.writeValue(this.persona__resolvedKey);
+    }
+
+    private ColectorSecundario(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.personaID = in.readLong();
+        this.persona = in.readParcelable(Persona.class.getClassLoader());
+        this.persona__resolvedKey = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Creator<ColectorSecundario> CREATOR = new Creator<ColectorSecundario>() {
+        public ColectorSecundario createFromParcel(Parcel source) {
+            return new ColectorSecundario(source);
+        }
+
+        public ColectorSecundario[] newArray(int size) {
+            return new ColectorSecundario[size];
+        }
+    };
 }

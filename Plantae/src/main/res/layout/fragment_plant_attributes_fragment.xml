@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/associated_sample_text"
                     android:text="@string/no_associated_samples"
-                    android:src="@drawable/ic_action_content_edit"/>
+                    android:src="@drawable/pencil_primary"/>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

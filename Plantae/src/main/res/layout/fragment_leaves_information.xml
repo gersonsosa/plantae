@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/leaves_information_title"
-                android:textSize="45sp" />
+                android:textSize="34sp" />
 
             <EditText
                 android:id="@+id/leaves_number"
@@ -49,31 +49,35 @@
                 android:layout_below="@+id/leaf_arrangement" />
 
             <LinearLayout
-                android:id="@+id/leaf_color"
+                android:id="@+id/sheath_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/sheath_nature">
                 <EditText
-                    android:id="@+id/leaf_color_text"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/sheath_color_text"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_leaf_color"
+                    android:hint="@string/prompt_sheath_color"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"/>
-                <SurfaceView
-                    android:id="@+id/leaf_color_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/sheath_color_view"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
             <EditText
-                android:id="@+id/leaf_size"
+                android:id="@+id/sheath_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/leaf_color"
-                android:hint="@string/prompt_leaf_size"
+                android:layout_below="@+id/sheath_color"
+                android:hint="@string/prompt_sheath_size"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:singleLine="true"/>
@@ -82,7 +86,7 @@
                 android:id="@+id/limbo_nature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/leaf_size" />
+                android:layout_below="@+id/sheath_size" />
 
             <EditText
                 android:id="@+id/rachis_length"
@@ -115,7 +119,7 @@
 
             <EditText
                 android:id="@+id/petiole_form"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/petiole_size"
                 android:hint="@string/prompt_petiole_form"
@@ -131,16 +135,20 @@
                 android:layout_below="@+id/petiole_form">
                 <EditText
                     android:id="@+id/petiole_color_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_petiole_color"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"/>
-                <SurfaceView
-                    android:id="@+id/petiole_color_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/petiole_color_image"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
 
             <Spinner
@@ -171,11 +179,11 @@
 
             <EditText
                 android:id="@+id/pinnae_arrangement"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pinnae_number"
+                android:inputType="text"
                 android:hint="@string/prompt_pinnae_arrangement"
-                android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:singleLine="true"/>
 
@@ -190,7 +198,7 @@
                         android:layout_marginBottom="6dp"
                         android:background="@drawable/bg_card">
             <EditText
-                android:id="@+id/leaves_description"
+                android:id="@+id/stem_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/prompt_leaves_description"

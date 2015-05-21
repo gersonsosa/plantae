@@ -4,14 +4,14 @@
       xmlns:projectList="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/add_project"
           android:title="@string/add_project"
-          android:icon="@drawable/ic_action_add"
+          android:icon="@drawable/plus"
           projectList:showAsAction="always" />
     <item android:id="@+id/edit_project"
           android:title="@string/edit_project"
-          android:icon="@drawable/ic_action_content_edit"
+          android:icon="@drawable/pencil"
           projectList:showAsAction="ifRoom" />
     <item android:id="@+id/delete_projects"
           android:title="@string/delete_project"
-          android:icon="@drawable/ic_action_content_discard"
+          android:icon="@drawable/close"
           projectList:showAsAction="ifRoom" />
 </menu>

@@ -5,15 +5,15 @@
 
     <item android:id="@+id/action_pictures"
           android:title="@string/view_pictures"
-          android:icon="@drawable/ic_action_web_site"
+          android:icon="@drawable/picture"
           createSpecimen:showAsAction="ifRoom" />
     <item android:id="@+id/action_photo"
           android:title="@string/take_photo"
-          android:icon="@drawable/ic_action_camera"
+          android:icon="@drawable/camera"
           createSpecimen:showAsAction="ifRoom" />
     <item android:id="@+id/action_save"
           android:title="@string/string_action_save"
-          android:icon="@drawable/ic_action_navigation_accept"
+          android:icon="@drawable/checkmark"
           createSpecimen:showAsAction="ifRoom" />
 
 </menu>

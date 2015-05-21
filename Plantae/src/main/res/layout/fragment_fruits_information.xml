@@ -24,12 +24,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mature_information_title"
-                android:textSize="45sp" />
+                android:textSize="34sp" />
 
-            <Spinner
+            <AutoCompleteTextView
                 android:id="@+id/pericarp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/prompt_pericarp"
                 android:layout_below="@+id/mature_information_title" />
 
             <LinearLayout
@@ -37,42 +38,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/pericarp">
-                <EditText
+                android:layout_below="@+id/pericarp"
+                android:paddingBottom="4dp">
+                <TextView
                     android:id="@+id/exocarp_color_text"
                     android:layout_width="0dip"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_exocarp"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
-                <SurfaceView
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_exocarp" />
+                <ImageView
                     android:id="@+id/exocarp_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
                     android:layout_width="0dip"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/mesocarp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/exocarp">
-                <EditText
+                android:layout_below="@+id/exocarp"
+                android:paddingBottom="4dp">
+                <TextView
                     android:id="@+id/mesocarp_color_text"
                     android:layout_width="0dip"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_mesocarp"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
-                <SurfaceView
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_mesocarp" />
+                <ImageView
                     android:id="@+id/mesocarp_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
                     android:layout_width="0dip"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -89,45 +92,51 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/immature_fruit_title"
-                android:textSize="45sp" />
+                android:textSize="34sp" />
 
             <LinearLayout
                 android:id="@+id/exocarp_immature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/immature_fruit_title">
-                <EditText
+                android:layout_below="@+id/immature_fruit_title"
+                android:paddingBottom="4dp">
+                <TextView
                     android:id="@+id/exocarp_immature_color_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_exocarp"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
-                <SurfaceView
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_exocarp" />
+                <ImageView
                     android:id="@+id/exocarp_immature_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/mesocarp_immature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/exocarp_immature">
-                <EditText
+                android:layout_below="@+id/exocarp_immature"
+                android:paddingBottom="4dp">
+                <TextView
                     android:id="@+id/mesocarp_immature_color_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_mesocarp"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
-                <SurfaceView
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_mesocarp"/>
+                <ImageView
                     android:id="@+id/mesocarp_immature_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

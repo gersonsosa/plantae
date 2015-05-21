@@ -13,7 +13,7 @@
         android:layout_marginRight="12dip"
         android:layout_centerVertical="true"
         android:contentDescription="@string/content_desc"
-        android:src="@drawable/ic_action_location_map" />
+        android:src="@drawable/world_map_primary" />
 
     <TextView
         android:id="@+id/title_travel_list_item"

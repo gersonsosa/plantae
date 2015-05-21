@@ -145,7 +145,7 @@ public class Usuario {
 
 			if (!cancel) {
 				// Check username and password in database
-				usuario = usuarioDao.queryBuilder().where(Properties.NombreUsuario.eq(nombreUsuario)).unique();
+				usuario = usuarioDao.queryBuilder().where(UsuarioDao.Properties.NombreUsuario.eq(nombreUsuario)).unique();
 				if (usuario != null && usuario.getContraseña().equals(contraseña)){
 					return usuario;
 				}else{

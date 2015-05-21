@@ -15,8 +15,6 @@ import edu.udistrital.plantae.persistencia.InflorescenciaDao;
 public class Inflorescencia {
 
     private Long id;
-    private ColorEspecimen colorDeLaInflorescenciaEnFlor;
-    private ColorEspecimen colorDeLaInflorescenciaEnFruto;
     private String naturalezaDeLasBracteasPedunculares;
     private String naturalezaDelProfilo;
     private String posicionDeLasBracteasPedunculares;
@@ -41,8 +39,10 @@ public class Inflorescencia {
     /** Used for active entity operations. */
     private transient InflorescenciaDao myDao;
 
+    private ColorEspecimen colorDeLaInflorescenciaEnFlor;
     private Long colorDeLaInflorescenciaEnFlor__resolvedKey;
 
+    private ColorEspecimen colorDeLaInflorescenciaEnFruto;
     private Long colorDeLaInflorescenciaEnFruto__resolvedKey;
 
 
@@ -72,92 +72,92 @@ public class Inflorescencia {
     }
 
     public String getNaturalezaDeLasBracteasPedunculares() {
-		return naturalezaDeLasBracteasPedunculares;
-	}
+        return naturalezaDeLasBracteasPedunculares;
+    }
 
     public void setNaturalezaDeLasBracteasPedunculares(String naturalezaDeLasBracteasPedunculares) {
         this.naturalezaDeLasBracteasPedunculares = naturalezaDeLasBracteasPedunculares;
-	}
+    }
 
     public String getNaturalezaDelProfilo() {
-		return naturalezaDelProfilo;
-	}
+        return naturalezaDelProfilo;
+    }
 
     public void setNaturalezaDelProfilo(String naturalezaDelProfilo) {
         this.naturalezaDelProfilo = naturalezaDelProfilo;
-	}
+    }
 
     public String getPosicionDeLasBracteasPedunculares() {
-		return posicionDeLasBracteasPedunculares;
-	}
+        return posicionDeLasBracteasPedunculares;
+    }
 
     public void setPosicionDeLasBracteasPedunculares(String posicionDeLasBracteasPedunculares) {
         this.posicionDeLasBracteasPedunculares = posicionDeLasBracteasPedunculares;
-	}
+    }
 
     public String getPosicionDeLasInflorescencias() {
-		return posicionDeLasInflorescencias;
-	}
+        return posicionDeLasInflorescencias;
+    }
 
     public void setPosicionDeLasInflorescencias(String posicionDeLasInflorescencias) {
         this.posicionDeLasInflorescencias = posicionDeLasInflorescencias;
-	}
+    }
 
     public String getRaquilas() {
-		return raquilas;
-	}
+        return raquilas;
+    }
 
     public void setRaquilas(String raquilas) {
         this.raquilas = raquilas;
-	}
+    }
 
     public String getRaquis() {
-		return raquis;
-	}
+        return raquis;
+    }
 
     public void setRaquis(String raquis) {
         this.raquis = raquis;
-	}
+    }
 
     public String getTamañoDeLasBracteasPedunculares() {
-		return tamañoDeLasBracteasPedunculares;
-	}
+        return tamañoDeLasBracteasPedunculares;
+    }
 
     public void setTamañoDeLasBracteasPedunculares(String tamañoDeLasBracteasPedunculares) {
         this.tamañoDeLasBracteasPedunculares = tamañoDeLasBracteasPedunculares;
-	}
+    }
 
     public String getTamañoDelPedunculo() {
-		return tamañoDelPedunculo;
-	}
+        return tamañoDelPedunculo;
+    }
 
     public void setTamañoDelPedunculo(String tamañoDelPedunculo) {
         this.tamañoDelPedunculo = tamañoDelPedunculo;
-	}
+    }
 
     public String getTamañoDelProfilo() {
-		return tamañoDelProfilo;
-	}
+        return tamañoDelProfilo;
+    }
 
     public void setTamañoDelProfilo(String tamañoDelProfilo) {
         this.tamañoDelProfilo = tamañoDelProfilo;
-	}
+    }
 
     public String getTamañoDelRaquis() {
-		return tamañoDelRaquis;
-	}
+        return tamañoDelRaquis;
+    }
 
     public void setTamañoDelRaquis(String tamañoDelRaquis) {
         this.tamañoDelRaquis = tamañoDelRaquis;
-	}
+    }
 
     public String getTamañoDeRaquilas() {
-		return tamañoDeRaquilas;
-	}
+        return tamañoDeRaquilas;
+    }
 
     public void setTamañoDeRaquilas(String tamañoDeRaquilas) {
         this.tamañoDeRaquilas = tamañoDeRaquilas;
-	}
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -257,4 +257,59 @@ public class Inflorescencia {
         }
     }
 
+    public String aString() {
+        String string = "";
+        if (naturalezaDeLasBracteasPedunculares != null) {
+            string  = string + (string.equals("") ? "Naturaleza de las bracteas pedunculares: " : ", Naturaleza de las bracteas pedunculares: ") + naturalezaDeLasBracteasPedunculares;
+        }
+        if (naturalezaDelProfilo != null) {
+            string  = string + (string.equals("") ? "Naturaleza del profilo: " : ", Naturaleza del profilo: ") + naturalezaDelProfilo;
+        }
+        if (posicionDeLasBracteasPedunculares != null) {
+            string  = string + (string.equals("") ? "Posicion de las bracteas pedunculares: " : ", Posicion de las bracteas pedunculares: ") + posicionDeLasBracteasPedunculares;
+        }
+        if (posicionDeLasInflorescencias != null) {
+            string  = string + (string.equals("") ? "Posicion de las inflorescencias: " : ", Posicion de las inflorescencias: ") + posicionDeLasInflorescencias;
+        }
+        if (raquilas != null) {
+            string  = string + (string.equals("") ? "Raquilas: " : ", Raquilas: ") + raquilas;
+        }
+        if (raquis != null) {
+            string  = string + (string.equals("") ? "Raquis: " : ", Raquis: ") + raquis;
+        }
+        if (tamañoDeLasBracteasPedunculares != null) {
+            string  = string + (string.equals("") ? "Tamaño de las bracteas pedunculares: " : ", Tamaño de las bracteas pedunculares: ") + tamañoDeLasBracteasPedunculares;
+        }
+        if (tamañoDelPedunculo != null) {
+            string  = string + (string.equals("") ? "Tamaño del pedunculo: " : ", Tamaño del pedunculo: ") + tamañoDelPedunculo;
+        }
+        if (tamañoDelProfilo != null) {
+            string  = string + (string.equals("") ? "Tamaño del profilo: " : ", Tamaño del profilo: ") + tamañoDelProfilo;
+        }
+        if (tamañoDelRaquis != null) {
+            string  = string + (string.equals("") ? "Tamaño del raquis: " : ", Tamaño del raquis: ") + tamañoDelRaquis;
+        }
+        if (tamañoDeRaquilas != null) {
+            string  = string + (string.equals("") ? "Tamaño de raquilas: " : ", Tamaño de raquilas: ") + tamañoDeRaquilas;
+        }
+        if (descripcion != null) {
+            string  = string + (string.equals("") ? "Descripcion: " : ", Descripcion: ") + descripcion;
+        }
+        if (inflorescenciaSolitaria != null) {
+            string  = string + (string.equals("") ? "Inflorescencia solitaria: " : ", Inflorescencia solitaria: ") + inflorescenciaSolitaria;
+        }
+        if (numeroDeLasBracteasPedunculares != null) {
+            string  = string + (string.equals("") ? "Numero de las bracteas pedunculares: " : ", Numero de las bracteas pedunculares: ") + numeroDeLasBracteasPedunculares;
+        }
+        if (numeroDeRaquilas != null) {
+            string  = string + (string.equals("") ? "Numero de raquilas: " : ", Numero de raquilas: ") + numeroDeRaquilas;
+        }
+        if (getColorDeLaInflorescenciaEnFlor() != null) {
+            string  = string + (string.equals("") ? "Color de la inflorescencia en flor: " : ", Color de la inflorescencia en flor: ") + colorDeLaInflorescenciaEnFlor;
+        }
+        if (getColorDeLaInflorescenciaEnFruto() != null) {
+            string  = string + (string.equals("") ? "Color de la inflorescencia en fruto: " : ", Color de la inflorescencia en fruto: ") + colorDeLaInflorescenciaEnFruto;
+        }
+        return string;
+    }
 }

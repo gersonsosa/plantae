@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 
 /**
  * Created by Gerson Sosa on 6/24/14.
@@ -26,19 +23,19 @@ public class SpecimenPagesAdapter extends FragmentPagerAdapter {
     private Fragment[] fragments;
     private String[] fragmentNames;
     private Activity activity;
-    private EspecimenDTO especimenDTO;
+    private Bundle fragmentsBundle;
 
-    public SpecimenPagesAdapter(FragmentManager fm, int specimenType, Activity activity, EspecimenDTO especimenDTO, String secondaryCollectorsName) {
+    public SpecimenPagesAdapter(FragmentManager fm, int specimenType, Activity activity, Bundle fragmentsBundle) {
         super(fm);
         if (specimenType == SPECIMEN_DETAILED){
             NUM_FRAGMENTS = NUM_FRAGMENTS_DETAILED;
         }
         this.activity = activity;
-        this.especimenDTO = especimenDTO;
-        configureFragments(secondaryCollectorsName);
+        this.fragmentsBundle = fragmentsBundle;
+        configureFragments();
     }
 
-    private void configureFragments(String secondaryCollectorsName){
+    private void configureFragments(){
         fragments = new Fragment[NUM_FRAGMENTS];
         fragmentNames = new String[NUM_FRAGMENTS];
         fragments[0] = Fragment.instantiate(activity, CollectingInformationFragment.class.getName());
@@ -51,8 +48,8 @@ public class SpecimenPagesAdapter extends FragmentPagerAdapter {
         fragmentNames[3] = activity.getString(R.string.habitat_information_title);
         fragments[4] = Fragment.instantiate(activity, PlantAttributesFragment.class.getName());
         fragmentNames[4] = activity.getString(R.string.plants_attributes_information_title);
-        fragments[5] = Fragment.instantiate(activity, FlowersInformationFragment.class.getName());
-        fragmentNames[5] = activity.getString(R.string.flowers_information_title);
+        fragments[5] = Fragment.instantiate(activity, FlowerInformationFragment.class.getName());
+        fragmentNames[5] = activity.getString(R.string.flower_information_title);
         if (NUM_FRAGMENTS > NUM_FRAGMENTS_SINGLE){
             fragments[6] = Fragment.instantiate(activity, FruitInformationFragment.class.getName());
             fragmentNames[6] = activity.getString(R.string.fruits_information_title);
@@ -65,11 +62,8 @@ public class SpecimenPagesAdapter extends FragmentPagerAdapter {
             fragments[10] = Fragment.instantiate(activity, StemInformationFragment.class.getName());
             fragmentNames[10] = activity.getString(R.string.stem_information_title);
         }
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("especimen", especimenDTO);
-        bundle.putString("secondaryCollectorsName", secondaryCollectorsName);
         for (Fragment fragment : fragments){
-            fragment.setArguments(bundle);
+            fragment.setArguments(fragmentsBundle);
         }
     }
 

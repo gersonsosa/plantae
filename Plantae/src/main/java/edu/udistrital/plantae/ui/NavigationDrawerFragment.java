@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -115,13 +115,12 @@ public class NavigationDrawerFragment extends Fragment {
         List<NavigationDrawerItem> navigationDrawerItems = new ArrayList<NavigationDrawerItem>();
         navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.title_travels),0,0));
         for (Viaje viaje : viajes) {
-            navigationDrawerItems.add(new NavigationDrawerItem(viaje.getId(), viaje.getNombre(), R.drawable.ic_action_location_map, viaje.getEspecimenes().size()));
+            navigationDrawerItems.add(new NavigationDrawerItem(viaje.getId(), viaje.getNombre(), R.drawable.compass_primary, viaje.getEspecimenes().size()));
         }
-        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.add_new_travels), R.drawable.ic_action_add, 0));
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.add_new_travels), R.drawable.plus_primary, 0));
         navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.manage_text), 0, 0));
-        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.manage_travels), R.drawable.ic_action_location_map, 0));
-        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.action_settings), android.R.drawable.ic_menu_preferences, 0));
-        // implementar custom adapter para mostrar los elementos del nav drawer
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.manage_travels), R.drawable.globe_primary, 0));
+        navigationDrawerItems.add(new NavigationDrawerItem(getString(R.string.autocomplete_lists), R.drawable.settings_primary, 0));
         ListImageTextAdapter listImageTextAdapter = new ListImageTextAdapter(getActivity().getApplicationContext(),navigationDrawerItems,viajeDao);
         mDrawerListView.setAdapter(listImageTextAdapter);
     }
@@ -281,7 +280,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+        return ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     /**

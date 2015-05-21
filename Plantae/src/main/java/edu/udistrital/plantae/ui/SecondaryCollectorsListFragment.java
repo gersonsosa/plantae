@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -31,6 +32,7 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
     private Long[] itemsSelected;
     private OnSecondaryCollectorSelectedListener secondaryCollectorSelectedListener;
     private ActionMode mActionMode;
+    private List<ColectorSecundario> colectoresSecundarios;
 
     @Override
     public void onAttach(Activity activity) {
@@ -43,9 +45,9 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
     }
 
     public interface OnSecondaryCollectorSelectedListener {
-        public void onSecondaryCollectorAdded(ColectorSecundario colectorSecundario);
-        public void onSecondaryCollectorRemoved(ColectorSecundario colectorSecundario);
-        public void onActionModeFinished();
+        void onSecondaryCollectorAdded(ColectorSecundario colectorSecundario);
+        void onSecondaryCollectorRemoved(ColectorSecundario colectorSecundario);
+        void onActionModeFinished();
     }
 
     @Override
@@ -54,6 +56,12 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         colectorSecundarioDao = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession().getColectorSecundarioDao();
+        colectoresSecundarios = new ArrayList<>();
+        if (getArguments() != null) {
+            for (Parcelable parcelable:getArguments().getParcelableArrayList("colectoresSecundarios")) {
+                colectoresSecundarios.add((ColectorSecundario) parcelable);
+            }
+        }
         loadSecondaryCollectors();
         mActionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.select_secondary_collectors));
@@ -71,12 +79,11 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
             itemsSelected = new Long[secondaryCollectors.size()];
             System.arraycopy(itemsSelectedLast, 0, itemsSelected, 0, itemsSelectedLast.length);
         }
-        int pos = 0;
         for (ColectorSecundario colectorSecundario:secondaryCollectors) {
-            listItems.add(new ListItem(colectorSecundario.getId(), colectorSecundario.getPersona().getNombres() + " " + colectorSecundario.getPersona().getApellidos(), colectorSecundario.getPersona().getInstitucion(), "0",false,itemsSelected[pos] != null));
-            pos++;
+            boolean selected = colectoresSecundarios.contains(colectorSecundario);
+            listItems.add(new ListItem(colectorSecundario.getId(), colectorSecundario.getPersona().getNombres() + " " + colectorSecundario.getPersona().getApellidos(), colectorSecundario.getPersona().getInstitucion(), "0",false,selected));
         }
-        setListAdapter(new ListItemCheckAdapter(getActivity().getApplicationContext(), R.layout.list_item_check, listItems));
+        setListAdapter(new ListItemCheckAdapter(getActivity().getApplicationContext(), R.layout.list_item_check, this, listItems));
     }
 
     public void updateSelectedSecondaryCollectors(Long[] itemsSelected) {
@@ -103,6 +110,11 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
             }
         }
         return i;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
     }
 
     @Override

@@ -15,8 +15,6 @@ public class MuestraAsociada implements Parcelable {
     private String metodoDeTratamiento;
     private Long especimenID;
 
-
-
 	public void finalize() throws Throwable {
 	}
 

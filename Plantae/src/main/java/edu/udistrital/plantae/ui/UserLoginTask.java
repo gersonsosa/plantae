@@ -50,7 +50,7 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
         SharedPreferences preferences = context.getSharedPreferences("plantae_prefs", 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong("idUsuario", usuario.getId());
-        editor.commit();
+        editor.apply();
 
         Persona persona = personaDao.queryBuilder().where(PersonaDao.Properties.UsuarioID.eq(usuario.getId())).unique();
         colectorPrincipal = colectorPrincipalDao.queryBuilder().where(ColectorPrincipalDao.Properties.PersonaID.eq(persona.getId())).unique();

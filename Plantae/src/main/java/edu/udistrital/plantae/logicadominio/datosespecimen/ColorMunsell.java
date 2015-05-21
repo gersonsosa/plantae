@@ -83,9 +83,28 @@ public class ColorMunsell implements Parcelable {
         this.chroma = chroma;
     }
 
+    public String aString() {
+        String string = "";
+        if (hue != null) {
+            string = string + (string.equals("") ? "Hue: ":", Hue: ") + hue;
+        }
+        if (value != null) {
+            string = string + (string.equals("") ? "Value: ":", Value: ") + value;
+        }
+        if (chroma != null) {
+            string = string + (string.equals("") ? "Chroma: ":", Chroma: ") + chroma;
+        }
+        return string;
+    }
+
     @Override
     public String toString() {
-        return hue.toString().concat(",").concat(value.toString()).concat(",").concat(chroma.toString());
+        return "ColorMunsell{" +
+                "id=" + id +
+                ", hue=" + hue +
+                ", value=" + value +
+                ", chroma=" + chroma +
+                '}';
     }
 
     private ColorMunsell(Parcel in) {

@@ -19,10 +19,11 @@
         <item name="android:windowBackground">@color/plantae_fallback</item>
 
         <item name="android:actionModeBackground">@color/plantae_accent_main_color</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_action_navigation_accept</item>
+        <item name="actionModeCloseDrawable">@drawable/checkmark</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
     </style>

@@ -4,6 +4,6 @@
       xmlns:pictureGallery="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_photo"
           android:title="@string/take_photo"
-          android:icon="@drawable/ic_action_camera"
+          android:icon="@drawable/camera"
           pictureGallery:showAsAction="ifRoom" />
 </menu>

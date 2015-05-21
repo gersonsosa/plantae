@@ -15,12 +15,12 @@ import edu.udistrital.plantae.persistencia.FrutoDao;
 public class Fruto {
 
     private Long id;
-    private ColorEspecimen colorDelEndocarpio;
-    private ColorEspecimen colorDelExocarpio;
     private String consistenciaDelPericarpio;
     private String descripcion;
-    private Long colorDelEndocarpioID;
     private Long colorDelExocarpioID;
+    private Long colorDelMesocarpioID;
+    private Long colorDelExocarpioInmaduroID;
+    private Long colorDelMesocarpioInmaduroID;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -28,11 +28,17 @@ public class Fruto {
     /** Used for active entity operations. */
     private transient FrutoDao myDao;
 
-    private Long colorDelEndocarpio__resolvedKey;
+    private ColorEspecimen colorDelMesocarpio;
+    private Long colorDelMesocarpio__resolvedKey;
 
+    private ColorEspecimen colorDelExocarpio;
     private Long colorDelExocarpio__resolvedKey;
 
+    private ColorEspecimen colorDelMesocarpioInmaduro;
+    private Long colorDelMesocarpioInmaduro__resolvedKey;
 
+    private ColorEspecimen colorDelExocarpioInmaduro;
+    private Long colorDelExocarpioInmaduro__resolvedKey;
 
     /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
@@ -76,14 +82,6 @@ public class Fruto {
         this.descripcion = descripcion;
     }
 
-    public Long getColorDelEndocarpioID() {
-        return colorDelEndocarpioID;
-    }
-
-    public void setColorDelEndocarpioID(Long colorDelEndocarpioID) {
-        this.colorDelEndocarpioID = colorDelEndocarpioID;
-    }
-
     public Long getColorDelExocarpioID() {
         return colorDelExocarpioID;
     }
@@ -92,29 +90,53 @@ public class Fruto {
         this.colorDelExocarpioID = colorDelExocarpioID;
     }
 
+    public Long getColorDelMesocarpioID() {
+        return colorDelMesocarpioID;
+    }
+
+    public void setColorDelMesocarpioID(Long colorDelMesocarpioID) {
+        this.colorDelMesocarpioID = colorDelMesocarpioID;
+    }
+
+    public Long getColorDelExocarpioInmaduroID() {
+        return colorDelExocarpioInmaduroID;
+    }
+
+    public void setColorDelExocarpioInmaduroID(Long colorDelExocarpioInmaduroID) {
+        this.colorDelExocarpioInmaduroID = colorDelExocarpioInmaduroID;
+    }
+
+    public Long getColorDelMesocarpioInmaduroID() {
+        return colorDelMesocarpioInmaduroID;
+    }
+
+    public void setColorDelMesocarpioInmaduroID(Long colorDelMesocarpioInmaduroID) {
+        this.colorDelMesocarpioInmaduroID = colorDelMesocarpioInmaduroID;
+    }
+
     /** To-one relationship, resolved on first access. */
-    public ColorEspecimen getColorDelEndocarpio() {
-        Long __key = this.colorDelEndocarpioID;
-        if (colorDelEndocarpio__resolvedKey == null || !colorDelEndocarpio__resolvedKey.equals(__key)) {
+    public ColorEspecimen getColorDelMesocarpio() {
+        Long __key = this.colorDelMesocarpioID;
+        if (colorDelMesocarpio__resolvedKey == null || !colorDelMesocarpio__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
-            ColorEspecimen colorDelEndocarpioNew = targetDao.load(__key);
+            ColorEspecimen colorDelMesocarpioNew = targetDao.load(__key);
             synchronized (this) {
-                colorDelEndocarpio = colorDelEndocarpioNew;
-            	colorDelEndocarpio__resolvedKey = __key;
+                colorDelMesocarpio = colorDelMesocarpioNew;
+            	colorDelMesocarpio__resolvedKey = __key;
             }
         }
-		return colorDelEndocarpio;
-	}
+        return colorDelMesocarpio;
+    }
 
-    public void setColorDelEndocarpio(ColorEspecimen colorDelEndocarpio) {
+    public void setColorDelMesocarpio(ColorEspecimen colorDelMesocarpio) {
         synchronized (this) {
-            this.colorDelEndocarpio = colorDelEndocarpio;
-            colorDelEndocarpioID = colorDelEndocarpio == null ? null : colorDelEndocarpio.getId();
-            colorDelEndocarpio__resolvedKey = colorDelEndocarpioID;
-	    }
+            this.colorDelMesocarpio = colorDelMesocarpio;
+            colorDelMesocarpioID = colorDelMesocarpio == null ? null : colorDelMesocarpio.getId();
+            colorDelMesocarpio__resolvedKey = colorDelMesocarpioID;
+        }
     }
 
     /** To-one relationship, resolved on first access. */
@@ -131,8 +153,8 @@ public class Fruto {
             	colorDelExocarpio__resolvedKey = __key;
             }
         }
-		return colorDelExocarpio;
-	}
+        return colorDelExocarpio;
+    }
 
     public void setColorDelExocarpio(ColorEspecimen colorDelExocarpio) {
         synchronized (this) {
@@ -142,4 +164,76 @@ public class Fruto {
         }
     }
 
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelMesocarpioInmaduro() {
+        Long __key = this.colorDelMesocarpioInmaduroID;
+        if (colorDelMesocarpioInmaduro__resolvedKey == null || !colorDelMesocarpioInmaduro__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelMesocarpioInmaduroNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelMesocarpioInmaduro = colorDelMesocarpioInmaduroNew;
+            	colorDelMesocarpioInmaduro__resolvedKey = __key;
+            }
+        }
+        return colorDelMesocarpioInmaduro;
+    }
+
+    public void setColorDelMesocarpioInmaduro(ColorEspecimen colorDelMesocarpioInmaduro) {
+        synchronized (this) {
+            this.colorDelMesocarpioInmaduro = colorDelMesocarpioInmaduro;
+            colorDelMesocarpioInmaduroID = colorDelMesocarpioInmaduro == null ? null : colorDelMesocarpioInmaduro.getId();
+            colorDelMesocarpioInmaduro__resolvedKey = colorDelMesocarpioInmaduroID;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public ColorEspecimen getColorDelExocarpioInmaduro() {
+        Long __key = this.colorDelExocarpioInmaduroID;
+        if (colorDelExocarpioInmaduro__resolvedKey == null || !colorDelExocarpioInmaduro__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ColorEspecimenDao targetDao = daoSession.getColorEspecimenDao();
+            ColorEspecimen colorDelExocarpioInmaduroNew = targetDao.load(__key);
+            synchronized (this) {
+                colorDelExocarpioInmaduro = colorDelExocarpioInmaduroNew;
+            	colorDelExocarpioInmaduro__resolvedKey = __key;
+            }
+        }
+        return colorDelExocarpioInmaduro;
+    }
+
+    public void setColorDelExocarpioInmaduro(ColorEspecimen colorDelExocarpioInmaduro) {
+        synchronized (this) {
+            this.colorDelExocarpioInmaduro = colorDelExocarpioInmaduro;
+            colorDelExocarpioInmaduroID = colorDelExocarpioInmaduro == null ? null : colorDelExocarpioInmaduro.getId();
+            colorDelExocarpioInmaduro__resolvedKey = colorDelExocarpioInmaduroID;
+        }
+    }
+
+    public String aString() {
+        String string = "";
+        if (consistenciaDelPericarpio != null) {
+            string = string + consistenciaDelPericarpio;
+        }
+        if (descripcion != null) {
+            string = string + (string.equals("") ? ", ":"") + descripcion;
+        }
+        if (getColorDelMesocarpio() != null) {
+            string = string + (string.equals("") ? ", ":"") + colorDelMesocarpio.aString();
+        }
+        if (getColorDelExocarpio() != null) {
+            string = string + (string.equals("") ? ", ":"") + colorDelExocarpio.aString();
+        }
+        if (getColorDelMesocarpioInmaduro() != null) {
+            string = string + (string.equals("") ? ", ":"") + colorDelMesocarpioInmaduro.aString();
+        }
+        if (getColorDelExocarpioInmaduro() != null) {
+            string = string + (string.equals("") ? ", ":"") + colorDelExocarpioInmaduro.aString();
+        }
+        return string;
+    }
 }
