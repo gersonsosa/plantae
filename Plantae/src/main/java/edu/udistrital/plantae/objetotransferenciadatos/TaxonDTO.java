@@ -2,10 +2,16 @@ package edu.udistrital.plantae.objetotransferenciadatos;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import edu.udistrital.plantae.logicadominio.taxonomia.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.udistrital.plantae.logicadominio.taxonomia.EpitetoEspecifico;
+import edu.udistrital.plantae.logicadominio.taxonomia.Familia;
+import edu.udistrital.plantae.logicadominio.taxonomia.Genero;
+import edu.udistrital.plantae.logicadominio.taxonomia.NombreComun;
+import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
+import edu.udistrital.plantae.logicadominio.taxonomia.Uso;
 
 /**
  * Created by hghar on 9/29/14.

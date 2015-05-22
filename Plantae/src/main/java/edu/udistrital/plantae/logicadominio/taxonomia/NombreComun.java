@@ -2,6 +2,7 @@ package edu.udistrital.plantae.logicadominio.taxonomia;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.NombreComunDao;

@@ -1,14 +1,21 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
+
 import android.text.TextUtils;
-import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
-import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
-import edu.udistrital.plantae.persistencia.*;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
+import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
+import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.EspecimenDao;
+import edu.udistrital.plantae.persistencia.PersonaDao;
+import edu.udistrital.plantae.persistencia.ProyectoDao;
+import edu.udistrital.plantae.persistencia.ViajeDao;
 
 /**
  * @author Sosa G., Mateus A.

@@ -1,7 +1,7 @@
 package edu.udistrital.plantae.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 import edu.udistrital.plantae.logicadominio.recoleccion.Proyecto;
@@ -19,7 +20,7 @@ import edu.udistrital.plantae.persistencia.ProyectoDao;
 /**
  * Created by Gerson Sosa on 4/22/14.
  */
-public class CreateProjectActivity extends ActionBarActivity {
+public class CreateProjectActivity extends AppCompatActivity {
 
     private ProyectoDao proyectoDao;
     private ColectorPrincipal colectorPrincipal;
@@ -38,7 +39,7 @@ public class CreateProjectActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_project);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         DaoSession daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();

@@ -1,8 +1,12 @@
 package edu.udistrital.plantae.objetotransferenciadatos;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
@@ -13,12 +17,6 @@ import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
 import edu.udistrital.plantae.logicadominio.datosespecimen.MuestraAsociada;
 import edu.udistrital.plantae.ui.SpecimenPagesAdapter;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Gerson Sosa on 8/4/14.

@@ -19,8 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import java.util.List;
 
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
@@ -32,8 +35,6 @@ import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.PersonaDao;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 		

@@ -64,7 +64,7 @@
         android:id="@+id/item_located"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/map_marker_primary"
+        android:src="@drawable/ic_room_grey600_36dp"
         android:layout_alignTop="@+id/scientific_name"
         android:gravity="right"
         android:layout_alignParentRight="true"

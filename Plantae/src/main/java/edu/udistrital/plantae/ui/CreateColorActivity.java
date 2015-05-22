@@ -2,11 +2,10 @@ package edu.udistrital.plantae.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,7 @@ import java.util.Arrays;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
 
-public class CreateColorActivity extends ActionBarActivity {
+public class CreateColorActivity extends AppCompatActivity {
 
     private ColorPicker picker;
     private ColorEspecimenDTO colorEspecimen;
@@ -41,7 +40,7 @@ public class CreateColorActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_color);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         retrieveViews();
@@ -143,22 +142,28 @@ public class CreateColorActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
             // Save the color
-            colorEspecimen.setNombre(TextUtils.isEmpty(colorNameEditText.getText())? null : colorNameEditText.getText().toString());
-            colorEspecimen.setDescripcion(TextUtils.isEmpty(colorDescriptionEditText.getText()) ? null : colorDescriptionEditText.getText().toString());
-            colorEspecimen.setColorRGB(picker.getColor());
-            String plantOrganText = TextUtils.isEmpty(plantOrgan.getText()) ? "especimen" : plantOrgan.getText().toString();
-            colorEspecimen.setOrganoDeLaPlanta(plantOrganText);
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("colorEspecimen", colorEspecimen);
-            ColorEspecimenDTO colorEspecimenOld = getIntent().getParcelableExtra("color");
-            if (colorEspecimenOld != null) {
-                resultIntent.putExtra("colorEspecimenOld", colorEspecimenOld);
+            colorNameEditText.setError(null);
+            if (TextUtils.isEmpty(colorNameEditText.getText())) {
+                colorNameEditText.setError(getString(R.string.error_register_field_required));
+                colorNameEditText.requestFocus();
+            }else {
+                colorEspecimen.setNombre(colorNameEditText.getText().toString());
+                colorEspecimen.setDescripcion(TextUtils.isEmpty(colorDescriptionEditText.getText()) ? null : colorDescriptionEditText.getText().toString());
+                colorEspecimen.setColorRGB(picker.getColor());
+                String plantOrganText = TextUtils.isEmpty(plantOrgan.getText()) ? "especimen" : plantOrgan.getText().toString();
+                colorEspecimen.setOrganoDeLaPlanta(plantOrganText);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("colorEspecimen", colorEspecimen);
+                ColorEspecimenDTO colorEspecimenOld = getIntent().getParcelableExtra("color");
+                if (colorEspecimenOld != null) {
+                    resultIntent.putExtra("colorEspecimenOld", colorEspecimenOld);
+                }
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }

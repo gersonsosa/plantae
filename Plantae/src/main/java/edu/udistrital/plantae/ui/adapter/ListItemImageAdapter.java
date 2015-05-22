@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.ui.ListItem;
 
 import java.util.List;
+
+import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.ui.ListItem;
 
 /**
  * Created by Gerson Sosa on 4/10/14.

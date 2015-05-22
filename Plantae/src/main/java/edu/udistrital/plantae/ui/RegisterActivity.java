@@ -19,15 +19,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Sesion;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
-import edu.udistrital.plantae.persistencia.*;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
+import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.DataBaseHelper;
+import edu.udistrital.plantae.persistencia.PersonaDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
 
 /**
  * Activity which displays a register screen to the user, offering registration as
@@ -73,7 +78,6 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_register);
-		//setupActionBar();
 
 		// Set up the register form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -118,17 +122,6 @@ public class RegisterActivity extends Activity {
 		colectorPrincipalDao = daoSession.getColectorPrincipalDao();
 		personaDao = daoSession.getPersonaDao();
 		usuarioDao = daoSession.getUsuarioDao();
-	}
-
-	/**
-	 * Set up the {@link android.app.ActionBar}, if the API is available.
-	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setupActionBar() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// Show the Up button in the action bar.
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
 	}
 
 	@Override

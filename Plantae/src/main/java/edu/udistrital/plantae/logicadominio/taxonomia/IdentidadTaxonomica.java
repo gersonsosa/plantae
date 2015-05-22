@@ -2,14 +2,19 @@ package edu.udistrital.plantae.logicadominio.taxonomia;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
-import edu.udistrital.plantae.persistencia.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.EspecimenDao;
+import edu.udistrital.plantae.persistencia.IdentidadTaxonomicaDao;
+import edu.udistrital.plantae.persistencia.PersonaDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
 
 /**
  * @author Sosa G., Mateus A.

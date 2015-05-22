@@ -10,19 +10,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,10 +26,23 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+
 import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.*;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
+import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import edu.udistrital.plantae.logicadominio.datosespecimen.MuestraAsociada;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
@@ -48,22 +57,20 @@ import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.RegionDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.TaxonDTO;
-import edu.udistrital.plantae.persistencia.*;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.DataBaseHelper;
+import edu.udistrital.plantae.persistencia.FenologiaDao;
+import edu.udistrital.plantae.persistencia.HabitoDao;
+import edu.udistrital.plantae.persistencia.RegionDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
+import edu.udistrital.plantae.persistencia.ViajeColectorSecundarioDao;
 import edu.udistrital.plantae.ui.view.SlidingTabLayout;
 import edu.udistrital.plantae.ui.view.ViewPagerPlantae;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Gerson Sosa on 5/15/14.
  */
-public class CreateSpecimenActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
+public class CreateSpecimenActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener,
         SecondaryCollectorsListFragment.OnSecondaryCollectorSelectedListener,
         CollectingInformationFragment.OnCollectingInformationUpdated,
@@ -118,7 +125,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
 
         // Setup the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();
@@ -182,6 +189,7 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
 
         viewPager = (ViewPagerPlantae) findViewById(R.id.specimen_view_pager);
         viewPager.setAdapter(pagesAdapter);
+        viewPager.setOffscreenPageLimit(7);
 
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         slidingTabLayout.setViewPager(viewPager);
@@ -857,52 +865,84 @@ public class CreateSpecimenActivity extends ActionBarActivity implements GoogleA
                 }
                 break;
             case SecondaryCollectorsListFragment.SECONDARY_COLLECTOR_CREATION_REQUEST:
-                collectingInformationFragment.onActivityResult(requestCode,resultCode,data);
+                if (collectingInformationFragment != null) {
+                    collectingInformationFragment.onActivityResult(requestCode,resultCode,data);
+                }
                 break;
             case AssociatedSamplesFragment.ASSOCIATED_SAMPLE_CREATION_REQUEST:
-                plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                if (plantAttributesFragment != null) {
+                    plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case ColorsFragment.COLOR_CREATION_REQUEST:
-                plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                if (plantAttributesFragment != null) {
+                    plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case ColorsFragment.COLOR_EDIT_REQUEST:
-                plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                if (plantAttributesFragment != null) {
+                    plantAttributesFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case FlowerInformationFragment.FLOWER_COLOR_EDIT_REQUEST:
-                flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (flowersInformationFragment != null) {
+                    flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case FlowerInformationFragment.FLOWER_COLOR_CREATION_REQUEST:
-                flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (flowersInformationFragment != null) {
+                    flowersInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case FruitInformationFragment.FRUIT_COLOR_CREATION_REQUEST:
-                fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (fruitInformationFragment != null) {
+                    fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case FruitInformationFragment.FRUIT_COLOR_EDIT_REQUEST:
-                fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (fruitInformationFragment != null) {
+                    fruitInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case InflorescenceInformationFragment.INFLORESCENCE_COLOR_CREATION_REQUEST:
-                inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (inflorescenceInformationFragment != null) {
+                    inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case InflorescenceInformationFragment.INFLORESCENCE_COLOR_EDIT_REQUEST:
-                inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (inflorescenceInformationFragment != null) {
+                    inflorescenceInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case LeavesInformationFragment.LEAVES_COLOR_CREATION_REQUEST:
-                leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (leavesInformationFragment != null) {
+                    leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case LeavesInformationFragment.LEAVES_COLOR_EDIT_REQUEST:
-                leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (leavesInformationFragment != null) {
+                    leavesInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case RootInformationFragment.ROOT_COLOR_CREATION_REQUEST:
-                rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (rootInformationFragment != null) {
+                    rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case RootInformationFragment.ROOT_COLOR_EDIT_REQUEST:
-                rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (rootInformationFragment != null) {
+                    rootInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case StemInformationFragment.STEM_COLOR_CREATION_REQUEST:
-                stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (stemInformationFragment != null) {
+                    stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             case StemInformationFragment.STEM_COLOR_EDIT_REQUEST:
-                stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                if (stemInformationFragment != null) {
+                    stemInformationFragment.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

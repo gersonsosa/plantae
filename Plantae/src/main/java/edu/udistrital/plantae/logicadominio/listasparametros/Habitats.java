@@ -1,10 +1,10 @@
 package edu.udistrital.plantae.logicadominio.listasparametros;
 
-import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
 
 /**
  * @author Sosa G., Mateus A.

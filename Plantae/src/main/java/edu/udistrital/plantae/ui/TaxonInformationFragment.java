@@ -9,13 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+
+import java.util.List;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.TaxonDao;
-
-import java.util.List;
 
 /**
  * Created by hghar on 6/25/14.

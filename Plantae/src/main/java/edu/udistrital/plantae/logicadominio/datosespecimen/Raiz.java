@@ -1,8 +1,5 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
 import edu.udistrital.plantae.persistencia.DaoSession;

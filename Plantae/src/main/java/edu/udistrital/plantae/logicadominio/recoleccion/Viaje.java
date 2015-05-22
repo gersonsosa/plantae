@@ -1,20 +1,54 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
+
 import com.google.android.gms.maps.MapView;
-import de.greenrobot.dao.DaoException;
-import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
-import edu.udistrital.plantae.logicadominio.datosespecimen.*;
-import edu.udistrital.plantae.logicadominio.taxonomia.*;
-import edu.udistrital.plantae.logicadominio.ubicacion.*;
-import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
-import edu.udistrital.plantae.persistencia.*;
-import edu.udistrital.plantae.ui.SpecimenPagesAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import de.greenrobot.dao.DaoException;
+import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
+import edu.udistrital.plantae.logicadominio.datosespecimen.BuilderEspecimen;
+import edu.udistrital.plantae.logicadominio.datosespecimen.BuilderEspecimenDetallado;
+import edu.udistrital.plantae.logicadominio.datosespecimen.BuilderEspecimenSencillo;
+import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
+import edu.udistrital.plantae.logicadominio.datosespecimen.ColorMunsell;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
+import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Flor;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fruto;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Hoja;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Inflorescencia;
+import edu.udistrital.plantae.logicadominio.datosespecimen.MuestraAsociada;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Raiz;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Tallo;
+import edu.udistrital.plantae.logicadominio.taxonomia.EpitetoEspecifico;
+import edu.udistrital.plantae.logicadominio.taxonomia.Familia;
+import edu.udistrital.plantae.logicadominio.taxonomia.Genero;
+import edu.udistrital.plantae.logicadominio.taxonomia.IdentidadTaxonomica;
+import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
+import edu.udistrital.plantae.logicadominio.ubicacion.Departamento;
+import edu.udistrital.plantae.logicadominio.ubicacion.Localidad;
+import edu.udistrital.plantae.logicadominio.ubicacion.Municipio;
+import edu.udistrital.plantae.logicadominio.ubicacion.Pais;
+import edu.udistrital.plantae.logicadominio.ubicacion.Region;
+import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
+import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
+import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.EspecimenDao;
+import edu.udistrital.plantae.persistencia.FTSEspecimenDao;
+import edu.udistrital.plantae.persistencia.ProyectoDao;
+import edu.udistrital.plantae.persistencia.RegionDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
+import edu.udistrital.plantae.persistencia.ViajeColectorSecundarioDao;
+import edu.udistrital.plantae.persistencia.ViajeDao;
+import edu.udistrital.plantae.ui.SpecimenPagesAdapter;
 
 /**
  * @author Sosa G., Mateus A.

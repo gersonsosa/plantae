@@ -1,10 +1,14 @@
 package edu.udistrital.plantae.logicadominio.taxonomia;
 
+import java.util.List;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
-import edu.udistrital.plantae.persistencia.*;
-
-import java.util.List;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.NombreComunDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
+import edu.udistrital.plantae.persistencia.UsoDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
 
 /**
  * @author Sosa G., Mateus A.

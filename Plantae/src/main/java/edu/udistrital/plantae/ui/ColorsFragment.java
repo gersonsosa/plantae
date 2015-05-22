@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,8 +21,6 @@ import java.util.List;
 
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
-import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
-import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.ui.adapter.ListItemAdapter;
 
 /**
@@ -65,7 +63,7 @@ public class ColorsFragment extends ListFragment {
             colors.add((ColorEspecimenDTO) parcelable);
         }
         loadColors();
-        mActionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.colors_title));
         return rootView;
     }

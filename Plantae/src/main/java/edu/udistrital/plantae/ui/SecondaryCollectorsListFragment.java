@@ -4,23 +4,27 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
-import android.view.*;
-import android.widget.CheckBox;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
 import edu.udistrital.plantae.persistencia.ColectorSecundarioDao;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.ui.adapter.ListItemCheckAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hghar on 11/18/14.
@@ -63,7 +67,7 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
             }
         }
         loadSecondaryCollectors();
-        mActionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.select_secondary_collectors));
         return rootView;
     }

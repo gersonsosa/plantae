@@ -1,9 +1,9 @@
 package edu.udistrital.plantae.ui;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;

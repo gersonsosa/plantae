@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
 import edu.udistrital.plantae.persistencia.ViajeDao;
-
-import java.util.List;
 
 /**
  * Created by Gerson Sosa on 4/10/14.

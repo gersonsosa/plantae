@@ -2,19 +2,20 @@ package edu.udistrital.plantae.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.MuestraAsociada;
 
 /**
  * Created by hghar on 12/4/14.
  */
-public class CreateAssociatedSampleActivity extends ActionBarActivity {
+public class CreateAssociatedSampleActivity extends AppCompatActivity {
 
     private MuestraAsociada muestraAsociada;
     private EditText associatedSampleDescription, associatedSampleTreatmentMethod;
@@ -25,7 +26,7 @@ public class CreateAssociatedSampleActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_associated_sample);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         retrieveViews();

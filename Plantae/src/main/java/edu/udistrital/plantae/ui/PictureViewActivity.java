@@ -14,12 +14,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Display;
 import android.widget.ImageView;
-import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
-import edu.udistrital.plantae.ui.adapter.PicturesAdapter;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+
+import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
+import edu.udistrital.plantae.ui.adapter.PicturesAdapter;
 
 /**
  * Created by hghar on 11/28/14.

@@ -2,6 +2,7 @@ package edu.udistrital.plantae.objetotransferenciadatos;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import edu.udistrital.plantae.logicadominio.ubicacion.Departamento;
 import edu.udistrital.plantae.logicadominio.ubicacion.Municipio;
 import edu.udistrital.plantae.logicadominio.ubicacion.Pais;

@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Habitat;
 
 /**
  * Created by hghar on 6/25/14.

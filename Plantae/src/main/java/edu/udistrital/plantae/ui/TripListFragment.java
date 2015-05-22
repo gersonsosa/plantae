@@ -7,11 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
@@ -20,9 +29,6 @@ import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.ViajeDao;
 import edu.udistrital.plantae.ui.adapter.ListItemImageAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TripListFragment extends ListFragment implements View.OnClickListener{
 
@@ -123,7 +129,7 @@ public class TripListFragment extends ListFragment implements View.OnClickListen
             itemsSelected[position]= listItem.getId();
             imageView.setImageResource(R.drawable.checkmark_primary);
             if (actionMode == null) {
-                actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(new TravelListMultiSelectionActionMode());
+                actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new TravelListMultiSelectionActionMode());
             }else{
                 actionMode.invalidate();
             }

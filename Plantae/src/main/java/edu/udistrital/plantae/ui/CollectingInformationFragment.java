@@ -5,25 +5,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
-import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 
 /**
  * Created by Gerson Sosa on 6/5/14.

@@ -7,24 +7,25 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
-import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
-import edu.udistrital.plantae.ui.adapter.PicturesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
+import edu.udistrital.plantae.ui.adapter.PicturesAdapter;
+
 /**
  * Created by hghar on 11/26/14.
  */
-public class PictureGalleryActivity extends ActionBarActivity implements View.OnClickListener {
+public class PictureGalleryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private GridView gridView;
     private Fotografia[] fotografias;
@@ -43,7 +44,7 @@ public class PictureGalleryActivity extends ActionBarActivity implements View.On
         setContentView(R.layout.activity_picture_gallery);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         numeroColeccion = getIntent().getStringExtra("numeroColeccion");

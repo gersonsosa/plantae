@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/plantae_fallback"
-                android:src="@drawable/map_marker_primary"
+                android:src="@drawable/ic_room_grey600_36dp"
                 android:contentDescription="@string/update_location"/>
 
             <ImageButton
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/plantae_fallback"
-                android:src="@drawable/pencil_primary"
+                android:src="@drawable/ic_mode_edit_grey600_36dp"
                 android:contentDescription="@string/edit_location"/>
             </LinearLayout>
 

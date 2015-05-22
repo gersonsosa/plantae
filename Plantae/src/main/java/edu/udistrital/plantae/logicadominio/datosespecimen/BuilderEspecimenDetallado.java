@@ -1,10 +1,10 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
-import edu.udistrital.plantae.logicadominio.taxonomia.IdentidadTaxonomica;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import edu.udistrital.plantae.logicadominio.taxonomia.IdentidadTaxonomica;
 
 /**
  * @author Mateus A., Sosa G.

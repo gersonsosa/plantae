@@ -13,17 +13,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.ubicacion.Region;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.RegionDao;
 import edu.udistrital.plantae.utils.Devices;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by hghar on 6/25/14.

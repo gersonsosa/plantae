@@ -3,29 +3,44 @@ package edu.udistrital.plantae.ui;
 import android.animation.TimeInterpolator;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
-import android.support.v7.widget.Toolbar;
-
-import de.greenrobot.dao.query.QueryBuilder;
-import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.recoleccion.*;
-import edu.udistrital.plantae.persistencia.*;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.greenrobot.dao.query.QueryBuilder;
+import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
+import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
+import edu.udistrital.plantae.logicadominio.recoleccion.Proyecto;
+import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
+import edu.udistrital.plantae.logicadominio.recoleccion.ViajeColectorSecundario;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.DataBaseHelper;
+import edu.udistrital.plantae.persistencia.ProyectoDao;
+import edu.udistrital.plantae.persistencia.ViajeColectorSecundarioDao;
+import edu.udistrital.plantae.persistencia.ViajeDao;
+
 /**
  * Created by Gerson Sosa on 4/11/14.
  */
-public class CreateTripActivity extends ActionBarActivity implements ProjectListFragment.OnProjectSelectedListener, SecondaryCollectorsListFragment.OnSecondaryCollectorSelectedListener {
+public class CreateTripActivity extends AppCompatActivity implements ProjectListFragment.OnProjectSelectedListener, SecondaryCollectorsListFragment.OnSecondaryCollectorSelectedListener {
     private ViajeDao viajeDao;
     private ProyectoDao proyectoDao;
     private ViajeColectorSecundarioDao viajeColectorSecundarioDao;
@@ -69,7 +84,7 @@ public class CreateTripActivity extends ActionBarActivity implements ProjectList
          * Initialize Toolbar
          */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         retrieveViews();

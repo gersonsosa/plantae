@@ -1,18 +1,18 @@
 package edu.udistrital.plantae.persistencia;
 
-import java.util.List;
-import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
-import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
-
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
 import edu.udistrital.plantae.logicadominio.recoleccion.Viaje;
 import edu.udistrital.plantae.logicadominio.recoleccion.ViajeColectorSecundario;

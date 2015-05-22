@@ -8,10 +8,10 @@
           projectList:showAsAction="always" />
     <item android:id="@+id/edit_project"
           android:title="@string/edit_project"
-          android:icon="@drawable/pencil"
+          android:icon="@drawable/ic_mode_edit_white_36dp"
           projectList:showAsAction="ifRoom" />
     <item android:id="@+id/delete_projects"
           android:title="@string/delete_project"
-          android:icon="@drawable/close"
+          android:icon="@drawable/ic_delete_white_36dp"
           projectList:showAsAction="ifRoom" />
 </menu>

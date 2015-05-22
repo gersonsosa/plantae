@@ -1,6 +1,10 @@
 package edu.udistrital.plantae.logicadominio.autenticacion;
 
 import android.text.TextUtils;
+
+import java.util.HashMap;
+import java.util.List;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
@@ -8,11 +12,15 @@ import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
 import edu.udistrital.plantae.logicadominio.taxonomia.Taxon;
 import edu.udistrital.plantae.logicadominio.taxonomia.Uso;
 import edu.udistrital.plantae.logicadominio.ubicacion.Region;
-import edu.udistrital.plantae.persistencia.*;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.FenologiaDao;
+import edu.udistrital.plantae.persistencia.HabitoDao;
+import edu.udistrital.plantae.persistencia.RegionDao;
+import edu.udistrital.plantae.persistencia.TaxonDao;
+import edu.udistrital.plantae.persistencia.UsoDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
 import edu.udistrital.plantae.persistencia.UsuarioDao.Properties;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.

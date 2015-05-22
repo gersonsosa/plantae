@@ -1,11 +1,14 @@
 package edu.udistrital.plantae.logicadominio.datosespecimen;
 
 import android.graphics.Color;
-import android.os.Parcel;
-import android.os.Parcelable;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
-import edu.udistrital.plantae.persistencia.*;
+import edu.udistrital.plantae.persistencia.ColorEspecimenDao;
+import edu.udistrital.plantae.persistencia.ColorMunsellDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.EspecimenDao;
+import edu.udistrital.plantae.persistencia.UsuarioDao;
 
 /**
  * @author Sosa G., Mateus A.

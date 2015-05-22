@@ -14,8 +14,6 @@ import de.greenrobot.dao.DaoException;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
-import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 import edu.udistrital.plantae.ui.SpecimenListItem;
 
 /**

@@ -1,7 +1,7 @@
 package edu.udistrital.plantae.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorSecundario;
@@ -19,7 +20,7 @@ import edu.udistrital.plantae.persistencia.PersonaDao;
 /**
  * Created by hghar on 11/18/14.
  */
-public class CreateSecondaryCollectorActivity extends ActionBarActivity {
+public class CreateSecondaryCollectorActivity extends AppCompatActivity {
     private ColectorSecundarioDao colectorSecundarioDao;
     private PersonaDao personaDao;
     private ColectorSecundario colectorSecundario;
@@ -32,7 +33,7 @@ public class CreateSecondaryCollectorActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_secondary_collector);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.left);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_36dp);
         setSupportActionBar(toolbar);
 
         colectorSecundarioDao = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession().getColectorSecundarioDao();

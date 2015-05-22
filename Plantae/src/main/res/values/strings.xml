@@ -381,7 +381,7 @@
 
     <string name="prompt_leaf_color">Sheath color</string>
     <string name="prompt_leaf_size">Leaf size </string>
-    <string name="error_number_format">This mut be a number</string>
+    <string name="error_number_format">This must be a number</string>
     <string name="csv_exported_succesfully">"The csv file was exported to "</string>
 
     <!-- Value lists -->

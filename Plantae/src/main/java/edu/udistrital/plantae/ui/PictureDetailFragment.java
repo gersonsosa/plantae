@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.logicadominio.datosespecimen.Fotografia;
 
 /**
  * Created by hghar on 11/30/14.

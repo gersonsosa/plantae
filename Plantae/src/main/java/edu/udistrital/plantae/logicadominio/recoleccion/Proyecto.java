@@ -1,11 +1,11 @@
 package edu.udistrital.plantae.logicadominio.recoleccion;
 
+import java.util.List;
+
 import de.greenrobot.dao.DaoException;
 import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.ProyectoDao;
 import edu.udistrital.plantae.persistencia.ViajeDao;
-
-import java.util.List;
 
 /**
  * @author Sosa G., Mateus A.

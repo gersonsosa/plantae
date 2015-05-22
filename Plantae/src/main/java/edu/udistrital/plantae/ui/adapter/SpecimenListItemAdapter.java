@@ -15,12 +15,13 @@ import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import edu.udistrital.plantae.R;
-import edu.udistrital.plantae.ui.SpecimenListItem;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.ui.SpecimenListItem;
 
 /**
  * Created by Gerson Sosa on 4/10/14.

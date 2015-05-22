@@ -10,19 +10,30 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
-import android.view.*;
-import android.widget.Button;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.johnpersano.supertoasts.SuperActivityToast;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.util.OnClickWrapper;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
@@ -53,15 +64,6 @@ import edu.udistrital.plantae.persistencia.EspecimenDao;
 import edu.udistrital.plantae.persistencia.ViajeDao;
 import edu.udistrital.plantae.ui.adapter.SpecimenListItemAdapter;
 import edu.udistrital.plantae.utils.CSVWriter;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Gerson Sosa on 5/5/14.
@@ -264,7 +266,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
             itemsSelected[position]= listItem.getId();
             imageView.setImageResource(R.drawable.checkmark_primary);
             if (actionMode == null) {
-                actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(new SpecimenListMultiSelectionActionMode());
+                actionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(new SpecimenListMultiSelectionActionMode());
             }else{
                 actionMode.invalidate();
             }

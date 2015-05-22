@@ -7,19 +7,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.recoleccion.Proyecto;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.ProyectoDao;
 import edu.udistrital.plantae.ui.adapter.ListItemImageAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by hghar on 11/4/14.
@@ -57,7 +62,7 @@ public class ProjectListFragment extends ListFragment implements View.OnClickLis
         colectorPrincipalID = getArguments().getLong("colectorPrincipal");
         proyectoDao = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession().getProyectoDao();
         loadProjects();
-        mActionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.select_project));
         return rootView;
     }

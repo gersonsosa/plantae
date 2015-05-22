@@ -52,7 +52,7 @@
         android:id="@+id/item_located"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/marker_primary"
+        android:src="@drawable/ic_room_grey600_36dp"
         android:layout_below="@+id/subitem_count"
         android:visibility="gone"
         android:layout_alignParentRight="true"
