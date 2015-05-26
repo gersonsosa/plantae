@@ -6,19 +6,18 @@ package edu.udistrital.plantae.ui;
 public class ListItem {
     private Long id;
     private String title;
+    private String superTitle;
     private String descriptionText;
-    private String classType;
     private int image;
     private String imagePath;
     private String subitemCount;
     private boolean isLocated;
     private boolean isChecked;
 
-    public ListItem(Long id, String classType, String title, String descriptionText) {
+    public ListItem(Long id, String title, String superTitle) {
         this.id = id;
-        this.classType = classType;
         this.title = title;
-        this.descriptionText = descriptionText;
+        this.superTitle = superTitle;
     }
 
     public ListItem(Long id, String title, String descriptionText, int image, String subitemCount, boolean isLocated) {
@@ -68,20 +67,20 @@ public class ListItem {
         this.title = title;
     }
 
+    public String getSuperTitle() {
+        return superTitle;
+    }
+
+    public void setSuperTitle(String superTitle) {
+        this.superTitle = superTitle;
+    }
+
     public String getDescriptionText() {
         return descriptionText;
     }
 
     public void setDescriptionText(String descriptionText) {
         this.descriptionText = descriptionText;
-    }
-
-    public String getClassType() {
-        return classType;
-    }
-
-    public void setClassType(String classType) {
-        this.classType = classType;
     }
 
     public int getImage() {

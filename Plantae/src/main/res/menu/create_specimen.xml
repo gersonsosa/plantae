@@ -5,11 +5,11 @@
 
     <item android:id="@+id/action_pictures"
           android:title="@string/view_pictures"
-          android:icon="@drawable/picture"
+          android:icon="@drawable/ic_image_white_36dp"
           createSpecimen:showAsAction="ifRoom" />
     <item android:id="@+id/action_photo"
           android:title="@string/take_photo"
-          android:icon="@drawable/camera"
+          android:icon="@drawable/ic_photo_camera_white_36dp"
           createSpecimen:showAsAction="ifRoom" />
     <item android:id="@+id/action_save"
           android:title="@string/string_action_save"

@@ -1451,11 +1451,19 @@ public class EspecimenDTO implements Parcelable {
         dest.writeParcelable(this.habitat, 0);
         dest.writeValue(this.localidadId);
         dest.writeString(this.localidadNombre);
-        dest.writeDouble(this.latitud);
-        dest.writeDouble(this.longitud);
+        if (this.latitud != null) {
+            dest.writeDouble(this.latitud);
+        }
+        if (this.longitud != null) {
+            dest.writeDouble(this.longitud);
+        }
         dest.writeString(this.datum);
-        dest.writeDouble(this.altitudMinima);
-        dest.writeDouble(this.altitudMaxima);
+        if (this.altitudMinima != null) {
+            dest.writeDouble(this.altitudMinima);
+        }
+        if (this.altitudMaxima != null) {
+            dest.writeDouble(this.altitudMaxima);
+        }
         dest.writeString(this.localidadDescripcion);
         dest.writeString(this.marcaDispositivo);
         dest.writeParcelable(this.region, 0);

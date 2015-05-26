@@ -51,6 +51,7 @@ public class TripListFragment extends ListFragment implements View.OnClickListen
         viajeDao = daoSession.getViajeDao();
         loadTravels();
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 		return rootView;
 	}
 

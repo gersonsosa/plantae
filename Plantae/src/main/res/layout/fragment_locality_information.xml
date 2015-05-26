@@ -29,7 +29,7 @@
 
             <ProgressBar
                 android:id="@+id/progress_bar_coordinates"
-                style="?android:attr/progressBarStyleSmallInverse"
+                style="?android:attr/progressBarStyleSmall"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:indeterminate="true"

@@ -127,6 +127,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         View rootView=inflater.inflate(R.layout.fragment_specimen_list, container, false);
         Long viajeID = getArguments().getLong("viaje");
         Long colectorPrincipalID = getArguments().getLong("colectorPrincipal");
@@ -142,6 +143,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
         actionMode = null;
         especimenDao = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession().getEspecimenDao();
         setHasOptionsMenu(true);
+        setRetainInstance(true);
         return rootView;
     }
 

@@ -111,18 +111,26 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         if (viajes.size() > 0) {
             Viaje viaje = viajes.iterator().next();
             mNavigationDrawerFragment.selectViaje(viaje);
-            fragment = new SpecimenListFragment();
-            Bundle args = new Bundle();
-            args.putLong("viaje", viaje.getId());
-            args.putLong("colectorPrincipal", colectorPrincipal.getId());
-            fragment.setArguments(args);
+            if (savedInstanceState != null) {
+                fragment = fragmentManager.findFragmentByTag("specimenList");
+            }else{
+                fragment = new SpecimenListFragment();
+                Bundle args = new Bundle();
+                args.putLong("viaje", viaje.getId());
+                args.putLong("colectorPrincipal", colectorPrincipal.getId());
+                fragment.setArguments(args);
+            }
             updateContent(fragment, "specimenList");
         }else{
             mNavigationDrawerFragment.selectItem(3);
-            fragment = new TripListFragment();
-            Bundle args = new Bundle();
-            args.putLong("colectorPrincipal", colectorPrincipal.getId());
-            fragment.setArguments(args);
+            if (savedInstanceState != null) {
+                fragment = fragmentManager.findFragmentByTag("viajeList");
+            } else {
+                fragment = new TripListFragment();
+                Bundle args = new Bundle();
+                args.putLong("colectorPrincipal", colectorPrincipal.getId());
+                fragment.setArguments(args);
+            }
             updateContent(fragment, "viajeList");
         }
         servicesConnected();

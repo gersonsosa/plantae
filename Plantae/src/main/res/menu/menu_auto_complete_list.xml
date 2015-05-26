@@ -8,8 +8,8 @@
         android:icon="@drawable/plus"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_replace_list"
-        android:title="@string/replace_list"
+    <item android:id="@+id/action_import_csv"
+        android:title="@string/import_csv_file"
         android:icon="@drawable/icon_light_redo"
         app:showAsAction="ifRoom" />
 </menu>

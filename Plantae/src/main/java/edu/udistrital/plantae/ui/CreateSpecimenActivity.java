@@ -203,15 +203,6 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
-        if (savedInstanceState != null) {
-            picturePath = savedInstanceState.getString("photo_uri");
-            especimenDTO = savedInstanceState.getParcelable("especimen");
-            loadSecondaryCollectorsFromSpecimen(especimenDTO.getColectoresSecundarios());
-            secondaryCollectorsListFragment.updateSelectedSecondaryCollectors(getSelectedSecondaryCollectors());
-            plantAttributesFragment.updateAssociatedSamplesText(textAssociatedSamples());
-            plantAttributesFragment.updateColorsText(textColors());
-        }
     }
 
     private Bundle createFragmentsBundle() {
@@ -625,9 +616,33 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (picturePath != null) {
+            outState.putString("photo_uri", picturePath);
+            outState.putParcelable("especimen", especimenDTO);
+        }else{
+            outState.putParcelable("especimen", especimenDTO);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            picturePath = savedInstanceState.getString("photo_uri");
+            especimenDTO = savedInstanceState.getParcelable("especimen");
+            loadSecondaryCollectorsFromSpecimen(especimenDTO.getColectoresSecundarios());
+            //secondaryCollectorsListFragment = collectingInformationFragment.getFragmentSecondaryCollectosList();
+            //secondaryCollectorsListFragment.updateSelectedSecondaryCollectors(getSelectedSecondaryCollectors());
+            //plantAttributesFragment.updateAssociatedSamplesText(textAssociatedSamples());
+            //plantAttributesFragment.updateColorsText(textColors());
+        }
+    }
+
     /*
-     * Called when the Activity is no longer visible.
-     */
+         * Called when the Activity is no longer visible.
+         */
     @Override
     protected void onStop() {
         // Disconnecting the client invalidates it.
@@ -1028,15 +1043,6 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
         }
 
         return mediaFile;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (picturePath != null) {
-            outState.putString("photo_uri", picturePath);
-            outState.putParcelable("especimen", especimenDTO);
-        }
-        super.onSaveInstanceState(outState);
     }
 
     @Override

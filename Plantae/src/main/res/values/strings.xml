@@ -389,7 +389,7 @@
     <string name="action_add_value">Add value</string>
     <string name="action_edit_value">Edit value</string>
     <string name="action_delete_value">Delete value</string>
-    <string name="replace_list">"Replace list with csv file"</string>
+    <string name="import_csv_file">"Import list from csv file"</string>
     <string name="title_autocomplete_list_detail">Autocomplete List Detail</string>
     <string name="title_activity_auto_complete_list">Autocomplete Lists</string>
     <string name="title_add_value_dialog_fragment">Add value</string>
@@ -399,6 +399,19 @@
     <string name="trip_activity_name">New trip</string>
     <string name="create_project_activity_name">Create project</string>
     <string name="no_values_found">There are not values in this list</string>
+    <string name="csv_import_progress">Importing…</string>
+
+    <string name="error_importing_csv_file">Error importing the csv file.</string>
+    <string name="bad_format_sv_file">The csv file has a bad format.</string>
+    <string name="value">The value </string>
+    <string name="value_created_successfully"> was created successfully</string>
+    <string name="value_updated_successfully"> was updated successfully</string>
+    <string name="file_imported_succesfully">The file was imported successfully</string>
+    <string name="parent_parent_value">Parent parent value</string>
+    <string name="parent_value">Parent value</string>
+    <string name="value_required">The value must have a value</string>
+    <string name="value_parent_value_required">The value must have a value and a parent value</string>
+    <string name="must_select_parent_value">You must select a parent value</string>
 
     <string-array name="auto_complete">
         <item>County list</item>

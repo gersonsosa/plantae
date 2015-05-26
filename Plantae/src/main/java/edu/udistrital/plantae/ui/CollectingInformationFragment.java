@@ -48,14 +48,14 @@ public class CollectingInformationFragment extends Fragment {
     }
 
     public interface OnCollectingInformationUpdated {
-        public void onCollectorNumberUpdated(String collectorNumber);
-        public void onCollectionMethodUpdated(String collectionMethod);
-        public void onStationUpdated(String station);
+        void onCollectorNumberUpdated(String collectorNumber);
+        void onCollectionMethodUpdated(String collectionMethod);
+        void onStationUpdated(String station);
     }
 
     public interface OnEditModeStarted {
-        public void onSecondaryCollectorsEditModeStarted();
-        public void onEditModeFinished();
+        void onSecondaryCollectorsEditModeStarted();
+        void onEditModeFinished();
     }
 
     public SecondaryCollectorsListFragment getFragmentSecondaryCollectosList() {

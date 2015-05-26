@@ -69,6 +69,7 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
         loadSecondaryCollectors();
         mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.select_secondary_collectors));
+        setRetainInstance(true);
         return rootView;
     }
 

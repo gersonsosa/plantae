@@ -38,7 +38,7 @@ public class SpecimenPagesAdapter extends FragmentPagerAdapter {
     private void configureFragments(){
         fragments = new Fragment[NUM_FRAGMENTS];
         fragmentNames = new String[NUM_FRAGMENTS];
-        fragments[0] = Fragment.instantiate(activity, CollectingInformationFragment.class.getName());
+        fragments[0] = new CollectingInformationFragment();
         fragmentNames[0] = activity.getString(R.string.collecting_information_title);
         fragments[1] = Fragment.instantiate(activity, LocalityInformationFragment.class.getName());
         fragmentNames[1] = activity.getString(R.string.locality_information_title);

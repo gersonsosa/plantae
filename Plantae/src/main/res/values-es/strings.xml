@@ -128,7 +128,6 @@
     <string name="fruits_information_title">Frutos</string>
     <string name="habitat_information_subtitle">Información del hábitat</string>
     <string name="habitat_information_title">Hábitat</string>
-    <string name="hello_world">Hola mundo!</string>
     <string name="immature_fruit_title">Fruto inmaduro</string>
     <string name="inflorescence_color_title">Color de la inflorescencia</string>
     <string name="inflorescence_information_subtitle">Información de la inflorescencia</string>
@@ -258,7 +257,6 @@
     <string name="prompt_prophyll_size">Tamaño del prófilo</string>
     <string name="prompt_sheath_color">Color de la vaina</string>
     <string name="prompt_sheath_size">Tamaño de la vaina</string>
-    <string name="more_default_projects_than_allowed">Hay más proyectos por defecto que los permitidos</string>
     <string name="prompt_permit_issuer">Emisor del permiso</string>
     <string name="action_add_value">Agregar valor</string>
     <string name="action_delete_value">Borrar valor</string>
@@ -273,4 +271,19 @@
     <string name="no_values_found">No se encontraron valores</string>
     <string name="ok_action_dialog_fragment">OK</string>
     <string name="trip_activity_name">Nuevo viaje</string>
+    <string name="edit_specimen_title">Editar espécimen</string>
+    <string name="error_importing_csv_file">Error importando el archivo CSV</string>
+    <string name="file_imported_succesfully">El archivo se importó satisfactoriamente</string>
+    <string name="import_csv_file">Importar desde archivo CSV</string>
+    <string name="save_feedback">El especimen se guardó</string>
+    <string name="string_action_save_and_new">Agregar nuevo</string>
+    <string name="title_activity_auto_complete_list">Listas de autocompletado</string>
+    <string name="title_add_value_dialog_fragment">Agregar valor</string>
+    <string name="title_autocomplete_list_detail">Detalle de lista de autocompletado</string>
+    <string name="title_edit_value_dialog_fragment">Editar valor</string>
+    <string name="value">El valor</string>
+    <string name="value_created_successfully">fue creado satisfactoriamente</string>
+    <string name="value_updated_successfully"> fue actualizado satisfactoriamente</string>
+    <string name="bad_format_sv_file">El archivo CSV tiene un mal formato</string>
+    <string name="csv_import_progress">Importando…</string>
 </resources>

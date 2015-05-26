@@ -1,14 +1,22 @@
 package edu.udistrital.plantae.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,12 +28,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import de.greenrobot.dao.query.Query;
 import edu.udistrital.plantae.R;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Fenologia;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Habito;
@@ -50,20 +67,16 @@ import edu.udistrital.plantae.persistencia.TaxonDao;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnAutoCompleteValueListener}
- * interface.
  */
 public class AutoCompleteValueFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String AUTO_COMPLETE_LIST1 = "autoCompleteList1";
     private static final String USUARIO_ID2 = "usuarioId2";
-    private static final int FILE_CODE = 99;
+    private static final int FILE_CODE = 19;
 
     private String autoCompleteList1;
     private Long usuarioId2;
-
-    private OnAutoCompleteValueListener mListener;
 
     private List<ListItem> listItems;
 
@@ -71,6 +84,7 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
      * The fragment's ListView/GridView.
      */
     private AbsListView mListView;
+    private View mCsvImportStatusView;
 
     /**
      * The Adapter which will be used to populate the ListView/GridView with
@@ -135,38 +149,68 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
 
         mListView = (AbsListView) view.findViewById(android.R.id.list);
 
+        mCsvImportStatusView = view.findViewById(R.id.csv_import_status_list);
+
         setEmptyText(getActivity().getString(R.string.no_values_found));
 
         setHasOptionsMenu(true);
 
-        LoadAutoCompleteListValues loadAutoCompleteListValues =
-                new LoadAutoCompleteListValues(daoSession);
-        loadAutoCompleteListValues.execute(autoCompleteList1);
+        loadValues();
 
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnAutoCompleteValueListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnAutoCompleteListListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void loadValues() {
+        LoadAutoCompleteListValues loadAutoCompleteListValues =
+                new LoadAutoCompleteListValues(daoSession);
+        loadAutoCompleteListValues.execute(autoCompleteList1);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_auto_complete_list, menu);
+    }
+
+    /**
+     * Shows the progress UI and hides the register form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(
+                    android.R.integer.config_shortAnimTime);
+
+            mCsvImportStatusView.setVisibility(View.VISIBLE);
+            mCsvImportStatusView.animate().setDuration(shortAnimTime)
+                    .alpha(show ? 1 : 0)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mCsvImportStatusView.setVisibility(show ? View.VISIBLE
+                                    : View.GONE);
+                        }
+                    });
+
+            mListView.setVisibility(View.VISIBLE);
+            mListView.animate().setDuration(shortAnimTime)
+                    .alpha(show ? 0 : 1)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mListView.setVisibility(show ? View.GONE
+                                    : View.VISIBLE);
+                        }
+                    });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mCsvImportStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mListView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     @Override
@@ -177,7 +221,7 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_replace_list) {
+        if (id == R.id.action_import_csv) {
             // This always works
             Intent i = new Intent(getActivity(), FilePickerActivity.class);
             // This works if you defined the intent filter
@@ -191,12 +235,11 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
             // Configure initial directory like so
             i.putExtra(FilePickerActivity.EXTRA_START_PATH, "/storage/emulated/0/");
 
-            startActivityForResult(i, FILE_CODE);
+            getActivity().startActivityForResult(i, FILE_CODE);
             return true;
         }
         if (id == R.id.action_add_value) {
-            EditValueDialogFragment valueDialogFragment = EditValueDialogFragment.newInstance(null, classType, null);
-            valueDialogFragment.show(getFragmentManager(), "valueDialogFragment");
+            startValueDialog(null, null, null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -233,23 +276,59 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
             } else {
                 Uri uri = data.getData();
                 // Do something with the URI
+                handleFileImport(uri);
             }
         }
     }
 
+    private void handleFileImport(Uri uri) {
+        showProgress(true);
+        LoadCsvValuesTask loadCsvValuesTask = new LoadCsvValuesTask();
+        loadCsvValuesTask.execute(uri.getPath());
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            // create dialogs to edit name or content of values
-            ListItem listItem = ((ListItem) mListView.getItemAtPosition(position));
-            Long listItemId = listItem.getId();
-            String classType = listItem.getClassType();
-            String value = listItem.getTitle();
-            EditValueDialogFragment valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value);
-            valueDialogFragment.show(getFragmentManager(), "valueDialogFragment");
+        // Notify the active callbacks interface (the activity, if the
+        // fragment is attached to one) that an item has been selected.
+        // create dialogs to edit name or content of values
+        ListItem listItem = ((ListItem) mListView.getItemAtPosition(position));
+        Long listItemId = listItem.getId();
+        String value = listItem.getTitle();
+        String parentValue = listItem.getSuperTitle();
+        startValueDialog(listItemId, value, parentValue);
+    }
+
+    private void startValueDialog(Long listItemId, String value, String parentValue) {
+        EditValueDialogFragment valueDialogFragment;
+        if (this.classType.equals(Municipio.class.getName())) {
+            ArrayList<String> stringArrayList = new ArrayList<>();
+            for (Region region:daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("departamento")).list()) {
+                stringArrayList.add(region.getNombre());
+            }
+            valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value, parentValue, stringArrayList);
+        } else if (this.classType.equals(Departamento.class.getName())) {
+            ArrayList<String> stringArrayList = new ArrayList<>();
+            for (Region region:daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Rango.eq("pais")).list()) {
+                stringArrayList.add(region.getNombre());
+            }
+            valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value, parentValue, stringArrayList);
+        } else if (this.classType.equals(Genero.class.getName())) {
+            ArrayList<String> stringArrayList = new ArrayList<>();
+            for (Taxon taxon:daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("familia")).list()) {
+                stringArrayList.add(taxon.getNombre());
+            }
+            valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value, parentValue, stringArrayList);
+        } else if (this.classType.equals(EpitetoEspecifico.class.getName())) {
+            ArrayList<String> stringArrayList = new ArrayList<>();
+            for (Taxon taxon:daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("genero")).list()) {
+                stringArrayList.add(taxon.getNombre());
+            }
+            valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value, parentValue, stringArrayList);
+        } else {
+            valueDialogFragment = EditValueDialogFragment.newInstance(listItemId, classType, value);
         }
+        valueDialogFragment.show(getFragmentManager(), "valueDialogFragment");
     }
 
     /**
@@ -265,43 +344,104 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
         }
     }
 
-    public void createValue(String newValue) {
-        if (classType.equals(Municipio.class.getName())) {
-            Municipio municipio = new Municipio(newValue);
-            municipio.setUsuarioId(usuarioId2);
-            daoSession.getRegionDao().insert(municipio);
-        }else if (classType.equals(Departamento.class.getName())) {
-            Departamento departamento = new Departamento(newValue);
-            departamento.setUsuarioId(usuarioId2);
-            daoSession.getRegionDao().insert(departamento);
-        }else if (classType.equals(Pais.class.getName())) {
-            Pais pais = new Pais(newValue);
-            pais.setUsuarioId(usuarioId2);
-            daoSession.getRegionDao().insert(pais);
-        }if (classType.equals(Familia.class.getName())) {
-            Familia familia = new Familia(newValue);
-            familia.setUsuarioId(usuarioId2);
-            daoSession.getTaxonDao().insert(familia);
-        }else if (classType.equals(Genero.class.getName())) {
-            Genero genero = new Genero(newValue);
+    public Object createValue(String newValue) {
+        if (classType.equals(Pais.class.getName()) || classType.equals(Departamento.class.getName()) || classType.equals(Municipio.class.getName())) {
+            Query<Region> countryQuery = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Pais.eq(newValue)).limit(1).build();
+            Pais pais = (Pais) countryQuery.unique();
+            if (pais == null) {
+                pais = new Pais(newValue);
+                pais.setUsuarioId(usuarioId2);
+                daoSession.getRegionDao().insert(pais);
+            }
+            return pais;
+        }if (classType.equals(Familia.class.getName()) || classType.equals(Genero.class.getName()) || classType.equals(EpitetoEspecifico.class.getName())) {
+            Query<Taxon> familyQuery = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(newValue)).limit(1).build();
+            Familia familia = (Familia) familyQuery.unique();
+            if (familia == null) {
+                familia = new Familia(newValue);
+                familia.setUsuarioId(usuarioId2);
+                daoSession.getTaxonDao().insert(familia);
+            }
+            return familia;
+        }else if (classType.equals(Habito.class.getName())) {
+            Query<Habito> habitoQuery = daoSession.getHabitoDao().queryBuilder().where(HabitoDao.Properties.Habito.eq(newValue)).limit(1).build();
+            Habito habito = habitoQuery.unique();
+            if (habito == null) {
+                habito = new Habito(newValue);
+                habito.setUsuarioID(usuarioId2);
+                daoSession.getHabitoDao().insert(habito);
+            }
+            return habito;
+        }else if (classType.equals(Fenologia.class.getName())) {
+            Query<Fenologia> fenologiaQuery = daoSession.getFenologiaDao().queryBuilder().where(FenologiaDao.Properties.Fenologia.eq(newValue)).limit(1).build();
+            Fenologia fenologia = fenologiaQuery.unique();
+            if (fenologia == null) {
+                fenologia = new Fenologia(newValue);
+                fenologia.setUsuarioID(usuarioId2);
+                daoSession.getFenologiaDao().insert(fenologia);
+            }
+            return fenologia;
+        }
+        return null;
+    }
+
+    public Taxon createGenus(String newValue, String parentValue) {
+        Query<Taxon> genusQuery = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(newValue)).limit(1).build();
+        Genero genero = (Genero) genusQuery.unique();
+        if (genero == null) {
+            genero = new Genero(newValue);
+            Familia familia = (Familia) daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(parentValue)).limit(1).unique();
+            if (familia == null) {
+                familia = (Familia) createValue(parentValue);
+            }
+            genero.setTaxonPadre(familia);
             genero.setUsuarioId(usuarioId2);
             daoSession.getTaxonDao().insert(genero);
-        }else if (classType.equals(EpitetoEspecifico.class.getName())) {
-            EpitetoEspecifico epitetoEspecifico = new EpitetoEspecifico(newValue);
-            epitetoEspecifico.setUsuarioId(usuarioId2);
-            daoSession.getTaxonDao().insert(epitetoEspecifico);
-        }else if (classType.equals(Habito.class.getName())) {
-            Habito habito = new Habito(newValue);
-            habito.setUsuarioID(usuarioId2);
-            daoSession.getHabitoDao().insert(habito);
-        }else if (classType.equals(Fenologia.class.getName())) {
-            Fenologia fenologia = new Fenologia(newValue);
-            fenologia.setUsuarioID(usuarioId2);
-            daoSession.getFenologiaDao().insert(fenologia);
         }
-        LoadAutoCompleteListValues loadAutoCompleteListValues =
-                new LoadAutoCompleteListValues(daoSession);
-        loadAutoCompleteListValues.execute(autoCompleteList1);
+        return genero;
+    }
+
+    public Region createState(String newValue, String parentRegion) {
+        Query<Region> stateQuery = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Departamento.eq(newValue)).limit(1).build();
+        Departamento departamento = (Departamento) stateQuery.unique();
+        if (departamento == null) {
+            departamento = new Departamento(newValue);
+            Region country = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Pais.eq(parentRegion)).limit(1).unique();
+            if (country == null) {
+                country = (Region) createValue(parentRegion);
+            }
+            departamento.setRegionPadre(country);
+            departamento.setUsuarioId(usuarioId2);
+            daoSession.getRegionDao().insert(departamento);
+        }
+        return departamento;
+    }
+
+    public void createCounty(String newValue, String parentValue, String parentParentValue) {
+        Query<Region> countyQuery = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Municipio.eq(newValue)).limit(1).build();
+        Municipio municipio = (Municipio) countyQuery.unique();
+        if (municipio == null) {
+            municipio = new Municipio(newValue);
+            Region departamento = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Departamento.eq(parentValue)).limit(1).unique();
+            if (departamento == null) {
+                departamento = createState(parentValue, parentParentValue);
+            }
+            municipio.setRegionPadre(departamento);
+            municipio.setUsuarioId(usuarioId2);
+            daoSession.getRegionDao().insert(municipio);
+        }
+    }
+
+    public void createSpecies(String newValue, String parentValue, String parentParentValue) {
+        Query<Taxon> speciesQuery = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Especie.eq(newValue)).limit(1).build();
+        EpitetoEspecifico epitetoEspecifico = speciesQuery.unique() == null ? new EpitetoEspecifico(newValue) : (EpitetoEspecifico) speciesQuery.unique();
+        Taxon genero = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(parentValue)).limit(1).unique();
+        if (genero == null) {
+            genero = createGenus(parentValue, parentParentValue);
+        }
+        epitetoEspecifico.setTaxonPadre(genero);
+        epitetoEspecifico.setUsuarioId(usuarioId2);
+        daoSession.getTaxonDao().insert(epitetoEspecifico);
     }
 
     public void updateValue(Long id, String classType, String newValue) {
@@ -322,24 +462,57 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
             fenologia.setFenologia(newValue);
             daoSession.getFenologiaDao().update(fenologia);
         }
-        LoadAutoCompleteListValues loadAutoCompleteListValues =
-                new LoadAutoCompleteListValues(daoSession);
-        loadAutoCompleteListValues.execute(autoCompleteList1);
+        loadValues();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnAutoCompleteValueListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String id);
+    public Taxon updateGenus(Long id, String newValue, String parentValue) {
+        Genero genero = (Genero) daoSession.getTaxonDao().load(id);
+        Familia familia = (Familia) daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(parentValue)).limit(1).unique();
+        if (familia == null) {
+            familia = (Familia) createValue(parentValue);
+        }
+        genero.setNombre(newValue);
+        genero.setTaxonPadre(familia);
+        genero.setUsuarioId(usuarioId2);
+        daoSession.getTaxonDao().update(genero);
+        return genero;
+    }
+
+    public Region updateState(Long id, String newValue, String parentRegion) {
+        Departamento departamento = (Departamento) daoSession.getRegionDao().load(id);
+        Region country = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Pais.eq(parentRegion)).limit(1).unique();
+        if (country == null) {
+            country = (Region) createValue(parentRegion);
+        }
+        departamento.setNombre(newValue);
+        departamento.setRegionPadre(country);
+        departamento.setUsuarioId(usuarioId2);
+        daoSession.getRegionDao().update(departamento);
+        return departamento;
+    }
+
+    public void updateCounty(Long id, String newValue, String parentValue, String parentParentValue) {
+        Municipio municipio = (Municipio) daoSession.getRegionDao().load(id);
+        Region departamento = daoSession.getRegionDao().queryBuilder().where(RegionDao.Properties.Departamento.eq(parentValue)).limit(1).unique();
+        if (departamento == null) {
+            departamento = createState(parentValue, parentParentValue);
+        }
+        municipio.setNombre(newValue);
+        municipio.setRegionPadre(departamento);
+        municipio.setUsuarioId(usuarioId2);
+        daoSession.getRegionDao().update(municipio);
+    }
+
+    public void updateSpecies(Long id, String newValue, String parentValue, String parentParentValue) {
+        EpitetoEspecifico epitetoEspecifico = (EpitetoEspecifico) daoSession.getTaxonDao().load(id);
+        Taxon genero = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(parentValue)).limit(1).unique();
+        if (genero == null) {
+            genero = createGenus(parentValue, parentParentValue);
+        }
+        epitetoEspecifico.setNombre(newValue);
+        epitetoEspecifico.setTaxonPadre(genero);
+        epitetoEspecifico.setUsuarioId(usuarioId2);
+        daoSession.getTaxonDao().update(epitetoEspecifico);
     }
 
     class LoadAutoCompleteListValues extends AsyncTask<String, Void, Boolean> {
@@ -371,7 +544,7 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
             if (list != null && !list.isEmpty()) {
                 listItems = new ArrayList<>();
                 for (Region region:list) {
-                    listItems.add(new ListItem(region.getId(), Region.class.getName(), region.getNombre(),
+                    listItems.add(new ListItem(region.getId(), region.getNombre(),
                             region.getRegionPadre() != null ? region.getRegionPadre().getNombre():null));
                 }
             }
@@ -392,7 +565,7 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
             if (taxonList != null && !taxonList.isEmpty()) {
                 listItems = new ArrayList<>();
                 for (Taxon taxon:taxonList) {
-                    listItems.add(new ListItem(taxon.getId(), Taxon.class.getName(),taxon.getNombre(),
+                    listItems.add(new ListItem(taxon.getId(), taxon.getNombre(),
                             taxon.getTaxonPadre().getNombre()));
                 }
             }
@@ -401,14 +574,14 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
                         .where(HabitoDao.Properties.UsuarioID.eq(usuarioId2)).list();
                 listItems = new ArrayList<>();
                 for (Habito habito:habitoList) {
-                    listItems.add(new ListItem(habito.getId(), Habito.class.getName(), habito.getHabito(), ""));
+                    listItems.add(new ListItem(habito.getId(), habito.getHabito(), ""));
                 }
             }else if (autoCompleteList1.equals(autoCompleteLists[7])) { // Fenology list
                 List<Fenologia> fenologiaList = daoSession.queryBuilder(Fenologia.class)
                         .where(FenologiaDao.Properties.UsuarioID.eq(usuarioId2)).list();
                 listItems = new ArrayList<>();
                 for (Fenologia fenologia:fenologiaList) {
-                    listItems.add(new ListItem(fenologia.getId(), Fenologia.class.getName(), fenologia.getFenologia(), ""));
+                    listItems.add(new ListItem(fenologia.getId(), fenologia.getFenologia(), ""));
                 }
             }
             return true;
@@ -431,6 +604,136 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+    }
+
+    class LoadCsvValuesTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String path = params[0];
+            InputStream inputStream = null;
+            int csvColumnNumber;
+            BufferedReader reader;
+            try {
+                inputStream = new FileInputStream(path);
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                csvColumnNumber = csvColumns(reader.readLine());
+                if (classType.equals(Departamento.class.getName()) || classType.equals(Genero.class.getName())) {
+                    // Check two column csv file comma separated
+                    if (csvColumnNumber != 2) {
+                        // Mark task as failed and show error
+                        CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.bad_format_sv_file);
+                        csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                        return false;
+                    }
+                }else if (classType.equals(Municipio.class.getName()) || classType.equals(EpitetoEspecifico.class.getName())) {
+                    // Check tree column csv file comma separated
+                    if (csvColumnNumber != 3) {
+                        // Mark task as failed
+                        CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.bad_format_sv_file);
+                        csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                        return false;
+                    }
+                }
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] rowData = line.split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)", -1);
+                    if (rowData.length == csvColumnNumber) {
+                        switch (csvColumnNumber) {
+                            case 1:
+                                createValue(rowData[0]);
+                                break;
+                            case 2:
+                                if (classType.equals(Departamento.class.getName())) {
+                                    createState(rowData[0], rowData[1]);
+                                }else{
+                                    createGenus(rowData[0], rowData[1]);
+                                }
+                                break;
+                            case 3:
+                                if (classType.equals(Municipio.class.getName())) {
+                                    createCounty(rowData[0], rowData[1], rowData[2]);
+                                }else{
+                                    createSpecies(rowData[0], rowData[1], rowData[2]);
+                                }
+                                break;
+                            default:
+                                CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.bad_format_sv_file);
+                                csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                                return false;
+                        }
+                    }else{
+                        CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.bad_format_sv_file);
+                        csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                        return false;
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                Log.e("Plantae", "File " + path + " doesn't exists." + Arrays.toString(e.getStackTrace()));
+                CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.error_importing_csv_file);
+                csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                return false;
+            } catch (IOException ex) {
+                CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.error_importing_csv_file);
+                csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                return false;
+            } finally {
+                try {
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                }
+                catch (IOException e) {
+                    CsvErrorDialogFragment csvErrorDialogFragment = CsvErrorDialogFragment.newInstance(R.string.error_importing_csv_file);
+                    csvErrorDialogFragment.show(getFragmentManager(), "formatErrorDialog");
+                }
+            }
+            return true;
+        }
+
+        public int csvColumns(String firstLine) {
+            return firstLine.split(",",-1).length;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            showProgress(false);
+            if (aBoolean) {
+                loadValues();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.file_imported_succesfully), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public static class CsvErrorDialogFragment extends DialogFragment {
+
+        private static final String RES_ID_MESSAGE1 = "resIdMessage1";
+        private int resIdMesage;
+
+        public static CsvErrorDialogFragment newInstance(int resIdMesage) {
+            CsvErrorDialogFragment fragment =  new CsvErrorDialogFragment();
+            Bundle args = new Bundle();
+            if (resIdMesage != 0) {
+                args.putInt(RES_ID_MESSAGE1, resIdMesage);
+            }
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            resIdMesage = getArguments().getInt(RES_ID_MESSAGE1);
+            builder.setMessage(resIdMesage)
+                    .setPositiveButton(R.string.ok_action_dialog_fragment, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 
 }
