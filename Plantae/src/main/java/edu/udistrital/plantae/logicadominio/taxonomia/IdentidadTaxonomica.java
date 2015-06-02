@@ -251,19 +251,12 @@ public class IdentidadTaxonomica implements Parcelable {
     };
 
     public String aString() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String string = "";
         if (taxon != null) {
             string = taxon.aString();
         }
-        if (fechaIdentificacion != null) {
-            string = string + (string.equals("") ? "" : ", ") + simpleDateFormat.format(fechaIdentificacion);
-        }
         if (tipo != null) {
             string = string + (string.equals("") ? "" : ", ") + tipo;
-        }
-        if (determinador != null) {
-            string = string + (string.equals("") ? "" : ", ") + determinador.aString();
         }
         return string;
     }

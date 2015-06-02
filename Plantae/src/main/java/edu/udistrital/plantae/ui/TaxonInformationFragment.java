@@ -23,15 +23,23 @@ import edu.udistrital.plantae.persistencia.TaxonDao;
  */
 public class TaxonInformationFragment extends Fragment {
 
+    private static final String SPECIES1 = "especie";
+    private static final String GENUS2 = "genero";
+    private static final String FAMILY3 = "familia";
+
     private ViewHolder viewHolder;
     private DaoSession daoSession;
     private TaxonFragmentLoadTask taxonFragmentLoadTask;
     private OnTaxonInformationUpdated onTaxonInformationUpdated;
 
+    private String species;
+    private String genus;
+    private String family;
+
     public interface OnTaxonInformationUpdated {
-        public void onFamilyUpdated(String family);
-        public void onGenusUpdated(String genus);
-        public void onSpeciesUpdated(String species);
+        void onFamilyUpdated(String family);
+        void onGenusUpdated(String genus);
+        void onSpeciesUpdated(String species);
     }
 
     @Override
@@ -58,10 +66,18 @@ public class TaxonInformationFragment extends Fragment {
             }
         }
 
+        species = getArguments().getString(SPECIES1);
+        genus = getArguments().getString(GENUS2);
+        family = getArguments().getString(FAMILY3);
+
         daoSession = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession();
 
         taxonFragmentLoadTask = new TaxonFragmentLoadTask();
         taxonFragmentLoadTask.execute();
+
+        viewHolder.family.setText(family);
+        viewHolder.genus.setText(genus);
+        viewHolder.species.setText(species);
 
         viewHolder.family.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

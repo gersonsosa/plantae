@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,21 +79,25 @@ public class SpecimenListItemAdapter extends BaseAdapter {
             viewHolder.specimenImageView.setImageResource(specimenListItem.getSpecimenImage());
         } else {
             final ViewTreeObserver vto = viewHolder.specimenImageView.getViewTreeObserver();
-            vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                public boolean onPreDraw() {
-                    vto.removeOnPreDrawListener(this);
-                    thumbnailHeight = viewHolder.specimenImageView.getMeasuredHeight();
-                    thumbnailWidth = viewHolder.specimenImageView.getMeasuredWidth();
-                    if (cancelPotentialWork(specimenListItem.getImagePath(), viewHolder.specimenImageView)) {
-                        final LoadThumbnailTask loadThumbnailTask = new LoadThumbnailTask(viewHolder.specimenImageView);
-                        final AsyncDrawable asyncDrawable = new AsyncDrawable(resources, bitmapPlaceHolder, loadThumbnailTask);
-                        viewHolder.specimenImageView.setImageDrawable(asyncDrawable);
+            if (vto.isAlive()) {
+                vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    public boolean onPreDraw() {
+                        if (vto.isAlive()) {
+                            vto.removeOnPreDrawListener(this);
+                        }
+                        thumbnailHeight = viewHolder.specimenImageView.getMeasuredHeight();
                         thumbnailWidth = viewHolder.specimenImageView.getMeasuredWidth();
-                        loadThumbnailTask.execute(specimenListItem.getImagePath());
+                        if (cancelPotentialWork(specimenListItem.getImagePath(), viewHolder.specimenImageView)) {
+                            final LoadThumbnailTask loadThumbnailTask = new LoadThumbnailTask(viewHolder.specimenImageView);
+                            final AsyncDrawable asyncDrawable = new AsyncDrawable(resources, bitmapPlaceHolder, loadThumbnailTask);
+                            viewHolder.specimenImageView.setImageDrawable(asyncDrawable);
+                            thumbnailWidth = viewHolder.specimenImageView.getMeasuredWidth();
+                            loadThumbnailTask.execute(specimenListItem.getImagePath());
+                        }
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }
 
         }
         viewHolder.specimenTitleView.setText(specimenListItem.getSpecimenTitle());

@@ -214,7 +214,7 @@ public class ColorEspecimen {
         String colorName = "";
         String hexColor = String.format("#%06X", (0xFFFFFF & colorRGB));
         String[] commonColorNames = {"red", "blue", "green", "black", "white", "gray", "cyan", "magenta",
-                "yellow", "lightgray", "darkgray", "grey", "lightgrey", "darkgrey",
+                "yellow", "lightgray", "darkgray",
                 "aqua", "fuchsia", "lime", "maroon", "navy", "olive", "purple",
                 "silver", "teal"};
         for (String commonColorname : commonColorNames) {

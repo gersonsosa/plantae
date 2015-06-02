@@ -566,7 +566,7 @@ public class AutoCompleteValueFragment extends Fragment implements AbsListView.O
                 listItems = new ArrayList<>();
                 for (Taxon taxon:taxonList) {
                     listItems.add(new ListItem(taxon.getId(), taxon.getNombre(),
-                            taxon.getTaxonPadre().getNombre()));
+                            taxon.getTaxonPadre() != null ? taxon.getTaxonPadre().getNombre():null));
                 }
             }
             if (autoCompleteList1.equals(autoCompleteLists[6])) { // Habit list
