@@ -56,21 +56,21 @@ public class LocalityInformationFragment extends Fragment {
     private boolean isEditable;
 
     public interface OnLocationUpdateRequest {
-        public void onLocationUpdateRequested();
+        void onLocationUpdateRequested();
     }
 
     public interface OnLocalityChangeListener {
-        public void onLocalityNameChanged(String localityName);
-        public void onCountyChanged(String county);
-        public void onStateChanged(String state);
-        public void onCountryChanged( String country);
-        public void onMinAltitudeChanged(double minAltidude);
-        public void onMaxAltitudeChanged(double maxAltitude);
-        public void onLatitudeChanged(double lat);
-        public void onLongitudeChanged(double lon);
-        public void onDatumChanged(String datum);
-        public void onDeviceBrandChanged(String deviceBrand);
-        public void onLocalityDescriptionChanged(String localityDescription);
+        void onLocalityNameChanged(String localityName);
+        void onCountyChanged(String county);
+        void onStateChanged(String state);
+        void onCountryChanged( String country);
+        void onMinAltitudeChanged(double minAltidude);
+        void onMaxAltitudeChanged(double maxAltitude);
+        void onLatitudeChanged(double lat);
+        void onLongitudeChanged(double lon);
+        void onDatumChanged(String datum);
+        void onDeviceBrandChanged(String deviceBrand);
+        void onLocalityDescriptionChanged(String localityDescription);
     }
 
     @Override

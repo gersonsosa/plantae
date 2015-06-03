@@ -252,7 +252,7 @@ public class IdentidadTaxonomica implements Parcelable {
 
     public String aString() {
         String string = "";
-        if (taxon != null) {
+        if (getTaxon() != null) {
             string = taxon.aString();
         }
         if (tipo != null) {

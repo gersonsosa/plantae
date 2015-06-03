@@ -147,6 +147,12 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(viaje.getNombre());
+    }
+
     void reloadFromArguments(Bundle arguments) {
         if (arguments == null) {
             arguments = new Bundle();
@@ -154,7 +160,6 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
             // since we might make changes, don't meddle with caller's copy
             arguments = (Bundle) arguments.clone();
         }
-        String query = arguments.getString("query");
         List<SpecimenListItem> specimenListItem = arguments.getParcelableArrayList("specimens");
         setListAdapter(new SpecimenListItemAdapter(getActivity().getApplicationContext(), specimenListItem, null, getResources()));
     }

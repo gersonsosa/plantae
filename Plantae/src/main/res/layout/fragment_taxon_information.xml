@@ -22,7 +22,7 @@
             android:textSize="34sp" />
 
         <AutoCompleteTextView
-            android:id="@+id/family"
+            android:id="@+id/family_autocomplete"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/prompt_family"
@@ -33,16 +33,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_below="@+id/family">
+            android:layout_below="@+id/family_autocomplete">
             <AutoCompleteTextView
-                android:id="@+id/genus"
+                android:id="@+id/genus_autocomplete"
                 android:layout_width="0dip"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_genus"/>
 
             <AutoCompleteTextView
-                android:id="@+id/species"
+                android:id="@+id/species_autocomplete"
                 android:layout_width="0dip"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"

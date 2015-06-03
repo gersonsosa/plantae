@@ -817,7 +817,7 @@ public class Especimen implements Cloneable {
 
     public IdentidadTaxonomica getDeterminacionActual() {
         IdentidadTaxonomica determinacionActual = null;
-        if (determinaciones != null) {
+        if (getDeterminaciones() != null) {
             for (IdentidadTaxonomica identidadTaxonomica:determinaciones) {
                 if (determinacionActual == null || determinacionActual.getFechaIdentificacion().before(identidadTaxonomica.getFechaIdentificacion())) {
                     determinacionActual = identidadTaxonomica;

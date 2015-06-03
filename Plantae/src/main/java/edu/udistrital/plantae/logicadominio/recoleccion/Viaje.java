@@ -41,6 +41,7 @@ import edu.udistrital.plantae.objetotransferenciadatos.ColorEspecimenDTO;
 import edu.udistrital.plantae.objetotransferenciadatos.EspecimenDTO;
 import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
 import edu.udistrital.plantae.persistencia.DaoSession;
+import edu.udistrital.plantae.persistencia.EspecimenColectorSecundarioDao;
 import edu.udistrital.plantae.persistencia.EspecimenDao;
 import edu.udistrital.plantae.persistencia.FTSEspecimenDao;
 import edu.udistrital.plantae.persistencia.ProyectoDao;
@@ -367,7 +368,11 @@ public class Viaje {
                 /* Insert secondary collectors */
                 if (especimen.getColectoresSecundarios() != null && !especimen.getColectoresSecundarios().isEmpty()){
                     for (EspecimenColectorSecundario especimenColectorSecundario : especimen.getColectoresSecundarios()) {
-                        if (especimenColectorSecundario.getId() == null) {
+                        if (daoSession.getEspecimenColectorSecundarioDao()
+                                .queryBuilder().where(EspecimenColectorSecundarioDao.Properties
+                                        .EspecimenID.eq(especimenColectorSecundario.getEspecimenID()))
+                                .where(EspecimenColectorSecundarioDao.Properties
+                                        .ColectorSecundarioID.eq(especimenColectorSecundario.getColectorSecundarioID())).count() == 0) {
                             especimenColectorSecundario.setEspecimenID(especimenDTO.getId());
                             daoSession.getEspecimenColectorSecundarioDao().insert(especimenColectorSecundario);
                         }

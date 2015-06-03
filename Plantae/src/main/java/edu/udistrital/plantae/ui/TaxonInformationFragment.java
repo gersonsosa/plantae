@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.udistrital.plantae.R;
@@ -107,9 +108,9 @@ public class TaxonInformationFragment extends Fragment {
     }
 
     private void retrieveViews() {
-        viewHolder.family = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.family);
-        viewHolder.genus = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.genus);
-        viewHolder.species = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.species);
+        viewHolder.family = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.family_autocomplete);
+        viewHolder.genus = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.genus_autocomplete);
+        viewHolder.species = (AutoCompleteTextView) viewHolder.fragmentView.findViewById(R.id.species_autocomplete);
     }
 
     static class ViewHolder{
@@ -129,9 +130,9 @@ public class TaxonInformationFragment extends Fragment {
 
     public class TaxonFragmentLoadTask extends AsyncTask<String, Void, Boolean> {
 
-        private ArrayAdapter<Taxon> especiesArrayAdapter;
-        private ArrayAdapter<Taxon> generosArrayAdapter;
-        private ArrayAdapter<Taxon> familiasArrayAdapter;
+        private ArrayAdapter<String> especiesArrayAdapter;
+        private ArrayAdapter<String> generosArrayAdapter;
+        private ArrayAdapter<String> familiasArrayAdapter;
         private String family;
         private String genus;
 
@@ -143,19 +144,27 @@ public class TaxonInformationFragment extends Fragment {
             }
             if (family == null && genus == null) {
                 List<Taxon> especies = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("epitetoespecifico")).list();
-                especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,especies);
+                especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(especies));
                 List<Taxon> generos = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("genero")).list();
-                generosArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,generos);
+                generosArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(generos));
                 List<Taxon> familias = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("familia")).list();
-                familiasArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,familias);
+                familiasArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(familias));
             }else if (family != null && genus == null) {
                 List<Taxon> generos = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(family)).where(TaxonDao.Properties.Rango.eq("genero")).list();
-                generosArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,generos);
+                generosArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(generos));
             }else {
                 List<Taxon> especies = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(genus)).where(TaxonDao.Properties.Rango.eq("genero")).list();
-                especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line,especies);
+                especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(especies));
             }
             return true;
+        }
+
+        private List<String> convertToStrings(List<Taxon> taxons) {
+            List<String> result = new ArrayList<>();
+            for (Taxon taxon:taxons) {
+                result.add(taxon.getNombre());
+            }
+            return result;
         }
 
         @Override
@@ -169,10 +178,10 @@ public class TaxonInformationFragment extends Fragment {
             if (especiesArrayAdapter != null) {
                 viewHolder.species.setAdapter(especiesArrayAdapter);
             }
-            if (!viewHolder.genus.getText().toString().equals(genus)) {
+            if (!viewHolder.genus.getText().toString().equals(genus) && genus != null) {
                 viewHolder.genus.setText(genus);
             }
-            if (!viewHolder.family.getText().toString().equals(family)) {
+            if (!viewHolder.family.getText().toString().equals(family) && family != null) {
                 viewHolder.family.setText(family);
             }
         }
