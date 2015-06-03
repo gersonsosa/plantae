@@ -268,8 +268,14 @@ public class Viaje {
                 /* Insert secondary collectors */
                 if (especimen.getColectoresSecundarios() != null && !especimen.getColectoresSecundarios().isEmpty()){
                     for (EspecimenColectorSecundario especimenColectorSecundario : especimen.getColectoresSecundarios()) {
-                        especimenColectorSecundario.setEspecimenID(especimenId);
-                        daoSession.getEspecimenColectorSecundarioDao().insert(especimenColectorSecundario);
+                        especimenColectorSecundario.setEspecimenID(especimenDTO.getId());
+                        if (daoSession.getEspecimenColectorSecundarioDao()
+                                .queryBuilder().where(EspecimenColectorSecundarioDao.Properties
+                                        .EspecimenID.eq(especimenColectorSecundario.getEspecimenID()))
+                                .where(EspecimenColectorSecundarioDao.Properties
+                                        .ColectorSecundarioID.eq(especimenColectorSecundario.getColectorSecundarioID())).count() == 0) {
+                            daoSession.getEspecimenColectorSecundarioDao().insert(especimenColectorSecundario);
+                        }
                     }
                 }
                 if (especimen.getMuestrasAsociadas() != null && ! especimen.getMuestrasAsociadas().isEmpty()){
@@ -368,12 +374,12 @@ public class Viaje {
                 /* Insert secondary collectors */
                 if (especimen.getColectoresSecundarios() != null && !especimen.getColectoresSecundarios().isEmpty()){
                     for (EspecimenColectorSecundario especimenColectorSecundario : especimen.getColectoresSecundarios()) {
+                        especimenColectorSecundario.setEspecimenID(especimenDTO.getId());
                         if (daoSession.getEspecimenColectorSecundarioDao()
                                 .queryBuilder().where(EspecimenColectorSecundarioDao.Properties
                                         .EspecimenID.eq(especimenColectorSecundario.getEspecimenID()))
                                 .where(EspecimenColectorSecundarioDao.Properties
                                         .ColectorSecundarioID.eq(especimenColectorSecundario.getColectorSecundarioID())).count() == 0) {
-                            especimenColectorSecundario.setEspecimenID(especimenDTO.getId());
                             daoSession.getEspecimenColectorSecundarioDao().insert(especimenColectorSecundario);
                         }
                     }
