@@ -1014,7 +1014,7 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/Plantae/images");
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/Plantae/images");
         /*if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), "Plantae");
