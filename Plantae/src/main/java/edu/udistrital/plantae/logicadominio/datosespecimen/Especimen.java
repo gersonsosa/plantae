@@ -120,7 +120,7 @@ public class Especimen implements Cloneable {
     }
 
 	public Especimen(){
-        colectoresSecundarios = new ArrayList<>();
+        //colectoresSecundarios = new ArrayList<>();
 	}
 
 	public void finalize() throws Throwable {

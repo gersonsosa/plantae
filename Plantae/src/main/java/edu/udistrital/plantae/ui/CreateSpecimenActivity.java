@@ -140,6 +140,7 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
             setTitle(R.string.edit_specimen_title);
             Especimen especimen = daoSession.getEspecimenDao().loadDeep(especimenId);
             especimen.getDeterminaciones();
+            especimen.getColectoresSecundarios();
             viaje = especimen.getViaje();
             if (especimen.getTipo().equals("ES")) {
                 specimenType = SpecimenPagesAdapter.SPECIMEN_SINGLE;

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,21 +36,21 @@ public class InflorescenceInformationFragment extends Fragment {
     private OnInflorescenceInformationChangedListener onInflorescenceInformationChangedListener;
 
     public interface OnInflorescenceInformationChangedListener {
-        public void onInflorescencePositionChanged(String inflorescencePosition);
-        public void onInflorescenceAloneChanged(boolean inflorescenceAlone);
-        public void onProphyllNatureChanged(String prophyllNature);
-        public void onProphyllSizeChanged(String prophyllSize);
-        public void onBractsNumberChanged(String bractsNumber);
-        public void onBractsPositionChanged(String bractsPosition);
-        public void onBractsSizeChanged(String bractsSize);
-        public void onBractsNatureChanged(String bractsNature);
-        public void onPeduncleSizeChanged(String peduncleSize);
-        public void onRachisSizeChanged(String rachisSize);
-        public void onRachillaeNumberChanged(String rachillaeNumber);
-        public void onRachillaeSizeChanged(String rachillaeSize);
-        public void onInflorescenceDescriptionChanged(String inflorescenceDescription);
-        public void onInFlowerColorChanged(ColorEspecimenDTO exocarpColor);
-        public void onInFruitColorChanged(ColorEspecimenDTO mesocarpColor);
+        void onInflorescencePositionChanged(String inflorescencePosition);
+        void onInflorescenceAloneChanged(boolean inflorescenceAlone);
+        void onProphyllNatureChanged(String prophyllNature);
+        void onProphyllSizeChanged(String prophyllSize);
+        void onBractsNumberChanged(String bractsNumber);
+        void onBractsPositionChanged(String bractsPosition);
+        void onBractsSizeChanged(String bractsSize);
+        void onBractsNatureChanged(String bractsNature);
+        void onPeduncleSizeChanged(String peduncleSize);
+        void onRachisSizeChanged(String rachisSize);
+        void onRachillaeNumberChanged(String rachillaeNumber);
+        void onRachillaeSizeChanged(String rachillaeSize);
+        void onInflorescenceDescriptionChanged(String inflorescenceDescription);
+        void onInFlowerColorChanged(ColorEspecimenDTO exocarpColor);
+        void onInFruitColorChanged(ColorEspecimenDTO mesocarpColor);
     }
 
     @Override
@@ -89,8 +90,8 @@ public class InflorescenceInformationFragment extends Fragment {
         String tamañoDeRaquilas = fragmentsBundle.getString("tamañoDeRaquilas");
         String inflorescenciaDescripcion = fragmentsBundle.getString("inflorescenciaDescripcion");
         Boolean inflorescenciaSolitaria = fragmentsBundle.getBoolean("inflorescenciaSolitaria");
-        int numeroDeLasBracteasPedunculares = fragmentsBundle.getInt("numeroDeLasBracteasPedunculares");
-        int numeroDeRaquilas = fragmentsBundle.getInt("numeroDeRaquilas");
+        String numeroDeLasBracteasPedunculares = String.valueOf(fragmentsBundle.getInt("numeroDeLasBracteasPedunculares"));
+        String numeroDeRaquilas = String.valueOf(fragmentsBundle.getInt("numeroDeRaquilas"));
 
         final String[] inflorescencePositionOptions = getResources().getStringArray(R.array.inflorescence_position);
         ArrayAdapter<String> inflorescencePositionAdapter = new ArrayAdapter<>(
@@ -101,12 +102,26 @@ public class InflorescenceInformationFragment extends Fragment {
 
         if (colorEnFlor != null) {
             viewHolder.inFlowerColorText.setText(colorEnFlor.getNombre());
-            setInFlowerColor(colorEnFlor.getColorRGB());
+            final ViewTreeObserver enFlorViewTreeObserver = viewHolder.inFlowerColor.getViewTreeObserver();
+            enFlorViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setInFlowerColor(colorEnFlor.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         if (colorEnFruto != null) {
             viewHolder.inFruitColorText.setText(colorEnFruto.getNombre());
-            setInFruitColor(colorEnFruto.getColorRGB());
+            final ViewTreeObserver enFrutoViewTreeObserver = viewHolder.inFruitColor.getViewTreeObserver();
+            enFrutoViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setInFruitColor(colorEnFruto.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         if (naturalezaDeLasBracteasPedunculares != null) {
@@ -149,17 +164,9 @@ public class InflorescenceInformationFragment extends Fragment {
             viewHolder.inflorescenceDescription.setText(inflorescenciaDescripcion);
         }
 
-        if (inflorescenciaSolitaria != null) {
-            viewHolder.inflorescenceAlone.setChecked(inflorescenciaSolitaria);
-        }
-
-        if (numeroDeLasBracteasPedunculares > 0) {
-            viewHolder.bractsNumber.setText(numeroDeLasBracteasPedunculares);
-        }
-
-        if (numeroDeRaquilas > 0) {
-            viewHolder.rachillaeNumber.setText(numeroDeRaquilas);
-        }
+        viewHolder.inflorescenceAlone.setChecked(inflorescenciaSolitaria);
+        viewHolder.bractsNumber.setText(numeroDeLasBracteasPedunculares);
+        viewHolder.rachillaeNumber.setText(numeroDeRaquilas);
 
         viewHolder.bractsNature.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -313,11 +320,13 @@ public class InflorescenceInformationFragment extends Fragment {
                 case "Inflorescence Flower":
                     viewHolder.inFlowerColorText.setText(colorEspecimen.getNombre());
                     setInFlowerColor(colorEspecimen.getColorRGB());
+                    colorEnFlor = colorEspecimen;
                     onInflorescenceInformationChangedListener.onInFlowerColorChanged(colorEspecimen);
                     break;
                 case "Inflorescence Fruit":
                     viewHolder.inFruitColorText.setText(colorEspecimen.getNombre());
                     setInFruitColor(colorEspecimen.getColorRGB());
+                    colorEnFruto = colorEspecimen;
                     onInflorescenceInformationChangedListener.onInFruitColorChanged(colorEspecimen);
                     break;
             }
@@ -349,14 +358,14 @@ public class InflorescenceInformationFragment extends Fragment {
     }
 
     public void setInFruitColor(int corollaColorRGB) {
-        Bitmap bitmapPlaceHolder = Bitmap.createBitmap(viewHolder.inFlowerColor.getWidth(), viewHolder.inFlowerColor.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmapPlaceHolder = Bitmap.createBitmap(viewHolder.inFruitColor.getWidth(), viewHolder.inFruitColor.getHeight(), Bitmap.Config.ARGB_8888);
         bitmapPlaceHolder.eraseColor(corollaColorRGB);
-        viewHolder.inFlowerColor.setImageBitmap(bitmapPlaceHolder);
+        viewHolder.inFruitColor.setImageBitmap(bitmapPlaceHolder);
     }
 
     public void setInFlowerColor(int stamenColorRGB) {
-        Bitmap bitmapPlaceHolder = Bitmap.createBitmap(viewHolder.inFruitColor.getWidth(), viewHolder.inFruitColor.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmapPlaceHolder = Bitmap.createBitmap(viewHolder.inFlowerColor.getWidth(), viewHolder.inFlowerColor.getHeight(), Bitmap.Config.ARGB_8888);
         bitmapPlaceHolder.eraseColor(stamenColorRGB);
-        viewHolder.inFruitColor.setImageBitmap(bitmapPlaceHolder);
+        viewHolder.inFlowerColor.setImageBitmap(bitmapPlaceHolder);
     }
 }

@@ -61,10 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);
         Long idUsuarioLoggedIn = checkLogin(preferences);
         if (idUsuarioLoggedIn.equals(0l)){
@@ -73,16 +69,25 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
             finish();
             return;
         }else{
-            // Se comprueba que no se este llamando esta actividad desde otra actividad
+            // Se comprueba que este es el inicio del aplicativo
             // Se carga el usuario en base al identificador almacenado en el Intent con el que se inicio la actividad
             DaoSession daoSession = DataBaseHelper.getDataBaseHelper(getApplicationContext()).getDaoSession();
-            colectorPrincipal = daoSession.getColectorPrincipalDao().queryBuilder().where(ColectorPrincipalDao.Properties.Id.eq(getIntent().getLongExtra("colectorPrincipal", 0l))).unique();
+            ColectorPrincipalDao colectorPrincipalDao = daoSession.getColectorPrincipalDao();
+            colectorPrincipal = colectorPrincipalDao
+                .queryBuilder().where(ColectorPrincipalDao.Properties
+                        .Id.eq(getIntent().getLongExtra("colectorPrincipal", 0l)))
+                .unique();
             if (colectorPrincipal == null) {
                 // [Inicio applicación] Es la primera vez que se carga el colector principal en esta ejecución
                 // Cargar la persona y el colector principal en base al identificador del archivo de preferencias
-                Persona persona = daoSession.getPersonaDao().queryBuilder().where(PersonaDao.Properties.UsuarioID.eq(idUsuarioLoggedIn)).unique();
+                Persona persona = daoSession.getPersonaDao().queryBuilder()
+                    .where(PersonaDao.Properties.UsuarioID.eq(idUsuarioLoggedIn))
+                    .unique();
                 if (persona != null) {
-                    colectorPrincipal = daoSession.getColectorPrincipalDao().queryBuilder().where(ColectorPrincipalDao.Properties.PersonaID.eq(persona.getId())).unique();
+                    colectorPrincipal = colectorPrincipalDao
+                        .queryBuilder().where(ColectorPrincipalDao.Properties
+                                .PersonaID.eq(persona.getId()))
+                        .unique();
                 }else{
                     logout();
                 }

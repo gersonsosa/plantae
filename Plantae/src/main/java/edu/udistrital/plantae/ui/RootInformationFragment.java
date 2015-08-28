@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -29,14 +30,14 @@ public class RootInformationFragment extends Fragment {
     private OnRootInformationChangedListener onRootInformationChangedListener;
 
     public interface OnRootInformationChangedListener {
-        public void onInBaseDiameterChanged(String inBaseDiameter);
-        public void onRootsDiameterChanged(String rootsDiameter);
-        public void onSpinesShapeChanged(String spinesShape);
-        public void onSpinesSizeChanged(String spinesSize);
-        public void onArmedChanged(boolean armed);
-        public void onConeHeightChanged(String coneHeight);
-        public void onConeColorChanged(ColorEspecimenDTO coneColor);
-        public void onRootsDescriptionChanged(String rootsDescription);
+        void onInBaseDiameterChanged(String inBaseDiameter);
+        void onRootsDiameterChanged(String rootsDiameter);
+        void onSpinesShapeChanged(String spinesShape);
+        void onSpinesSizeChanged(String spinesSize);
+        void onArmedChanged(boolean armed);
+        void onConeHeightChanged(String coneHeight);
+        void onConeColorChanged(ColorEspecimenDTO coneColor);
+        void onRootsDescriptionChanged(String rootsDescription);
     }
 
     @Override
@@ -95,7 +96,14 @@ public class RootInformationFragment extends Fragment {
         }
         if (colorDelCono != null) {
             viewHolder.coneColorText.setText(colorDelCono.getNombre());
-            setConeColor(colorDelCono.getColorRGB());
+            final ViewTreeObserver conoViewTreeObserver = viewHolder.coneColorImage.getViewTreeObserver();
+            conoViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setConeColor(colorDelCono.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         viewHolder.rootsDiameter.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -197,9 +205,10 @@ public class RootInformationFragment extends Fragment {
         if ((requestCode == ROOT_COLOR_CREATION_REQUEST || requestCode == ROOT_COLOR_EDIT_REQUEST) && resultCode == Activity.RESULT_OK ) {
             ColorEspecimenDTO colorEspecimen = data.getParcelableExtra("colorEspecimen");
             switch (colorEspecimen.getOrganoDeLaPlanta()) {
-                case "Root":
+                case "Root Cone":
                     viewHolder.coneColorText.setText(colorEspecimen.getNombre());
                     setConeColor(colorEspecimen.getColorRGB());
+                    colorDelCono = colorEspecimen;
                     onRootInformationChangedListener.onConeColorChanged(colorEspecimen);
                     break;
             }

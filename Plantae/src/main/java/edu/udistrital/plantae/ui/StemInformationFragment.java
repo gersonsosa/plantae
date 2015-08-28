@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,18 +34,18 @@ public class StemInformationFragment extends Fragment {
     private OnStemInformationChangedListener onStemInformationChangedListener;
 
     public interface OnStemInformationChangedListener {
-        public void onStemHeightChanged(String stemHeight);
-        public void onStemNatureChanged(String stemNature);
-        public void onStemDiameterChanged(String stemDiameter);
-        public void onStemFormChanged(String stemForm);
-        public void onInternodesLengthChanged(String internodesLength);
-        public void onConspicuousInternodesChanged(boolean conspicuousInternodes);
-        public void onStemNakedChanged(boolean stemNaked);
-        public void onStemCoveredChanged(boolean stemCovered);
-        public void onThornsChanged(boolean thorns);
-        public void onThornArrangementChanged(String thornArrangement);
-        public void onStemColorChanged(ColorEspecimenDTO stemColor);
-        public void onStemDescriptionChanged(String stemDescription);
+        void onStemHeightChanged(String stemHeight);
+        void onStemNatureChanged(String stemNature);
+        void onStemDiameterChanged(String stemDiameter);
+        void onStemFormChanged(String stemForm);
+        void onInternodesLengthChanged(String internodesLength);
+        void onConspicuousInternodesChanged(boolean conspicuousInternodes);
+        void onStemNakedChanged(boolean stemNaked);
+        void onStemCoveredChanged(boolean stemCovered);
+        void onThornsChanged(boolean thorns);
+        void onThornArrangementChanged(String thornArrangement);
+        void onStemColorChanged(ColorEspecimenDTO stemColor);
+        void onStemDescriptionChanged(String stemDescription);
     }
 
     @Override
@@ -127,18 +128,19 @@ public class StemInformationFragment extends Fragment {
         if (talloDescripcion != null) {
             viewHolder.stemDescription.setText(talloDescripcion);
         }
-        if (desnudoCubierto != null) {
-            viewHolder.stemNaked.setChecked(desnudoCubierto);
-        }
-        if (entrenudosConspicuos != null) {
-            viewHolder.conspicuousInternodes.setChecked(entrenudosConspicuos);
-        }
-        if (espinas != null) {
-            viewHolder.thorns.setChecked(espinas);
-        }
+        viewHolder.stemNaked.setChecked(desnudoCubierto);
+        viewHolder.conspicuousInternodes.setChecked(entrenudosConspicuos);
+        viewHolder.thorns.setChecked(espinas);
         if (colorDelTallo != null) {
             viewHolder.stemColorText.setText(colorDelTallo.getNombre());
-            setStemColor(colorDelTallo.getColorRGB());
+            final ViewTreeObserver raizViewTreeObserver = viewHolder.stemColorImage.getViewTreeObserver();
+            raizViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setStemColor(colorDelTallo.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         viewHolder.stemNature.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -279,6 +281,7 @@ public class StemInformationFragment extends Fragment {
                 case "Stem":
                     viewHolder.stemColorText.setText(colorEspecimen.getNombre());
                     setStemColor(colorEspecimen.getColorRGB());
+                    colorDelTallo = colorEspecimen;
                     onStemInformationChangedListener.onStemColorChanged(colorEspecimen);
                     break;
             }

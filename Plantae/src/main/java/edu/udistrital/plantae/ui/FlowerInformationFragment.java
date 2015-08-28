@@ -35,13 +35,13 @@ public class FlowerInformationFragment extends Fragment {
     private ColorEspecimenDTO colorDeLosPistiliodios;
 
     public interface OnFlowersInformationChangedListener {
-        public void onCalyxColorChanged(ColorEspecimenDTO calyxColor);
-        public void onCorollaColorChanged(ColorEspecimenDTO corollaColor);
-        public void onStamensColorChanged(ColorEspecimenDTO stamensColor);
-        public void onPistiliodioColorChanged(ColorEspecimenDTO pistiliodioColor);
-        public void onGineceoColorChanged(ColorEspecimenDTO gineceoColor);
-        public void onStigmataColorChanged(ColorEspecimenDTO stigmataColor);
-        public void onFlowersDescriptionChanged(String flowersDescription);
+        void onCalyxColorChanged(ColorEspecimenDTO calyxColor);
+        void onCorollaColorChanged(ColorEspecimenDTO corollaColor);
+        void onStamensColorChanged(ColorEspecimenDTO stamensColor);
+        void onPistiliodioColorChanged(ColorEspecimenDTO pistiliodioColor);
+        void onGineceoColorChanged(ColorEspecimenDTO gineceoColor);
+        void onStigmataColorChanged(ColorEspecimenDTO stigmataColor);
+        void onFlowersDescriptionChanged(String flowersDescription);
     }
 
     @Override

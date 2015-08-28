@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import edu.udistrital.plantae.R;
+import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.datosespecimen.ColorEspecimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.Especimen;
 import edu.udistrital.plantae.logicadominio.datosespecimen.EspecimenColectorSecundario;
@@ -77,7 +78,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
         "Genero", "Especie", "Fecha determinación", "Determinador", "Tipo", 
         "Nombres comunes", "Usos", "Vegetacion", "Suelo/Sustrato", "Especies asociadas", 
         "Habito", "Fenologia", "Altura de la Planta", "DAP", "Abundancia", 
-        "Descripción de la planta", "Nombre colores", "Descrición colores", 
+        "Descripción de la planta", "Nombre colores", "Descripción colores",
         "RGB colores", "Munsell colores", "Descripción muestras asociadas", 
         "Método tratamiento muestras asociadas", "Descripción flor", 
         "Nombre color de la corola", "Descripción color de la corola", 
@@ -161,7 +162,9 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(viaje.getNombre());
+        if (viaje != null) {
+            getActivity().setTitle(viaje.getNombre());
+        }
     }
 
     void reloadFromArguments(Bundle arguments) {
@@ -505,7 +508,8 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
                         rowData[4] = especimen.getEstacionDelAño();
                         String colectoresSecundarios = "";
                         for (EspecimenColectorSecundario especimenColectorSecundario:especimen.getColectoresSecundarios()) {
-                            colectoresSecundarios = colectoresSecundarios.concat(especimenColectorSecundario.getColectorSecundario().getNombres().concat(" ").concat(especimenColectorSecundario.getColectorSecundario().getApellidos()));
+                            Persona persona = especimenColectorSecundario.getColectorSecundario().getPersona();
+                            colectoresSecundarios = colectoresSecundarios.concat(persona.getNombres().concat(" ").concat(persona.getApellidos()));
                             if (especimen.getColectoresSecundarios().indexOf(especimenColectorSecundario) != especimen.getColectoresSecundarios().size()-1) {
                                 colectoresSecundarios = colectoresSecundarios.concat("|");
                             }
@@ -553,7 +557,7 @@ public class SpecimenListFragment extends ListFragment implements View.OnClickLi
                             }
                             String fechaDeterminacion = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(especimen.getDeterminacionActual().getFechaIdentificacion());
                             rowData[18] = fechaDeterminacion;
-                            rowData[19] = especimen.getDeterminacionActual().getDeterminador().getNombres() + "/" + especimen.getDeterminacionActual().getDeterminador().getApellidos();
+                            rowData[19] = especimen.getDeterminacionActual().getDeterminador().getNombres() + " " + especimen.getDeterminacionActual().getDeterminador().getApellidos();
                             rowData[20] = especimen.getDeterminacionActual().getTipo();
                             String nombresComunesText = "";
                             for (NombreComun nombreComun:especimen.getDeterminacionActual().getTaxon().getNombresComunes()){

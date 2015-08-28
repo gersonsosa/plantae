@@ -8,6 +8,7 @@ import edu.udistrital.plantae.logicadominio.autenticacion.Persona;
 import edu.udistrital.plantae.logicadominio.autenticacion.Usuario;
 import edu.udistrital.plantae.logicadominio.recoleccion.ColectorPrincipal;
 import edu.udistrital.plantae.persistencia.ColectorPrincipalDao;
+import edu.udistrital.plantae.persistencia.DaoSession;
 import edu.udistrital.plantae.persistencia.DataBaseHelper;
 import edu.udistrital.plantae.persistencia.PersonaDao;
 import edu.udistrital.plantae.persistencia.UsuarioDao;
@@ -33,9 +34,10 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 	
 	public UserLoginTask(Context context) {
 		this.context=(LoginActivity)context;
-		usuarioDao = DataBaseHelper.getDataBaseHelper(context).getDaoSession().getUsuarioDao();
-        personaDao = DataBaseHelper.getDataBaseHelper(context).getDaoSession().getPersonaDao();
-        colectorPrincipalDao = DataBaseHelper.getDataBaseHelper(context).getDaoSession().getColectorPrincipalDao();
+		DaoSession daoSession = DataBaseHelper.getDataBaseHelper(context).getDaoSession();
+		usuarioDao = daoSession.getUsuarioDao();
+        personaDao = daoSession.getPersonaDao();
+        colectorPrincipalDao = daoSession.getColectorPrincipalDao();
 	}
 	
 	@Override

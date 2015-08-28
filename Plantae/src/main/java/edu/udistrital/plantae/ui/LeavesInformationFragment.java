@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -117,12 +118,26 @@ public class LeavesInformationFragment extends Fragment {
         viewHolder.limboNature.setAdapter(limboNatureAdapter);
         if (colorDeLaVaina != null) {
             viewHolder.sheathColorText.setText(colorDeLaVaina.getNombre());
-            setSheathColor(colorDeLaVaina.getColorRGB());
+            final ViewTreeObserver vainaViewTreeObserver = viewHolder.sheathColor.getViewTreeObserver();
+            vainaViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setSheathColor(colorDeLaVaina.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         if (colorDelPeciolo != null) {
             viewHolder.petioleColorText.setText(colorDelPeciolo.getNombre());
-            setPetioleColor(colorDelPeciolo.getColorRGB());
+            final ViewTreeObserver pecioloViewTreeObserver = viewHolder.petioleColor.getViewTreeObserver();
+            pecioloViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setPetioleColor(colorDelPeciolo.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         if (coberturaDelPeciolo != null) {
@@ -316,13 +331,15 @@ public class LeavesInformationFragment extends Fragment {
             ColorEspecimenDTO colorEspecimen = data.getParcelableExtra("colorEspecimen");
             switch (colorEspecimen.getOrganoDeLaPlanta()) {
                 case "Leaves Sheath":
-                    viewHolder.petioleColorText.setText(colorEspecimen.getNombre());
+                    viewHolder.sheathColorText.setText(colorEspecimen.getNombre());
                     setSheathColor(colorEspecimen.getColorRGB());
+                    colorDeLaVaina = colorEspecimen;
                     onLeavesInformationChangedListener.onSheathColorChanged(colorEspecimen);
                     break;
                 case "Leaves Petiole":
-                    viewHolder.sheathColorText.setText(colorEspecimen.getNombre());
+                    viewHolder.petioleColorText.setText(colorEspecimen.getNombre());
                     setPetioleColor(colorEspecimen.getColorRGB());
+                    colorDelPeciolo = colorEspecimen;
                     onLeavesInformationChangedListener.onPetioleColorChanged(colorEspecimen);
                     break;
             }

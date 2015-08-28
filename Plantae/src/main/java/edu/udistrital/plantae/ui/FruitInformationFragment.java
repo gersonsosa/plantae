@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -87,19 +88,47 @@ public class FruitInformationFragment extends Fragment {
         }
         if (colorDelExocarpio != null) {
             viewHolder.exocarpColorText.setText(colorDelExocarpio.getNombre());
-            setExocarpColor(colorDelExocarpio.getColorRGB());
+            final ViewTreeObserver expocarpioViewTreeObserver = viewHolder.exocarpColor.getViewTreeObserver();
+            expocarpioViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setExocarpColor(colorDelExocarpio.getColorRGB());
+                    return true;
+                }
+            });
         }
         if (colorDelMesocarpio != null) {
             viewHolder.mesocarpColorText.setText(colorDelMesocarpio.getNombre());
-            setMesocarpColor(colorDelMesocarpio.getColorRGB());
+            final ViewTreeObserver mesocarpioViewTreeObserver = viewHolder.mesocarpColor.getViewTreeObserver();
+            mesocarpioViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setMesocarpColor(colorDelMesocarpio.getColorRGB());
+                    return true;
+                }
+            });
         }
         if (colorDelMesocarpioInmaduro != null) {
             viewHolder.mesocarpImmatureColorText.setText(colorDelMesocarpioInmaduro.getNombre());
-            setMesocarpImmatureColor(colorDelMesocarpioInmaduro.getColorRGB());
+            final ViewTreeObserver mesocarpioInmaduroViewTreeObserver = viewHolder.mesocarpImmatureColor.getViewTreeObserver();
+            mesocarpioInmaduroViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setMesocarpImmatureColor(colorDelMesocarpioInmaduro.getColorRGB());
+                    return true;
+                }
+            });
         }
         if (colorDelExocarpioInmaduro != null) {
             viewHolder.exocarpImmatureColorText.setText(colorDelExocarpioInmaduro.getNombre());
-            setExocarpImmatureColor(colorDelExocarpioInmaduro.getColorRGB());
+            final ViewTreeObserver exocarpioInmaduroViewTreeObserver = viewHolder.exocarpImmatureColor.getViewTreeObserver();
+            exocarpioInmaduroViewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    setExocarpImmatureColor(colorDelExocarpioInmaduro.getColorRGB());
+                    return true;
+                }
+            });
         }
 
         final DaoSession daoSession = DataBaseHelper.getDataBaseHelper(getActivity().getApplicationContext()).getDaoSession();
@@ -184,7 +213,7 @@ public class FruitInformationFragment extends Fragment {
                     getActivity().startActivityForResult(editColorIntent, FRUIT_COLOR_EDIT_REQUEST);
                 } else {
                     Intent createColorIntent = new Intent(getActivity().getApplicationContext(), CreateColorActivity.class);
-                    createColorIntent.putExtra("plantOrgan", "Flower Gineceo");
+                    createColorIntent.putExtra("plantOrgan", "Fruit Inmature Mesocarp");
                     getActivity().startActivityForResult(createColorIntent, FRUIT_COLOR_CREATION_REQUEST);
                 }
             }
@@ -214,25 +243,29 @@ public class FruitInformationFragment extends Fragment {
         if ((requestCode == FRUIT_COLOR_CREATION_REQUEST || requestCode == FRUIT_COLOR_EDIT_REQUEST) && resultCode == Activity.RESULT_OK ) {
             ColorEspecimenDTO colorEspecimen = data.getParcelableExtra("colorEspecimen");
             switch (colorEspecimen.getOrganoDeLaPlanta()) {
-                case "Fruit Endocarp":
-                    viewHolder.mesocarpColorText.setText(colorEspecimen.getNombre());
-                    setMesocarpColor(colorEspecimen.getColorRGB());
-                    onFruitInformationChangedListener.onExocarpColorChanged(colorEspecimen);
-                    break;
                 case "Fruit Excarp":
                     viewHolder.exocarpColorText.setText(colorEspecimen.getNombre());
                     setExocarpColor(colorEspecimen.getColorRGB());
+                    colorDelExocarpio = colorEspecimen;
                     onFruitInformationChangedListener.onMesocarpColorChanged(colorEspecimen);
                     break;
-                case "Fruit Inmature Endocarp":
-                    viewHolder.mesocarpImmatureColorText.setText(colorEspecimen.getNombre());
-                    setMesocarpImmatureColor(colorEspecimen.getColorRGB());
-                    onFruitInformationChangedListener.onExocarpImmatureColorChanged(colorEspecimen);
+                case "Fruit Mesocarp":
+                    viewHolder.mesocarpColorText.setText(colorEspecimen.getNombre());
+                    setMesocarpColor(colorEspecimen.getColorRGB());
+                    colorDelMesocarpio = colorEspecimen;
+                    onFruitInformationChangedListener.onExocarpColorChanged(colorEspecimen);
                     break;
                 case "Fruit Inmature Excarp":
                     viewHolder.exocarpImmatureColorText.setText(colorEspecimen.getNombre());
                     setExocarpImmatureColor(colorEspecimen.getColorRGB());
+                    colorDelExocarpioInmaduro = colorEspecimen;
                     onFruitInformationChangedListener.onMesocarpImmatureColorChanged(colorEspecimen);
+                    break;
+                case "Fruit Inmature Mesocarp":
+                    viewHolder.mesocarpImmatureColorText.setText(colorEspecimen.getNombre());
+                    setMesocarpImmatureColor(colorEspecimen.getColorRGB());
+                    colorDelMesocarpioInmaduro = colorEspecimen;
+                    onFruitInformationChangedListener.onExocarpImmatureColorChanged(colorEspecimen);
                     break;
             }
         }

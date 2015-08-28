@@ -483,7 +483,7 @@ public class Viaje {
                     } else if (organoDeLaPlanta.contains("Inflorescence Fruit")) {
                         especimenDTO.setColorDeLaInflorescenciaEnFrutoID(colorEspecimenId);
                     } else if (organoDeLaPlanta.contains("Leaves Sheath")) {
-                        especimenDTO.setColorDelConoID(colorEspecimenId);
+                        especimenDTO.setColorDeLaVainaID(colorEspecimenId);
                     } else if (organoDeLaPlanta.contains("Leaves Petiole")) {
                         especimenDTO.setColorDelPecioloID(colorEspecimenId);
                     } else if (organoDeLaPlanta.contains("Root Cone")) {
@@ -644,6 +644,7 @@ public class Viaje {
                     || especimenDTO.getEntrenudosConspicuos() != null
                     || especimenDTO.getEspinas() != null) {
                 Tallo tallo = new Tallo();
+                tallo.setDescripcion(especimenDTO.getTalloDescripcion());
                 tallo.setAlturaDelTallo(especimenDTO.getAlturaDelTallo());
                 tallo.setColorDelTalloID(especimenDTO.getColorDelTalloID());
                 tallo.setDiametroDelTallo(especimenDTO.getDiametroDelTallo());
@@ -658,6 +659,7 @@ public class Viaje {
             }
         }else{
             Tallo tallo = daoSession.getTalloDao().load(especimenDTO.getTalloId());
+            tallo.setDescripcion(especimenDTO.getTalloDescripcion());
             tallo.setAlturaDelTallo(especimenDTO.getAlturaDelTallo());
             tallo.setColorDelTalloID(especimenDTO.getColorDelTalloID());
             tallo.setDiametroDelTallo(especimenDTO.getDiametroDelTallo());
@@ -767,6 +769,7 @@ public class Viaje {
             }
         }else{
             Flor flor = daoSession.getFlorDao().load(especimenDTO.getFlorId());
+            flor.setDescripcion(especimenDTO.getFlorDescripcion());
             flor.setColorDeLaCorolaID(especimenDTO.getColorDeLaCorolaID());
             flor.setColorDelCalizID(especimenDTO.getColorDelCalizID());
             flor.setColorDelGineceoID(especimenDTO.getColorDelGineceoID());

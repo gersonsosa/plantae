@@ -69,7 +69,10 @@ public class SecondaryCollectorsListFragment extends ListFragment implements Vie
         loadSecondaryCollectors();
         mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
         mActionMode.setTitle(getString(R.string.select_secondary_collectors));
-        setRetainInstance(true);
+        /**
+         * Removed because of exception thrown "    Can't retain fragements that are nested in other fragments"
+         */
+        //setRetainInstance(true);
         return rootView;
     }
 
