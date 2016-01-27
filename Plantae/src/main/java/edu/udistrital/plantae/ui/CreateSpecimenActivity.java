@@ -1415,13 +1415,12 @@ public class CreateSpecimenActivity extends AppCompatActivity implements GoogleA
                     if (taxon.getClass().equals(Genero.class) && taxon.getTaxonPadre().getNombre().equals(familia.getNombre())) {
                         taxonDTO.setGenero(genus);
                         taxonDTO.setId(oldId);
-                    }else{
-                        clearSpecies = true;
                     }
                     if (taxon.getClass().equals(EpitetoEspecifico.class) && taxon.getTaxonPadre().getTaxonPadre().getNombre().equals(familia.getNombre())) {
                         taxonDTO.setGenero(genus);
                         taxonDTO.setEspecie(species);
                         taxonDTO.setId(oldId);
+                        clearSpecies = false;
                     }else{
                         clearSpecies = true;
                     }

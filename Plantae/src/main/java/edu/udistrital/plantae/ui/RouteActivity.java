@@ -145,8 +145,10 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
                 for (MarkerOptions markerOptions:markers) {
                     mMap.addMarker(markerOptions);
                 }
-                for (PolylineOptions polylineOptions:polylines) {
-                    mMap.addPolyline(polylineOptions);
+                if (polylines != null) {
+                    for (PolylineOptions polylineOptions : polylines) {
+                        mMap.addPolyline(polylineOptions);
+                    }
                 }
                 mMap.animateCamera(cameraUpdate);
             }

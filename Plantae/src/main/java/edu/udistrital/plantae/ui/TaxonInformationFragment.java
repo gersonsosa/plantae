@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,6 +143,10 @@ public class TaxonInformationFragment extends Fragment {
                 family = params[0];
                 genus = params[1];
             }
+            if (getActivity() == null) {
+                Log.e("Plantae", "doInBackground: getActivity():null");
+                this.cancel(true);
+            }
             if (family == null && genus == null) {
                 List<Taxon> especies = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Rango.eq("epitetoespecifico")).list();
                 especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(especies));
@@ -153,7 +158,7 @@ public class TaxonInformationFragment extends Fragment {
                 List<Taxon> generos = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Familia.eq(family)).where(TaxonDao.Properties.Rango.eq("genero")).list();
                 generosArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(generos));
             }else {
-                List<Taxon> especies = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(genus)).where(TaxonDao.Properties.Rango.eq("genero")).list();
+                List<Taxon> especies = daoSession.getTaxonDao().queryBuilder().where(TaxonDao.Properties.Genero.eq(genus)).where(TaxonDao.Properties.Rango.eq("epitetoespecifico")).list();
                 especiesArrayAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_dropdown_item_1line, convertToStrings(especies));
             }
             return true;
