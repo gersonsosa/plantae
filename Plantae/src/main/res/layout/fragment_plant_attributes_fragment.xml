@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/plantae_card_background">
+
+    <ScrollView
+        android:id="@+id/normal_mode_plant_attrib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        android:background="@color/plantae_card_background">
+
+        <RelativeLayout
+            android:id="@+id/form_container_plant_attrib"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/plant_attributes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+                <TextView
+                    android:id="@+id/plant_attributes_information_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plants_attributes_information_title"
+                    android:textSize="34sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/habit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_habit"
+                    android:layout_below="@+id/plant_attributes_information_title"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/fenology"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_fenology"
+                    android:layout_below="@+id/habit"/>
+
+                <LinearLayout
+                    android:id="@+id/plant_dimensions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/fenology">
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prompt_height"
+                        android:layout_weight="0.1"/>
+                    <SeekBar
+                        android:id="@+id/height_seekbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:max="120"/>
+                    <EditText
+                        android:id="@+id/height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:selectAllOnFocus="true"/>
+                    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/plant_dap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/plant_dimensions"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prompt_DAP"
+                        android:layout_weight="0.1"/>
+                    <SeekBar
+                        android:id="@+id/DAP_seekbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:max="250"
+                        />
+                    <EditText
+                        android:id="@+id/DAP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:selectAllOnFocus="true"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:singleLine="true"/>
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/abundance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/plant_dap"
+                    android:hint="@string/prompt_abundance"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+
+                <EditText
+                    android:id="@+id/plant_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_plant_description"
+                    android:layout_below="@+id/abundance"
+                    android:inputType="text"
+                    android:minLines="3"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/specimen_colors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/plant_attributes"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/colors_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colors_title"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/colors_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/colors_title"
+                    android:text="@string/no_colors"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/associated_samples"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/specimen_colors"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/associated_sample_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/associated_samples_action"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/associated_sample_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/associated_sample_text"
+                    android:text="@string/no_associated_samples"
+                    android:src="@drawable/pencil_primary"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <FrameLayout
+        android:id="@+id/edit_mode_plant_attrib"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/edit_mode_fragment_container_plant_attrib"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingTop="6dp"
+                android:background="@color/plantae_fallback"/>
+        </LinearLayout>
+
+    </FrameLayout>
+</FrameLayout>

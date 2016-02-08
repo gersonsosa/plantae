@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_card">
+        <TextView
+            android:id="@+id/root_information_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/root_information_title"
+            android:textSize="34sp" />
+
+        <EditText
+            android:id="@+id/cone_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/root_information_title"
+            android:hint="@string/prompt_cone_height"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/in_base_diameter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_in_base_diameter"
+            android:inputType="numberDecimal"
+            android:layout_below="@+id/cone_height"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/roots_diameter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_roots_diameter"
+            android:inputType="text"
+            android:layout_below="@+id/in_base_diameter"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+        <LinearLayout
+            android:id="@+id/cone_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/roots_diameter"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/cone_color_text"
+                android:layout_width="0dip"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_cone_color"
+                android:textSize="18sp"/>
+            <ImageView
+                android:id="@+id/cone_color_image"
+                android:layout_width="0dip"
+                android:layout_weight="0.2"
+                android:src="@color/plantae_black"
+                android:contentDescription="@string/pick_color"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/armed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/armed_text"
+            android:layout_below="@+id/cone_color"/>
+
+        <EditText
+            android:id="@+id/spines_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_spines_shape"
+            android:inputType="text"
+            android:layout_below="@+id/armed"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/spines_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_spines_size"
+            android:inputType="numberDecimal"
+            android:layout_below="@+id/spines_shape"
+            android:maxLines="1"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/roots_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/prompt_roots_description"
+            android:layout_below="@+id/spines_size"
+            android:inputType="text"
+            android:minLines="3"/>
+
+    </RelativeLayout>
+</ScrollView>

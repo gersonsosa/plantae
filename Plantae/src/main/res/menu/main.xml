@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_autocomplete_lists"
+        android:title="@string/autocomplete_lists"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item android:id="@+id/log_out_action"
+        android:title="@string/log_out_string"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+</menu>

@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip"
+    android:background="@drawable/drawer_list_selector">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/content_desc"
+        android:src="@drawable/world_map_primary" />
+
+    <TextView
+        android:id="@+id/title_travel_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/imageView1"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textSize="18sp"
+        android:textColor="#ff0d0d0d" />
+
+    <TextView
+        android:id="@+id/especimen_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:textColor="@color/counter_text_color" />
+
+</RelativeLayout>

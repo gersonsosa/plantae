@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/mature_information_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mature_information_title"
+                android:textSize="34sp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/pericarp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_pericarp"
+                android:layout_below="@+id/mature_information_title" />
+
+            <LinearLayout
+                android:id="@+id/exocarp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/pericarp"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:id="@+id/exocarp_color_text"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_exocarp" />
+                <ImageView
+                    android:id="@+id/exocarp_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mesocarp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/exocarp"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:id="@+id/mesocarp_color_text"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_mesocarp" />
+                <ImageView
+                    android:id="@+id/mesocarp_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/immature_fruit_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/immature_fruit_title"
+                android:textSize="34sp" />
+
+            <LinearLayout
+                android:id="@+id/exocarp_immature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/immature_fruit_title"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:id="@+id/exocarp_immature_color_text"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_exocarp" />
+                <ImageView
+                    android:id="@+id/exocarp_immature_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mesocarp_immature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/exocarp_immature"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:id="@+id/mesocarp_immature_color_text"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:hint="@string/prompt_mesocarp"/>
+                <ImageView
+                    android:id="@+id/mesocarp_immature_color"
+                    android:src="@color/plantae_black"
+                    android:contentDescription="@string/pick_color"
+                    android:layout_width="0dip"
+                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <EditText
+                android:id="@+id/fruits_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/prompt_fruits_description"
+                android:inputType="text"
+                android:minLines="3"/>
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:projectList="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/add_project"
+          android:title="@string/add_project"
+          android:icon="@drawable/plus"
+          projectList:showAsAction="always" />
+    <item android:id="@+id/edit_project"
+          android:title="@string/edit_project"
+          android:icon="@drawable/ic_mode_edit_white_36dp"
+          projectList:showAsAction="ifRoom" />
+    <item android:id="@+id/delete_projects"
+          android:title="@string/delete_project"
+          android:icon="@drawable/ic_delete_white_36dp"
+          projectList:showAsAction="ifRoom" />
+</menu>

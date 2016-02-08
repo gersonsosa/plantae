@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="?listPreferredItemHeight">
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/plantae_87_grey"
+        android:textSize="15sp"
+        android:textStyle="bold|normal"/>
+    <TextView
+        android:id="@+id/item_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/list_item_title"
+        android:paddingLeft="@dimen/margin"
+        android:textSize="12sp"
+        android:layout_marginTop="1dip"/>
+
+</LinearLayout>

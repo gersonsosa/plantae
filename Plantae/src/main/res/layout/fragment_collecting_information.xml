@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/normal_mode_collecting_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        android:background="@color/plantae_70_white">
+
+        <RelativeLayout
+            android:id="@+id/form_container_collecting_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/collecting_information_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/collecting_information_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/collecting_information_title"
+                    android:textSize="34sp"/>
+
+                <TextView
+                    android:id="@+id/collection_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:hint="@string/prompt_collecting_date"
+                    android:layout_below="@+id/collecting_information_title"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/collector_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/collection_date"
+                    android:hint="@string/prompt_collector_number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/collection_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/collector_number"
+                    android:hint="@string/prompt_collecting_method"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/collection_station"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/collection_method"
+                    android:hint="@string/prompt_collecting_station"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/secondary_collectors_card"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:layout_below="@+id/collecting_information_card"
+                android:background="@drawable/bg_card">
+
+                <TextView
+                    android:id="@+id/secondary_collectors_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/titulo_colectores_secundarios"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/specimen_secondary_collectors_normal_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/secondary_collectors_title"
+                    android:text="@string/no_secondary_collectors_selected"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <FrameLayout
+        android:id="@+id/edit_mode_collecting_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/edit_mode_fragment_container_collecting_info"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingTop="6dp"
+                android:background="@color/plantae_fallback"/>
+        </LinearLayout>
+
+    </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_actionbar" />
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/create_project_title"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/create_project_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/project_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/create_project_title"
+                android:hint="@string/prompt_project_name"
+                android:inputType="text"
+                android:maxLines="3"/>
+
+            <EditText
+                android:id="@+id/financial_agency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/project_name"
+                android:hint="@string/prompt_financial_agency"
+                android:inputType="text"
+                android:maxLines="3"/>
+            <EditText
+                android:id="@+id/agreement_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/financial_agency"
+                android:hint="@string/prompt_agreement_number"
+                android:inputType="text"
+                android:maxLines="3"/>
+
+            <EditText
+                android:id="@+id/institution_where_project_is_based"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/agreement_number"
+                android:hint="@string/prompt_institution_where_project_is_based"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+            <EditText
+                android:id="@+id/collecting_permit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/institution_where_project_is_based"
+                android:hint="@string/prompt_collecting_permit"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+            <EditText
+                android:id="@+id/permit_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/collecting_permit"
+                android:hint="@string/prompt_permit_number"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/permit_issuer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/permit_number"
+                android:hint="@string/prompt_permit_issuer"
+                android:inputType="text"
+                android:minLines="3"
+                android:lines="3"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

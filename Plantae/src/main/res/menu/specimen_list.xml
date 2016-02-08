@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_add"
+          android:title="@string/action_add"
+          android:icon="@drawable/plus"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/search"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_search_white_36dp"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_add_detailed"
+          android:title="@string/action_add_detailed"
+          android:visible="false"
+          android:icon="@drawable/western"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_rebuild_journey"
+          android:title="@string/action_rebuild_journey"
+          android:icon="@drawable/line_spliting"
+          app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_export_csv"
+        android:title="@string/action_export_csv"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.udistrital.plantae.ui.SearchActivity">
+
+    <include layout="@layout/toolbar_actionbar" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize"
+        android:visibility="gone"
+        tools:context=".ui.SearchActivity" />
+
+    <RelativeLayout
+        android:id="@+id/search_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:paddingTop="?actionBarSize">
+        <ImageView
+            android:id="@+id/search_hint_image"
+            android:layout_width="@dimen/picture_height"
+            android:layout_height="@dimen/picture_width"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_search_white_36dp"
+            android:contentDescription="@string/action_search" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:layout_below="@+id/search_hint_image"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/margin"
+            android:text="@string/search_by_hint"/>
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/no_results_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingTop="?actionBarSize">
+        <TextView
+            android:id="@+id/no_results_found_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/abc_text_size_title_material_toolbar"
+            android:text="@string/no_results_found"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:paddingTop="@dimen/margin"
+            android:layout_below="@+id/no_results_found_text"
+            android:layout_centerHorizontal="true"
+            android:text="@string/no_items_matched"/>
+    </RelativeLayout>
+
+</RelativeLayout>

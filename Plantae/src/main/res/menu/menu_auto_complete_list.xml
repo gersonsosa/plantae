@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.udistrital.plantae.ui.AutoCompleteListActivity">
+
+    <item android:id="@+id/action_add_value"
+        android:title="@string/action_add"
+        android:icon="@drawable/plus"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_import_csv"
+        android:title="@string/import_csv_file"
+        android:icon="@drawable/icon_light_redo"
+        app:showAsAction="ifRoom" />
+</menu>

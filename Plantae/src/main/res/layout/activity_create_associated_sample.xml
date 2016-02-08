@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:background="#e5e5e5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_actionbar" />
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/bg_card">
+            <TextView
+                android:id="@+id/create_associated_sample_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_associated_sample_title"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/associated_sample_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/create_associated_sample_title"
+                android:hint="@string/associated_sample_description"
+                android:inputType="text"
+                android:maxLines="3"/>
+
+            <EditText
+                android:id="@+id/associated_sample_treatment_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/associated_sample_description"
+                android:hint="@string/prompt_associated_sample_treatment_method"
+                android:inputType="text"
+                android:maxLines="3"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
